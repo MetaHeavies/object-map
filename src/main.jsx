@@ -858,7 +858,17 @@ function App() {
     [history, setHistory] = useState({ past: [], future: [] }),
     [treatment, setTreatment] = useState("restrained"),
     [showStates, setShowStates] = useState(false),
-    [showEvidence, setShowEvidence] = useState(false);
+    [showEvidence, setShowEvidence] = useState(false),
+    [theme, setTheme] = useState(() => {
+      try { return localStorage.getItem("object-map-theme") || "system"; } catch { return "system"; }
+    });
+  useEffect(() => {
+    // "system" leaves the attribute off so the prefers-color-scheme block wins.
+    const root = document.documentElement;
+    if (theme === "system") root.removeAttribute("data-theme");
+    else root.dataset.theme = theme;
+    try { localStorage.setItem("object-map-theme", theme); } catch {}
+  }, [theme]);
   const revisions = useRef({}),
     pending = useRef({}),
     saving = useRef(false),
@@ -1778,6 +1788,20 @@ function App() {
                       onChange={(e) => setShowEvidence(e.target.checked)}
                     />
                   </label>
+                </div>
+                <div className="setting-group motion-settings">
+                  <h3>Appearance</h3>
+                  {[["system", "Match system"], ["light", "Light"], ["dark", "Dark"]].map(([key, label]) => (
+                    <button
+                      className={theme === key ? "selected" : ""}
+                      aria-pressed={theme === key}
+                      key={key}
+                      onClick={() => setTheme(key)}
+                    >
+                      {label}
+                      {theme === key && <Check size={14} />}
+                    </button>
+                  ))}
                 </div>
                 <div className="setting-group motion-settings">
                   <h3>Motion</h3>
