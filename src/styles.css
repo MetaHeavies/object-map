@@ -1600,7 +1600,10 @@ i.purple {
   border: 1px solid #d0d0d0;
   border-radius: 8px;
   padding: 12px 13px 10px;
-  min-height: 65px;
+  /* Fixed so every column's rows start at the same y. A heading that grew with
+     its definition would break alignment across the whole map. */
+  height: 80px;
+  box-sizing: border-box;
 }
 .focused .object-heading {
   border-color: #555;
@@ -1655,10 +1658,24 @@ i.purple {
   pointer-events: none;
 }
 .object-definition {
-  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  width: 100%;
+  height: 32px;
   font-size: 11px;
-  line-height: 1.45;
+  line-height: 16px;
   color: #717171;
+  text-align: left;
+  /* .editable keeps titles on one line; a definition wraps and clips at two. */
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.object-definition.inline-input {
+  display: block;
+  height: 32px;
+  white-space: nowrap;
 }
 .object-sections,
 .columns-3,
