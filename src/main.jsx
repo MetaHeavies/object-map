@@ -256,6 +256,7 @@ function ItemComposer({ section, object, map, onAdd, onCancel, onReveal }) {
 function ObjectCard({
   object,
   index,
+  zoom,
   expanded,
   focused,
   dimmed,
@@ -652,7 +653,7 @@ function ObjectCard({
           </span>
         </footer>
       </Reveal>
-      <ColumnAdd name={object.name} onChoose={section=>{
+      <ColumnAdd name={object.name} zoom={zoom} onChoose={section=>{
         onSelect(object.id);
         setComposer(section);
       }} />
@@ -1503,6 +1504,7 @@ function App() {
               relevantRelationships={context.relationships}
               onSelect={selectObject}
               position={positions[object.id]}
+              zoom={v.zoom}
               dragging={columnDrag?.id === object.id}
               map={map}
               onToggle={focus}

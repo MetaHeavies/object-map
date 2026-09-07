@@ -9,7 +9,7 @@ const choices = [
   { section: "states", label: "State", hint: "A condition in its lifecycle", icon: RotateCcw, color: "purple" },
 ];
 
-export function ColumnAdd({ name, onChoose }) {
+export function ColumnAdd({ name, onChoose, zoom = 1 }) {
   const [open, setOpen] = useState(false), [position, setPosition] = useState(null);
   const trigger = useRef(), menu = useRef();
   const close = (restoreFocus = false) => {
@@ -19,13 +19,19 @@ export function ColumnAdd({ name, onChoose }) {
   useLayoutEffect(() => {
     if (!open) return;
     const bounds = trigger.current.getBoundingClientRect();
-    const width = 280, height = 236, above = bounds.bottom + height + 12 > window.innerHeight;
+    // Portalled to the body, so it sits outside the canvas transform and stayed
+    // at 100% while the column it belongs to scaled. Its box is scaled here, and
+    // the flip and clamp measure the scaled size.
+    const width = 280 * zoom,
+      height = 236 * zoom,
+      gap = 8 * zoom;
+    const above = bounds.bottom + height + 12 > window.innerHeight;
     setPosition({
       left: Math.max(12, Math.min(bounds.left, window.innerWidth - width - 12)),
-      top: Math.max(12, Math.min(above ? bounds.top - height - 8 : bounds.bottom + 8, window.innerHeight - height - 12)),
+      top: Math.max(12, Math.min(above ? bounds.top - height - gap : bounds.bottom + gap, window.innerHeight - height - 12)),
       origin: above ? "bottom left" : "top left",
     });
-  }, [open]);
+  }, [open, zoom]);
   useEffect(() => {
     if (!open || !position) return;
     menu.current?.querySelector('[role="menuitem"]')?.focus({ preventScroll: true });
@@ -63,7 +69,7 @@ export function ColumnAdd({ name, onChoose }) {
       <Plus size={14} />
     </button>
     {open && position && createPortal(
-      <div ref={menu} className="object-type-menu" role="menu" aria-label={`Add to ${name}`} style={{ left: position.left, top: position.top, transformOrigin: position.origin }} onKeyDown={navigate}>
+      <div ref={menu} className="object-type-menu" role="menu" aria-label={`Add to ${name}`} style={{ left: position.left, top: position.top, transformOrigin: position.origin, scale: zoom }} onKeyDown={navigate}>
         <div className="object-type-menu-label">Add to {name}</div>
         {choices.map(({ section, label, hint, icon: Icon, color }) => <button key={section} type="button" role="menuitem" aria-label={label} onClick={() => { close(); onChoose(section); }}>
           <span className={`type-icon ${color}`}><Icon size={14} /></span>
