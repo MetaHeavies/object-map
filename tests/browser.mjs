@@ -6,7 +6,7 @@ import { testDrag } from "./drag-browser.mjs";
 import { testNavigation } from "./navigation-browser.mjs";
 import { testEditing } from "./editing-browser.mjs";
 import { testLiveMap } from "./live-map-browser.mjs";
-import { mkdir, mkdtemp } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
@@ -16,6 +16,12 @@ const temporary = await mkdtemp(path.join(os.tmpdir(), "object-map-browser-"));
 const root = path.join(temporary, "atlas");
 await generate(root);
 await install(root);
+// The canvas is populated by an agent, so the journey starts from a written map
+// rather than from anything the viewer itself can extract.
+await writeFile(
+  path.join(root, ".object-map/map.json"),
+  await readFile(new URL("./atlas-map.json", import.meta.url), "utf8"),
+);
 const server = spawn(
   process.execPath,
   ["node_modules/vite/bin/vite.js", "--port", "5176", "--strictPort"],
@@ -39,9 +45,12 @@ page.on("pageerror", (e) => errors.push(e.message));
 await mkdir("test-results", { recursive: true });
 try {
   await page.goto("http://127.0.0.1:5176");
-  await page.screenshot({ path: "test-results/discovery.png" });
-  await page.getByRole("button", { name: "Add 8 objects to map" }).click();
-  await page.waitForTimeout(350);
+  await page
+    .getByRole("button", { name: "Collapse Place" })
+    .waitFor({ state: "attached" });
+  await page.keyboard.press("f");
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: "test-results/loaded.png" });
   await testSpacing(page);
   await testDrag(page);
   await testFocus(page);
@@ -155,7 +164,7 @@ try {
   await testLiveMap(page, root);
   await page.setViewportSize({ width: 390, height: 844 });
   await page
-    .getByRole("button", { name: "Discover objects", exact: true })
+    .getByRole("button", { name: "Canvas settings", exact: true })
     .click();
   await page.waitForTimeout(300);
   await page.screenshot({ path: "test-results/mobile.png" });
@@ -166,7 +175,7 @@ try {
   if (errors.length) throw new Error(errors.join("\n"));
   await testAtlas(browser, root);
   console.log(
-    "Browser journey passed: discovery, inline editing, promotion, undo/redo, handoff, persistence, mobile.",
+    "Browser journey passed: inline editing, promotion, undo/redo, handoff, persistence, mobile.",
   );
 } catch (error) {
   await page.screenshot({ path: "test-results/failure.png" });

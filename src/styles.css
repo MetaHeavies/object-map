@@ -920,29 +920,6 @@ i.purple {
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) 0.006 231);
   margin: 0 0 23px;
 }
-.discovery-summary {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) 0.006 231);
-  padding-bottom: 12px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6633) 0.006 231);
-  font-size: 10px;
-}
-.candidate-list {
-  flex: 1;
-  overflow: auto;
-  min-height: 120px;
-  margin: 0 -8px;
-  padding: 0 8px;
-}
-.candidate-list h3 {
-  font-size: 12px;
-  font-weight: 500;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.696) 0.006 231);
-  display: flex;
-  justify-content: space-between;
-  margin: 22px 0 10px;
-}
 .candidate {
   border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) 0.006 231);
   border-radius: 6px;
@@ -954,18 +931,6 @@ i.purple {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9672) 0.006 231);
   border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8975) 0.006 231);
 }
-.candidate-row {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-.candidate-row input[type="checkbox"] {
-  accent-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5382) 0.006 231);
-  width: 13px;
-  height: 13px;
-  margin: 0;
-  flex-shrink: 0;
-}
 .candidate-name {
   font-size: 12px;
   font-weight: 500;
@@ -974,55 +939,6 @@ i.purple {
   width: 100%;
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5243) 0.006 231);
   padding: 3px 0;
-}
-.candidate-row .icon-button {
-  width: 22px;
-  height: 22px;
-}
-.candidate-row small {
-  font-size: 9px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.696) 0.006 231);
-}
-.candidate-meta {
-  font-size: 9px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7122) 0.006 231);
-  padding-left: 22px;
-  margin: 2px 0 4px;
-}
-.candidate-evidence {
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9067) 0.006 231);
-  margin-top: 8px;
-  padding-top: 6px;
-  font-size: 10px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6201) 0.006 231);
-}
-.candidate-evidence code {
-  display: block;
-  font-size: 8px;
-  line-height: 1.9;
-  overflow-wrap: anywhere;
-}
-.discovery-footer {
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) 0.006 231);
-  padding-top: 14px;
-  flex-shrink: 0;
-}
-.discovery-footer > p {
-  font-size: 10px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7025) 0.006 231);
-  margin: 0 0 12px;
-}
-.discovery-footer .primary {
-  width: 100%;
-  justify-content: space-between;
-}
-.discovery-footer details {
-  font-size: 9px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6862) 0.006 231);
-  margin-top: 12px;
-}
-.discovery-footer details p {
-  line-height: 1.6;
 }
 .change-list {
   margin: 4px 0 24px;
@@ -1107,15 +1023,9 @@ i.purple {
 .setting input {
   accent-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5208) 0.006 231);
 }
-.motion-settings > button + button {
-  margin-top: 4px;
-}
 .motion-settings h3 {
   font-size: 12px;
   font-weight: 500;
-}
-.setting-group > button + button {
-  margin-top: 4px;
 }
 .motion-settings p,
 .motion-settings small {
@@ -1123,18 +1033,32 @@ i.purple {
   line-height: 1.6;
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) 0.006 231);
 }
-.motion-settings button {
+/* One horizontal group per setting: the options are alternatives, so they read
+   as a row of equal choices rather than a stacked list of separate controls. */
+.setting-group .options {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--chrome-badge);
+}
+.setting-group .options button {
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 100%;
-  text-align: left;
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) 0.006 231);
-  padding: 13px;
-  margin: 9px 0;
-  border-radius: 5px;
-  font-size: 12px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6534) 0.006 231);
+  justify-content: center;
+  text-align: center;
+  padding: 7px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--chrome-label);
+}
+.setting-group .options button.selected {
+  background: var(--surface);
+  color: var(--chrome-title);
+  font-weight: 500;
 }
 .motion-settings button > span {
   font:
@@ -1145,11 +1069,7 @@ i.purple {
 .motion-settings button svg {
   margin-left: auto;
 }
-.motion-settings button.selected {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7858) 0.006 231);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) 0.006 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5417) 0.006 231);
-}
+
 .motion-settings > small {
   display: block;
   margin-top: 18px;
@@ -1384,11 +1304,6 @@ i.purple {
 }
 .fatal p {
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) 0.006 231);
-}
-.loading {
-  padding: 30px 0;
-  font-size: 12px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) 0.006 231);
 }
 .panning {
   cursor: grab;

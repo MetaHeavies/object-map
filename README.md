@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-Open **http://127.0.0.1:5173**. An existing Atlas map loads automatically. If you lose your place, choose **Atlas → Show saved map** or press **F** to fit it; a saved viewport with the entire map offscreen recovers on opening. The first run generates Atlas in `examples/atlas`, installs the Object Map skill there, and opens candidate discovery. Review the candidates and add the objects you want. Generation never includes a precomputed conceptual map.
+Open **http://127.0.0.1:5173**. An existing Atlas map loads automatically. If you lose your place, choose **Atlas → Show saved map** or press **F** to fit it; a saved viewport with the entire map offscreen recovers on opening. The first run generates Atlas in `examples/atlas` and installs the Object Map skill there. Generation never includes a precomputed conceptual map; an agent populates it.
 
 To run the separate Atlas application:
 
@@ -50,7 +50,7 @@ Installation creates empty map/layout/config files, the portable skill under `.a
 
 Tell the agent **“Run Object Map on this repository”** to inspect the implementation and populate the map. For a new product, it starts from the brief or PRD and maintains the model while building. “New object” is the builder’s direct way to express an additional concept, such as Pizza, before implementation exists.
 
-The built-in discovery adapter combines **SQL CREATE TABLE schemas and JSON page metadata**; it is deliberately bounded. It reports schema-only candidates separately and never imports candidates silently. For other stacks, the installed skill guides the agent to inspect routes, forms, schemas and services and propose a model for human review. General multi-stack automated extraction is future work.
+Mapping is the agent's job. The installed skill guides it to inspect routes, forms, schemas, services and tests, and to propose a model for human review. There is no built-in extractor: a schema reader only sees schema-backed products, it cannot tell a product object from a table, and having one in the canvas implied the map could populate itself.
 
 Resolve a reference from the target repository:
 
@@ -137,6 +137,6 @@ For a built local server, run `npm run build` then `npm start` (after preparing/
 
 ## Current boundary
 
-This is a working local prototype: semantic editing, promotion/demotion, undo/redo, contextual relationships, repository persistence, candidate review, handoff, a deployable agent skill, and the Atlas fixture generator are implemented. Motion treatments are interactive prototypes awaiting human evaluation; they are not a claim that the final motion design has been selected. Agent-led discovery/maintenance, portable packaging, prompt/session hooks, bounded end-of-turn review checks and live canvas refresh are implemented. Fully automatic semantic drift detection, generic deterministic parsers for arbitrary stacks and velocity-based drag inertia are not implemented. Native Windows and live host session activation still require validation on the recipient’s setup. There are no accounts, cloud storage or automatic code generation.
+This is a working local prototype: semantic editing, promotion/demotion, undo/redo, contextual relationships, repository persistence, handoff, a deployable agent skill, and the Atlas fixture generator are implemented. Motion treatments are interactive prototypes awaiting human evaluation; they are not a claim that the final motion design has been selected. Agent-led discovery/maintenance, portable packaging, prompt/session hooks, bounded end-of-turn review checks and live canvas refresh are implemented. Fully automatic semantic drift detection, generic deterministic parsers for arbitrary stacks and velocity-based drag inertia are not implemented. Native Windows and live host session activation still require validation on the recipient’s setup. There are no accounts, cloud storage or automatic code generation.
 
 The original intent and scope are in [PRD.md](PRD.md) and [PROJECT.md](PROJECT.md). The current design follows the user's traditional OOUX column reference, with subtle color coding and collapsing focus context added through interactive review.

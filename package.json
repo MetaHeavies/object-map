@@ -13,7 +13,6 @@
     "test:portable": "node tests/portable.mjs",
     "generate": "node generator/generate.mjs",
     "install:map": "node scripts/install.mjs",
-    "discover": "node scripts/discover.mjs",
     "atlas": "node examples/atlas/server.mjs"
   },
   "dependencies": {

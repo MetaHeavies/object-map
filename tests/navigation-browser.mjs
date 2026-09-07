@@ -28,7 +28,7 @@ export async function testNavigation(page) {
   assert.ok(Math.abs((await viewport()).zoom - after.zoom) < .001, 'Shift-double-click zooms out');
   await page.getByRole('button', {name: 'Canvas settings', exact: true}).click();
   const panelView = await viewport();
-  await page.locator('.motion-settings').hover();
+  await page.locator('.setting-group').last().hover();
   await page.mouse.wheel(0, 120);
   await page.waitForTimeout(150);
   assert.deepEqual(await viewport(), panelView, 'Scrolling settings does not zoom the canvas');

@@ -1,0 +1,457 @@
+{
+  "version": 1,
+  "objects": [
+    {
+      "id": "obj:city",
+      "name": "City",
+      "description": "The city a place sits in; how places are grouped geographically.",
+      "attributes": [
+        {
+          "id": "obj:city/attr:country",
+          "name": "Country"
+        },
+        {
+          "id": "obj:city/attr:name",
+          "name": "Name"
+        }
+      ],
+      "relationships": [],
+      "actions": [
+        {
+          "id": "obj:city/action:edit",
+          "name": "Edit"
+        }
+      ],
+      "states": [],
+      "evidence": [
+        "database/schema/city.sql",
+        "src/pages/city.json",
+        "src/models/city.json",
+        "src/services/city.mjs",
+        "src/validation/city.mjs"
+      ]
+    },
+    {
+      "id": "obj:collection",
+      "name": "Collection",
+      "description": "A named set of saved places, kept private or shared with chosen people.",
+      "attributes": [
+        {
+          "id": "obj:collection/attr:description",
+          "name": "Description"
+        },
+        {
+          "id": "obj:collection/attr:name",
+          "name": "Name"
+        },
+        {
+          "id": "obj:collection/attr:visibility",
+          "name": "Visibility"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:collection/rel:owner",
+          "name": "Owned by",
+          "target": "obj:person"
+        },
+        {
+          "id": "obj:collection/rel:place",
+          "name": "Includes",
+          "target": "obj:place"
+        },
+        {
+          "id": "obj:collection/rel:shared-with",
+          "name": "Shared with",
+          "target": "obj:person"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:collection/action:edit",
+          "name": "Edit"
+        },
+        {
+          "id": "obj:collection/action:add-place",
+          "name": "Add place"
+        },
+        {
+          "id": "obj:collection/action:remove-place",
+          "name": "Remove place"
+        },
+        {
+          "id": "obj:collection/action:share",
+          "name": "Share"
+        },
+        {
+          "id": "obj:collection/action:archive",
+          "name": "Archive"
+        }
+      ],
+      "states": [],
+      "evidence": [
+        "database/schema/list.sql",
+        "src/pages/collection.json",
+        "src/models/list.json",
+        "src/services/collection.mjs",
+        "src/validation/collection.mjs"
+      ]
+    },
+    {
+      "id": "obj:photo",
+      "name": "Photo",
+      "description": "An image taken at a place, usually during a visit.",
+      "attributes": [
+        {
+          "id": "obj:photo/attr:caption",
+          "name": "Caption"
+        },
+        {
+          "id": "obj:photo/attr:taken-at",
+          "name": "Date taken"
+        },
+        {
+          "id": "obj:photo/attr:url",
+          "name": "Url"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:photo/rel:place",
+          "name": "Taken at",
+          "target": "obj:place"
+        },
+        {
+          "id": "obj:photo/rel:visit",
+          "name": "Taken during",
+          "target": "obj:visit"
+        },
+        {
+          "id": "obj:photo/rel:person",
+          "name": "Taken by",
+          "target": "obj:person"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:photo/action:edit",
+          "name": "Edit"
+        },
+        {
+          "id": "obj:photo/action:delete",
+          "name": "Delete"
+        }
+      ],
+      "states": [],
+      "evidence": [
+        "database/schema/media_asset.sql",
+        "src/pages/photo.json",
+        "src/models/media_asset.json",
+        "src/services/photo.mjs",
+        "src/validation/photo.mjs"
+      ]
+    },
+    {
+      "id": "obj:note",
+      "name": "Note",
+      "description": "Something written down about a place or a visit.",
+      "attributes": [
+        {
+          "id": "obj:note/attr:body",
+          "name": "Body"
+        },
+        {
+          "id": "obj:note/attr:created-at",
+          "name": "Created At"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:note/rel:place",
+          "name": "About",
+          "target": "obj:place"
+        },
+        {
+          "id": "obj:note/rel:visit",
+          "name": "During",
+          "target": "obj:visit"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:note/action:edit",
+          "name": "Edit"
+        },
+        {
+          "id": "obj:note/action:delete",
+          "name": "Delete"
+        }
+      ],
+      "states": [],
+      "evidence": [
+        "database/schema/note.sql",
+        "src/pages/note.json",
+        "src/models/note.json",
+        "src/services/note.mjs",
+        "src/validation/note.mjs"
+      ]
+    },
+    {
+      "id": "obj:place",
+      "name": "Place",
+      "description": "A location someone saved to return to later.",
+      "attributes": [
+        {
+          "id": "obj:place/attr:address",
+          "name": "Address"
+        },
+        {
+          "id": "obj:place/attr:description",
+          "name": "Description"
+        },
+        {
+          "id": "obj:place/attr:instagram",
+          "name": "Instagram"
+        },
+        {
+          "id": "obj:place/attr:latitude",
+          "name": "Latitude"
+        },
+        {
+          "id": "obj:place/attr:longitude",
+          "name": "Longitude"
+        },
+        {
+          "id": "obj:place/attr:name",
+          "name": "Name"
+        },
+        {
+          "id": "obj:place/attr:opening-hours",
+          "name": "Opening Hours"
+        },
+        {
+          "id": "obj:place/attr:phone",
+          "name": "Phone"
+        },
+        {
+          "id": "obj:place/attr:status",
+          "name": "Status"
+        },
+        {
+          "id": "obj:place/attr:website",
+          "name": "Website"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:place/rel:city",
+          "name": "Located in",
+          "target": "obj:city"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:place/action:edit",
+          "name": "Edit"
+        },
+        {
+          "id": "obj:place/action:archive",
+          "name": "Archive"
+        },
+        {
+          "id": "obj:place/action:add-to-collection",
+          "name": "Add to collection"
+        },
+        {
+          "id": "obj:place/action:plan-visit",
+          "name": "Plan visit"
+        },
+        {
+          "id": "obj:place/action:add-note",
+          "name": "Add note"
+        },
+        {
+          "id": "obj:place/action:add-photo",
+          "name": "Add photo"
+        }
+      ],
+      "states": [
+        {
+          "id": "obj:place/state:active",
+          "name": "Active"
+        },
+        {
+          "id": "obj:place/state:archived",
+          "name": "Archived"
+        }
+      ],
+      "evidence": [
+        "database/schema/saved_location.sql",
+        "src/pages/place.json",
+        "src/models/saved_location.json",
+        "src/services/place.mjs",
+        "src/validation/place.mjs"
+      ]
+    },
+    {
+      "id": "obj:tag",
+      "name": "Tag",
+      "description": "A label grouping places by kind rather than by location.",
+      "attributes": [
+        {
+          "id": "obj:tag/attr:name",
+          "name": "Name"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:tag/rel:place",
+          "name": "Applied to",
+          "target": "obj:place"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:tag/action:edit",
+          "name": "Edit"
+        },
+        {
+          "id": "obj:tag/action:apply-to-place",
+          "name": "Apply to place"
+        }
+      ],
+      "states": [],
+      "evidence": [
+        "database/schema/tag.sql",
+        "src/pages/tag.json",
+        "src/models/tag.json",
+        "src/services/tag.mjs",
+        "src/validation/tag.mjs"
+      ]
+    },
+    {
+      "id": "obj:visit",
+      "name": "Visit",
+      "description": "A planned or completed trip to a place, rated once done.",
+      "attributes": [
+        {
+          "id": "obj:visit/attr:completed-date",
+          "name": "Completed Date"
+        },
+        {
+          "id": "obj:visit/attr:name",
+          "name": "Name"
+        },
+        {
+          "id": "obj:visit/attr:planned-date",
+          "name": "Planned Date"
+        },
+        {
+          "id": "obj:visit/attr:private-note",
+          "name": "Private Note"
+        },
+        {
+          "id": "obj:visit/attr:rating",
+          "name": "Rating"
+        },
+        {
+          "id": "obj:visit/attr:status",
+          "name": "Status"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:visit/rel:place",
+          "name": "At",
+          "target": "obj:place"
+        },
+        {
+          "id": "obj:visit/rel:person",
+          "name": "Made by",
+          "target": "obj:person"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:visit/action:plan-visit",
+          "name": "Plan visit"
+        },
+        {
+          "id": "obj:visit/action:complete",
+          "name": "Complete"
+        },
+        {
+          "id": "obj:visit/action:cancel",
+          "name": "Cancel"
+        },
+        {
+          "id": "obj:visit/action:add-note",
+          "name": "Add note"
+        },
+        {
+          "id": "obj:visit/action:add-photo",
+          "name": "Add photo"
+        }
+      ],
+      "states": [
+        {
+          "id": "obj:visit/state:planned",
+          "name": "Planned"
+        },
+        {
+          "id": "obj:visit/state:completed",
+          "name": "Completed"
+        },
+        {
+          "id": "obj:visit/state:cancelled",
+          "name": "Cancelled"
+        }
+      ],
+      "evidence": [
+        "database/schema/trip_event.sql",
+        "src/pages/visit.json",
+        "src/models/trip_event.json",
+        "src/services/visit.mjs",
+        "src/validation/visit.mjs"
+      ]
+    },
+    {
+      "id": "obj:person",
+      "name": "Person",
+      "description": "Someone who saves places, plans visits and is shared with.",
+      "attributes": [
+        {
+          "id": "obj:person/attr:avatar",
+          "name": "Avatar"
+        },
+        {
+          "id": "obj:person/attr:bio",
+          "name": "Bio"
+        },
+        {
+          "id": "obj:person/attr:email",
+          "name": "Email"
+        },
+        {
+          "id": "obj:person/attr:name",
+          "name": "Name"
+        }
+      ],
+      "relationships": [],
+      "actions": [
+        {
+          "id": "obj:person/action:edit",
+          "name": "Edit"
+        }
+      ],
+      "states": [],
+      "evidence": [
+        "database/schema/user.sql",
+        "src/pages/person.json",
+        "src/models/user.json",
+        "src/services/person.mjs",
+        "src/validation/person.mjs"
+      ]
+    }
+  ]
+}

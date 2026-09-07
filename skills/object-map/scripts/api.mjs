@@ -1,6 +1,5 @@
 import path from "node:path";
 import { Store } from "./store.mjs";
-import { discover } from "./discovery.mjs";
 export function createApi(
   root = path.resolve(process.env.OBJECT_MAP_REPO || "."),
 ) {
@@ -34,8 +33,6 @@ export function createApi(
           }),
         );
       }
-      if (url.pathname === "/api/discover" && req.method === "GET")
-        return res.end(JSON.stringify(await discover(root)));
       if (
         ["/api/map", "/api/layout"].includes(url.pathname) &&
         req.method === "PUT"

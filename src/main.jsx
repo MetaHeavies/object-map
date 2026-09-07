@@ -20,7 +20,6 @@ import {
   Redo2,
   Copy,
   Check,
-  Scan,
   Maximize,
   Layers,
   Link2,
@@ -636,178 +635,6 @@ function ObjectCard({
         setComposer(section);
       }} />
     </article>
-  );
-}
-function Discovery({ map, onAccept, onClose }) {
-  const [result, setResult] = useState(null),
-    [error, setError] = useState(""),
-    [selected, setSelected] = useState(new Set()),
-    [names, setNames] = useState({}),
-    [details, setDetails] = useState(null);
-  const load = () => {
-    setError("");
-    api("/api/discover")
-      .then((r) => {
-        setResult(r);
-        setSelected(
-          new Set(
-            r.candidates
-              .filter(
-                (c) =>
-                  c.confidence === "strong" &&
-                  !map.objects.some((o) => o.id === c.id),
-              )
-              .map((c) => c.id),
-          ),
-        );
-      })
-      .catch((e) => setError(e.message));
-  };
-  useEffect(load, []);
-  function accept() {
-    const next = clone(map);
-    const accepted = result.candidates.filter(
-      (c) => selected.has(c.id) && !map.objects.some((o) => o.id === c.id),
-    );
-    const available = new Set([
-      ...next.objects.map((o) => o.id),
-      ...accepted.map((c) => c.id),
-    ]);
-    for (const c of accepted)
-      next.objects.push({
-        ...clone(c.object),
-        name: names[c.id]?.trim() || c.object.name,
-        relationships: c.object.relationships.filter((r) =>
-          available.has(r.target),
-        ),
-      });
-    onAccept(next);
-  }
-  return (
-    <aside className="side-panel discovery-panel">
-      <div className="panel-heading">
-        <span>Discover objects</span>
-        <IconButton icon={X} label="Close discovery" onClick={onClose} />
-      </div>
-      <h2>Candidates</h2>
-      <p className="panel-intro">
-        Read from this repository's SQL schemas and page metadata. Keep what
-        belongs in the product; nothing is added until you accept it.
-      </p>
-      {error ? (
-        <div role="alert">
-          {error}
-          <button onClick={load}>Try again</button>
-        </div>
-      ) : !result ? (
-        <div className="loading">Reading schemas and interface evidence…</div>
-      ) : (
-        <>
-          <div className="discovery-summary">
-            <span>{result.candidates.length} candidates</span>
-            <span>{result.scannedFiles} files inspected</span>
-          </div>
-          <div className="candidate-list">
-            {["strong", "review"].map((confidence) => (
-              <section key={confidence}>
-                <h3>
-                  {confidence === "strong"
-                    ? "Likely product objects"
-                    : "Needs a closer look"}
-                  <span>
-                    {
-                      result.candidates.filter(
-                        (c) => c.confidence === confidence,
-                      ).length
-                    }
-                  </span>
-                </h3>
-                {result.candidates
-                  .filter((c) => c.confidence === confidence)
-                  .map((c) => {
-                    const exists = map.objects.some((o) => o.id === c.id);
-                    return (
-                      <div
-                        className={`candidate ${selected.has(c.id) ? "selected" : ""}`}
-                        key={c.id}
-                      >
-                        <div className="candidate-row">
-                          <input
-                            type="checkbox"
-                            aria-label={`Include ${c.object.name}`}
-                            disabled={exists}
-                            checked={selected.has(c.id) || exists}
-                            onChange={() =>
-                              setSelected((prev) => {
-                                const next = new Set(prev);
-                                next.has(c.id)
-                                  ? next.delete(c.id)
-                                  : next.add(c.id);
-                                return next;
-                              })
-                            }
-                          />
-                          <input
-                            aria-label={`Candidate ${c.object.name} name`}
-                            className="candidate-name"
-                            value={names[c.id] ?? c.object.name}
-                            onChange={(e) =>
-                              setNames({ ...names, [c.id]: e.target.value })
-                            }
-                            disabled={exists}
-                          />
-                          {exists ? (
-                            <small>Mapped</small>
-                          ) : (
-                            <IconButton
-                              icon={
-                                details === c.id ? ChevronDown : ChevronRight
-                              }
-                              label={`Evidence for ${c.object.name}`}
-                              onClick={() =>
-                                setDetails(details === c.id ? null : c.id)
-                              }
-                            />
-                          )}
-                        </div>
-                        <div className="candidate-meta">
-                          {c.object.attributes.length} attributes ·{" "}
-                          {c.object.relationships.length} relationships
-                        </div>
-                        {details === c.id && (
-                          <div className="candidate-evidence">
-                            <p>{c.reason}</p>
-                            {c.object.evidence.map((f) => (
-                              <code key={f}>{f}</code>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-              </section>
-            ))}
-          </div>
-          <div className="discovery-footer">
-            <p>
-              Unchecked concepts stay out of your map. Relationships are
-              included when both objects are accepted.
-            </p>
-            <button
-              className="primary"
-              onClick={accept}
-              disabled={!selected.size}
-            >
-              Add {selected.size} objects to map <ArrowRight size={15} />
-            </button>
-            <details>
-              <summary>About this discovery</summary>
-              <p>{result.limitations}</p>
-            </details>
-          </div>
-        </>
-      )}
-    </aside>
   );
 }
 function App() {
@@ -1532,11 +1359,6 @@ function App() {
             onClick={() => setSearchOpen(!searchOpen)}
           />
           <IconButton
-            icon={Scan}
-            label="Discover objects"
-            onClick={() => setPanel(panel === "discovery" ? null : "discovery")}
-          />
-          <IconButton
             icon={Settings}
             label="Canvas settings"
             onClick={() => setPanel(panel === "settings" ? null : "settings")}
@@ -1714,19 +1536,7 @@ function App() {
             />
           </div>
         </div>
-        {panel === "discovery" && (
-          <Discovery
-            map={map}
-            onClose={() => setPanel(null)}
-            onAccept={(next) => {
-              change(next, { expanded: next.objects.map((o) => o.id) });
-              setPanel(null);
-              setView({ ...layout, viewport: { x: 55, y: 96, zoom: 0.9 } });
-              notify("Your product model is ready to explore");
-            }}
-          />
-        )}
-        {panel && panel !== "discovery" && (
+        {panel && (
           <aside className="side-panel">
             <div className="panel-heading">
               <IconButton
@@ -1789,33 +1599,35 @@ function App() {
                     />
                   </label>
                 </div>
-                <div className="setting-group motion-settings">
-                  <h3>Appearance</h3>
-                  {[["system", "Match system"], ["light", "Light"], ["dark", "Dark"]].map(([key, label]) => (
-                    <button
-                      className={theme === key ? "selected" : ""}
-                      aria-pressed={theme === key}
-                      key={key}
-                      onClick={() => setTheme(key)}
-                    >
-                      {label}
-                      {theme === key && <Check size={14} />}
-                    </button>
-                  ))}
+                <div className="setting-group">
+                  <h3 id="appearance-label">Appearance</h3>
+                  <div className="options" role="group" aria-labelledby="appearance-label">
+                    {[["system", "System"], ["light", "Light"], ["dark", "Dark"]].map(([key, label]) => (
+                      <button
+                        className={theme === key ? "selected" : ""}
+                        aria-pressed={theme === key}
+                        key={key}
+                        onClick={() => setTheme(key)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 <div className="setting-group motion-settings">
-                  <h3>Motion</h3>
-                  {Object.entries(treatments).map(([key, value]) => (
-                    <button
-                      className={treatment === key ? "selected" : ""}
-                      aria-pressed={treatment === key}
-                      key={key}
-                      onClick={() => setTreatment(key)}
-                    >
-                      {value.label}
-                      {treatment === key && <Check size={14} />}
-                    </button>
-                  ))}
+                  <h3 id="motion-label">Motion</h3>
+                  <div className="options" role="group" aria-labelledby="motion-label">
+                    {Object.entries(treatments).map(([key, value]) => (
+                      <button
+                        className={treatment === key ? "selected" : ""}
+                        aria-pressed={treatment === key}
+                        key={key}
+                        onClick={() => setTreatment(key)}
+                      >
+                        {value.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </>
             ) : (
@@ -1838,13 +1650,6 @@ function App() {
                   <span>Layout</span>
                   <code>.object-map/layout.json</code>
                 </div>
-                <button
-                  className="secondary"
-                  onClick={() => setPanel("discovery")}
-                >
-                  <Scan size={15} />
-                  Discover more objects
-                </button>
                 <button className="secondary" onClick={exportContext}>
                   <Download size={15} />
                   Export map context

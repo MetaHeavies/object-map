@@ -153,7 +153,7 @@ export async function testFocus(page) {
     .getByRole("button", { name: "Expand Place", exact: true })
     .click();
 
-  // Alias labels still refer to the same object: both Owner and Shared With
+  // Alias labels still refer to the same object: both Owned by and Shared with
   // must survive, along with references in other containing objects.
   await collection
     .getByRole("button", { name: "Collapse Collection", exact: true })

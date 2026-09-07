@@ -13,7 +13,6 @@ import {
   changesBetween,
 } from "../src/model.mjs";
 import { generate } from "../generator/generate.mjs";
-import { discover } from "../server/discovery.mjs";
 import { Store, initialize } from "../server/store.mjs";
 import { install } from "../scripts/install.mjs";
 const empty = () => ({ version: 1, objects: [] });
@@ -68,7 +67,7 @@ test("semantic change summaries include actions and renames while stable IDs sur
   assert.ok(changes.some((x) => x.includes("actions: Archive")));
   assert.equal(next.objects[0].id, original.objects[0].id);
 });
-test("generator is deterministic, runnable metadata is separated from evaluation, and discovery distinguishes UI concepts", async () => {
+test("generator is deterministic and keeps runnable metadata separate from evaluation", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "object-map-generator-"));
   await generate(path.join(root, "one"), { seed: 42 });
   await generate(path.join(root, "two"), { seed: 42 });
@@ -85,24 +84,6 @@ test("generator is deterministic, runnable metadata is separated from evaluation
   assert.equal(data.place.length, 24);
   assert.equal(data.note.length, 36);
   await assert.rejects(access(path.join(root, "one/.object-map")));
-  const result = await discover(path.join(root, "one"));
-  assert.equal(
-    result.candidates.filter((c) => c.confidence === "strong").length,
-    8,
-  );
-  assert.ok(
-    result.candidates.find((c) => c.object.name === "Share Token")
-      .confidence === "review",
-  );
-  const place = result.candidates.find((c) => c.object.name === "Place").object;
-  assert.ok(place.attributes.some((a) => a.name === "Opening Hours"));
-  assert.ok(place.evidence.length >= 4);
-  const visit = result.candidates.find((c) => c.object.name === "Visit").object;
-  assert.deepEqual(
-    visit.states.map((s) => s.name),
-    ["Planned", "Completed", "Cancelled"],
-  );
-  assert.ok(!visit.relationships.some((r) => r.name.includes("Companion")));
   await assert.rejects(generate(path.join(root, "one")), /already exists/);
 });
 test("layout writes leave semantic bytes unchanged and stale semantic saves fail", async () => {
@@ -167,8 +148,9 @@ test("implementation scenarios preserve the existing conceptual map and migrate 
   assert.equal(data.place[0].opening_hours, undefined);
   assert.ok(data.place[0].opening_hours_id);
   assert.deepEqual(data.visit[0].companion_ids, []);
-  const result = await discover(root);
-  assert.ok(result.candidates.some((c) => c.object.name === "Contact"));
+  // The scenario has to reach the implementation, not just the working data.
+  const schema = await readFile(path.join(root, "database/schema/place_contact.sql"), "utf8");
+  assert.match(schema, /CREATE TABLE place_contact/);
   await assert.rejects(applyScenario(root, "drift"), /already been applied/);
 });
 
