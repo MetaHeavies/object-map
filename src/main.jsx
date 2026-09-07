@@ -268,6 +268,7 @@ function ObjectCard({
   onChange,
   onPromote,
   nameRelationship,
+  onNamedRelationship,
   onDelete,
   onDemote,
   onCopy,
@@ -297,9 +298,13 @@ function ObjectCard({
   // A freshly promoted relationship carries the attribute's name as a placeholder
   // role. Open its editor so naming it is part of the promotion, not a later chore.
   useEffect(() => {
-    if (nameRelationship && object.relationships.some((r) => r.id === nameRelationship))
-      setEditingRelationship(nameRelationship);
-  }, [nameRelationship, object.relationships]);
+    if (!nameRelationship) return;
+    if (!object.relationships.some((r) => r.id === nameRelationship)) return;
+    setEditingRelationship(nameRelationship);
+    onNamedRelationship?.();
+    // Depending on object.relationships would rerun on every render, since it is a
+    // fresh array each time, and hold the editor open against the builder closing it.
+  }, [nameRelationship]);
   const hasFocus = focused || related || dimmed;
   const showDetails = expanded && (!hasFocus || focused);
   useEffect(() => {
@@ -1611,6 +1616,7 @@ function App() {
               onChange={change}
               onPromote={promoteAttribute}
               nameRelationship={nameRelationship}
+              onNamedRelationship={() => setNameRelationship(null)}
               onDemote={demoteObject}
               onDelete={(id) => {
                 change(removeObject(map, id), {
