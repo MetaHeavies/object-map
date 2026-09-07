@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   ArrowRight,
   ChevronDown,
+  ChevronUp,
   ChevronRight,
   Minus,
   X,
@@ -346,7 +347,7 @@ function ObjectCard({
           </span>
           <div className="card-tools">
             <IconButton
-              icon={expanded ? Minus : ArrowUpRight}
+              icon={expanded ? ChevronUp : ChevronDown}
               label={`${expanded ? "Collapse" : "Expand"} ${object.name}`}
               onClick={() => onToggle(object.id)}
             />
@@ -491,7 +492,7 @@ function ObjectCard({
                             className="icon-button relationship-follow"
                             icon={Link2}
                             label={`Go to ${map.objects.find(o => o.id === item.target)?.name}`}
-                            onClick={() => onTraverse(item.target)}
+                            onClick={() => onTraverse(item.target, object.id)}
                           />
                         )}
                         <div className="item-tools">
@@ -675,6 +676,7 @@ function App() {
     [columnDrag, setColumnDrag] = useState(null),
     [columnSettling, setColumnSettling] = useState(false),
     [focusMotion, setFocusMotion] = useState(false),
+    [focusAnchor, setFocusAnchor] = useState(null),
     [cameraMotion, setCameraMotion] = useState(false);
   const shellRef = useRef();
   useEffect(() => {
@@ -939,7 +941,12 @@ function App() {
     expanded,
     dimensions,
     columnDrag,
-    focused ? { id: focused, visible: focusContextValue.objects } : null,
+    focused
+      ? {
+          id: focusContextValue.objects.has(focusAnchor) ? focusAnchor : focused,
+          visible: focusContextValue.objects,
+        }
+      : null,
   );
   useLayoutEffect(() => {
     if (!loaded || !map.objects.length) return;
@@ -957,9 +964,10 @@ function App() {
       before.current = null;
     }
   }, [map, layout, expanded, showStates, showEvidence]);
-  function selectObject(id) {
+  function selectObject(id, anchor = id) {
     if (dragged.current) return;
     setSelectedItem(null);
+    setFocusAnchor(anchor);
     setFocused(id);
     setExpanded((previous) =>
       previous.includes(id) ? previous : [...previous, id],
@@ -972,25 +980,8 @@ function App() {
     setExpanded(next);
     if (focused === id && !next.includes(id)) setFocused(null);
   }
-  function traverse(id) {
-    selectObject(id);
-    const point = positions[id],
-      bounds = canvasRef.current.getBoundingClientRect();
-    if (!point) return;
-    const viewport = layoutRef.current.viewport;
-    const left = point.x * viewport.zoom + viewport.x;
-    const top = point.y * viewport.zoom + viewport.y;
-    const rightEdge = bounds.width - (panel ? 420 : 40);
-    let { x, y } = viewport;
-    if (left < 40) x += 40 - left;
-    else if (left + 250 * viewport.zoom > rightEdge)
-      x += rightEdge - left - 250 * viewport.zoom;
-    if (top < 80) y += 80 - top;
-    else if (top > bounds.height - 180) y += 150 - top;
-    if (x !== viewport.x || y !== viewport.y) {
-      setCameraMotion(true);
-      setView({ ...layoutRef.current, viewport: { ...viewport, x, y } });
-    }
+  function traverse(id, from) {
+    selectObject(id, from ?? id);
   }
   function revealComposer(element) {
     if (!element || !canvasRef.current) return;

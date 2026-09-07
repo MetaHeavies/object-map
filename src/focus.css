@@ -237,8 +237,7 @@
   border-style: solid;
 }
 .object-card .mini-card.selected-item {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5971) 0.03232 234);
-  box-shadow: inset 0 0 0 1px oklch(calc(var(--tone-0) + var(--tone-d) * 0.5971) 0.03232 234);
+  border-color: oklch(from var(--row-label) l calc(c * 0.9) h);
 }
 .object-card.related .mini-card:not(.is-relevant),
 .object-card.related .add-item,
@@ -246,18 +245,17 @@
   opacity: 1;
 }
 .object-card .mini-card.is-relevant {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9374) 0.01699 225.2);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.728) 0.0443 221.3);
-  box-shadow: inset 2px 0 oklch(calc(var(--tone-0) + var(--tone-d) * 0.6531) 0.0506 226.1);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4358) 0.05159 228.6);
+  background: oklch(from var(--row-bg) calc(l - 0.035) calc(c * 1.5) h);
+  border-color: oklch(from var(--row-border) calc(l - 0.07) calc(c * 1.3) h);
+  color: var(--row-label);
 }
 .object-card .mini-card.is-relevant .relationship-link {
   color: var(--row-label);
   font-weight: 500;
 }
 .object-card .mini-card.is-relevant .item-tools {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9374) 0.01699 225.2);
-  box-shadow: -7px 0 8px oklch(calc(var(--tone-0) + var(--tone-d) * 0.9374) 0.01699 225.2);
+  background: oklch(from var(--row-bg) calc(l - 0.035) calc(c * 1.5) h);
+  box-shadow: -7px 0 8px oklch(from var(--row-bg) calc(l - 0.035) calc(c * 1.5) h);
 }
 .relationship-link {
   color: var(--row-label);
@@ -333,11 +331,10 @@
     transform 120ms var(--ease-focus);
 }
 .object-card.focused .object-heading {
-  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9283) 0.01703 225.2);
+  --row-bg: oklch(from var(--chrome-fill) calc(l - 0.03) calc(c * 1.4) h);
   background: var(--row-bg);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6807) 0.04013 227.1);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3909) 0.04903 231.6);
-  box-shadow: 0 0 0 3px oklch(0.6793 0.04193 225.7 / 0.0706);
+  border-color: oklch(from var(--chrome-border) calc(l - 0.12) calc(c * 1.5) h);
+  color: var(--chrome-title);
 }
 .object-card.focused .object-summary,
 .object-card.focused .card-tools .icon-button {

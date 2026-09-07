@@ -1860,20 +1860,6 @@ i.purple {
 .object-card.related .mini-card:not(.is-relevant):focus-within {
   opacity: 1;
 }
-.object-card .mini-card.is-relevant {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8669) 0.006 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4962) 0.006 231);
-  box-shadow: inset 3px 0 oklch(calc(var(--tone-0) + var(--tone-d) * 0.3867) 0.006 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.252) 0.006 231);
-}
-.object-card .mini-card.is-relevant .relationship-link {
-  color: var(--row-label);
-  font-weight: 550;
-}
-.object-card .mini-card.is-relevant .item-tools {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8669) 0.006 231);
-  box-shadow: -7px 0 8px oklch(calc(var(--tone-0) + var(--tone-d) * 0.8669) 0.006 231);
-}
 .clear-focus {
   position: absolute;
   left: 30px;
