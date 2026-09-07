@@ -405,7 +405,17 @@ function ObjectCard({
           value={object.name}
           onSave={(name) => update((o) => (o.name = name))}
         />
-        <div className="object-summary">{objectSummary(object)}</div>
+        {expanded ? (
+          <Editable
+            className="object-definition"
+            label={`${object.name} definition`}
+            value={object.description}
+            placeholder="What is this object?"
+            onSave={(description) => update((o) => (o.description = description))}
+          />
+        ) : (
+          <div className="object-summary">{objectSummary(object)}</div>
+        )}
       </div>
       <div className={`object-sections columns-${visible.length}`}>
         {visible.map((section) => {
@@ -457,10 +467,9 @@ function ObjectCard({
                           value={item.name}
                           onSelect={() => onSelectItem(item.id)}
                           selected={selectedItem === item.id}
-                          suffix={section === "relationships" &&
-                            map.objects.find(o => o.id === item.target)?.name.toLowerCase() !== item.name.toLowerCase() ? (
-                              <span className="relationship-target">{map.objects.find(o => o.id === item.target)?.name}</span>
-                            ) : null}
+                          suffix={section === "relationships" ? (
+                            <span className="relationship-target">{map.objects.find(o => o.id === item.target)?.name}</span>
+                          ) : null}
                           onSave={(name) => update(o => {
                             o[section].find(i => i.id === item.id).name = name;
                           })}
@@ -586,15 +595,6 @@ function ObjectCard({
       </div>
       <Reveal open={showDetails && (evidence || showEvidence)}>
         <div className="evidence">
-          <Editable
-            className="object-description"
-            label={`${object.name} description`}
-            value={object.description}
-            placeholder="What does this object represent?"
-            onSave={(description) =>
-              update((o) => (o.description = description))
-            }
-          />
           <span>Implementation evidence</span>
           {object.evidence?.length ? (
             object.evidence.map((file) => <code key={file}>{file}</code>)

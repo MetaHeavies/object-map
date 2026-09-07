@@ -1654,6 +1654,12 @@ i.purple {
   color: #717171;
   pointer-events: none;
 }
+.object-definition {
+  display: block;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #717171;
+}
 .object-sections,
 .columns-3,
 .columns-4 {

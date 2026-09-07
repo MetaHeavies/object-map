@@ -70,9 +70,9 @@ export async function discover(root) {
         )
         .map((s) => s.file),
     ];
-    object.description = page
-      ? `A ${name.toLowerCase()} in ${path.basename(root)}.`
-      : "";
+    // A definition restating the object's own name teaches the reader nothing and
+    // occupies the card heading where a real one belongs. Leave it for the agent.
+    object.description = "";
     map.objects.push(object);
     tableToId.set(table.table, object.id);
     candidates.push({
