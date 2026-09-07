@@ -83,6 +83,11 @@ try {
   await page
     .getByRole("button", { name: "Promote Contact to object", exact: true })
     .click();
+  // Reshaping the model is confirmed before it happens.
+  await page
+    .getByRole("alertdialog", { name: "Make Contact its own object?" })
+    .getByRole("button", { name: "Promote to object", exact: true })
+    .click();
   await page.waitForTimeout(700);
   await page.getByRole("button", { name: "Find an object (⌘K)" }).click();
   await page

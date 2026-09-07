@@ -638,6 +638,38 @@ function ObjectCard({
     </article>
   );
 }
+function Confirm({ title, body, confirmLabel, tone = "", onConfirm, onCancel }) {
+  const accept = useRef();
+  useEffect(() => {
+    accept.current?.focus();
+    const onKey = (e) => {
+      if (e.key === "Escape") { e.stopPropagation(); onCancel(); }
+      if (e.key === "Enter") { e.stopPropagation(); onConfirm(); }
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [onConfirm, onCancel]);
+  return (
+    <div className="modal" onPointerDown={onCancel}>
+      <div
+        className="modal-card"
+        role="alertdialog"
+        aria-modal="true"
+        aria-label={title}
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        <h2>{title}</h2>
+        <p>{body}</p>
+        <div className="modal-actions">
+          <button className="secondary" onClick={onCancel}>Cancel</button>
+          <button ref={accept} className={`primary ${tone}`} onClick={onConfirm}>
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 function App() {
   const [dimensions, setDimensions] = useState({}),
     [columnDrag, setColumnDrag] = useState(null),
@@ -688,6 +720,7 @@ function App() {
     [showStates, setShowStates] = useState(false),
     [showEvidence, setShowEvidence] = useState(false),
     [guide, setGuide] = useState(false),
+    [confirm, setConfirm] = useState(null),
     [theme, setTheme] = useState(() => {
       try { return localStorage.getItem("object-map-theme") || "system"; } catch { return "system"; }
     });
@@ -1441,16 +1474,49 @@ function App() {
               map={map}
               onToggle={focus}
               onChange={change}
-              onPromote={promoteAttribute}
+              onPromote={(objectId, attributeId) => {
+                const parent = map.objects.find((o) => o.id === objectId);
+                const attribute = parent.attributes.find((a) => a.id === attributeId);
+                setConfirm({
+                  title: `Make ${attribute.name} its own object?`,
+                  body: `${attribute.name} becomes a column beside ${parent.name}, and ${parent.name} keeps a link to it instead of the field. Do this when the thing has its own identity and other objects need to refer to it — not just because the field matters.`,
+                  confirmLabel: "Promote to object",
+                  run: () => promoteAttribute(objectId, attributeId),
+                });
+              }}
               nameRelationship={nameRelationship}
               onNamedRelationship={() => setNameRelationship(null)}
-              onDemote={demoteObject}
-              onDelete={(id) => {
-                change(removeObject(map, id), {
-                  expanded: expanded.filter((x) => x !== id),
-                  focused: focused === id ? null : focused,
+              onDemote={(id) => {
+                const target = map.objects.find((o) => o.id === id);
+                setConfirm({
+                  title: `Return ${target.name} to an attribute?`,
+                  body: `The column closes and ${target.name} goes back to being a field on the object it came from. Only possible while nothing has been added to it and nothing else links to it.`,
+                  confirmLabel: "Demote to attribute",
+                  run: () => demoteObject(id),
                 });
-                notify("Object and its connections removed. Undo to restore.");
+              }}
+              onDelete={(id) => {
+                const target = map.objects.find((o) => o.id === id);
+                const inbound = map.objects.flatMap((o) =>
+                  o.relationships
+                    .filter((r) => r.target === id)
+                    .map((r) => `${o.name} — ${r.name}`),
+                );
+                setConfirm({
+                  title: `Delete ${target.name}?`,
+                  body: inbound.length
+                    ? `Its ${target.attributes.length + target.actions.length + target.states.length} entries go with it, and ${inbound.length} link${inbound.length > 1 ? "s" : ""} into it will be removed: ${inbound.join(", ")}.`
+                    : `Its ${target.attributes.length + target.actions.length + target.states.length} entries go with it. Nothing else points at it.`,
+                  confirmLabel: "Delete object",
+                  tone: "danger",
+                  run: () => {
+                    change(removeObject(map, id), {
+                      expanded: expanded.filter((x) => x !== id),
+                      focused: focused === id ? null : focused,
+                    });
+                    notify("Object and its connections removed. Undo to restore.");
+                  },
+                });
               }}
               onCopy={copy}
               onTraverse={traverse}
@@ -1544,7 +1610,20 @@ function App() {
             />
           </div>
         </div>
-        {guide && (
+        {confirm && (
+        <Confirm
+          title={confirm.title}
+          body={confirm.body}
+          confirmLabel={confirm.confirmLabel}
+          tone={confirm.tone}
+          onCancel={() => setConfirm(null)}
+          onConfirm={() => {
+            confirm.run();
+            setConfirm(null);
+          }}
+        />
+      )}
+      {guide && (
         <Guide
           onClose={() => {
             setGuide(false);
