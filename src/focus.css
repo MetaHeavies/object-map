@@ -304,9 +304,22 @@
 .object-card.focused {
   transition: opacity 180ms ease;
 }
+.object-card:not(.dimmed) {
+  visibility: visible;
+  transition:
+    opacity 180ms ease,
+    visibility 0s;
+}
+/* Out of context means gone, not faint: a half-visible column still competes
+   for the reading, and leaves the gap that stops the rest closing up. */
 .object-card.dimmed,
 .object-card.dimmed:hover {
-  opacity: 0.46;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 140ms ease,
+    visibility 0s linear 140ms;
 }
 .object-heading {
   /* Gives the heading's own labels a base for the hover darkening. */

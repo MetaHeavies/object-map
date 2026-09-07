@@ -22,10 +22,21 @@ export function reorderColumns(order, id, x) {
 export function positionsForOrder(order) {
   return Object.fromEntries(order.map((id, index) => [id, defaultPosition(index)]));
 }
-export function arrange(map, layout, expanded, dimensions = {}, drag = null) {
+export function arrange(map, layout, expanded, dimensions = {}, drag = null, focus = null) {
   const order = drag?.order ?? columnOrder(map, layout);
   const positions = positionsForOrder(order);
   if (drag) positions[drag.id] = drag.point;
+  // Under focus the irrelevant columns are hidden rather than dimmed, so the ones
+  // that remain close the gaps. The clicked column holds its place and the rest
+  // gather around it, keeping their left-to-right order.
+  if (focus?.visible?.size && positions[focus.id]) {
+    const visible = order.filter(id => focus.visible.has(id));
+    const anchor = visible.indexOf(focus.id);
+    const anchorX = positions[focus.id].x;
+    visible.forEach((id, index) => {
+      positions[id] = { ...positions[id], x: anchorX + (index - anchor) * COLUMN_STEP };
+    });
+  }
   const placed = map.objects.map(object => {
     const open = expanded.includes(object.id);
     const height = dimensions[`${object.id}:${open}`] || (open

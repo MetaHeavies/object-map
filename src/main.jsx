@@ -674,6 +674,7 @@ function App() {
   const [dimensions, setDimensions] = useState({}),
     [columnDrag, setColumnDrag] = useState(null),
     [columnSettling, setColumnSettling] = useState(false),
+    [focusMotion, setFocusMotion] = useState(false),
     [cameraMotion, setCameraMotion] = useState(false);
   const shellRef = useRef();
   useEffect(() => {
@@ -731,6 +732,13 @@ function App() {
     else root.dataset.theme = theme;
     try { localStorage.setItem("object-map-theme", theme); } catch {}
   }, [theme]);
+  // Columns travel when focus changes, so translate transitions stay on across
+  // the move and switch off again once everything has landed.
+  useEffect(() => {
+    setFocusMotion(true);
+    const timer = setTimeout(() => setFocusMotion(false), 260);
+    return () => clearTimeout(timer);
+  }, [focused]);
   const revisions = useRef({}),
     pending = useRef({}),
     saving = useRef(false),
@@ -924,12 +932,14 @@ function App() {
     persist("layout", snapshot.layout);
     notify(redo ? "Change restored" : "Change undone");
   }
+  const focusContextValue = focusContext(map, focused);
   const { positions, placed } = arrange(
     map,
     layout,
     expanded,
     dimensions,
     columnDrag,
+    focused ? { id: focused, visible: focusContextValue.objects } : null,
   );
   useLayoutEffect(() => {
     if (!loaded || !map.objects.length) return;
@@ -1334,7 +1344,7 @@ function App() {
       </div>
     );
   const v = layout.viewport || initialLayout.viewport;
-  const context = focusContext(map, focused);
+  const context = focusContextValue;
   return (
     <div className="app-shell" ref={shellRef} data-save-state={saveStatus}>
       <header className="app-header">
@@ -1446,7 +1456,7 @@ function App() {
         <div
           className="world"
           data-camera-motion={cameraMotion}
-          data-column-motion={!!columnDrag || columnSettling}
+          data-column-motion={!!columnDrag || columnSettling || focusMotion}
           data-zoom={v.zoom}
           style={{ transform: `translate(${v.x}px,${v.y}px) scale(${v.zoom})` }}
         >

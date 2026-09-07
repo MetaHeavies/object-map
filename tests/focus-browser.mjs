@@ -62,13 +62,29 @@ export async function testFocus(page) {
         return { x: rect.x, y: rect.y };
       }),
     );
-  for (let i = 0; i < headers.length; i++) {
-    assert.ok(
-      Math.abs(headers[i].x - settledHeaders[i].x) < 1 &&
-        Math.abs(headers[i].y - settledHeaders[i].y) < 1,
-      "Headers stay anchored during focus",
-    );
-  }
+  // Out-of-context columns are hidden, so the remaining ones close the gaps and
+  // only the focused column keeps its place.
+  const hiddenCount = await page.locator(".object-card.dimmed").count();
+  assert.ok(hiddenCount > 0, "Out-of-context columns leave the layout");
+  assert.ok(
+    await page
+      .locator(".object-card.dimmed")
+      .first()
+      .evaluate((el) => getComputedStyle(el).visibility === "hidden"),
+    "A dimmed column is hidden rather than faint",
+  );
+  const focusedIndex = await page
+    .locator(".object-card")
+    .evaluateAll((nodes) => nodes.findIndex((n) => n.classList.contains("focused")));
+  assert.ok(
+    Math.abs(headers[focusedIndex].x - settledHeaders[focusedIndex].x) < 1 &&
+      Math.abs(headers[focusedIndex].y - settledHeaders[focusedIndex].y) < 1,
+    "The focused column holds its place while the others gather around it",
+  );
+  assert.ok(
+    settledHeaders.some((h, i) => i !== focusedIndex && Math.abs(headers[i].x - h.x) > 1),
+    "The remaining columns move in to close the gaps",
+  );
   await city.getByRole("button", { name: "Select City", exact: true }).click();
   assert.ok(
     (await city.getAttribute("class")).includes("focused"),
