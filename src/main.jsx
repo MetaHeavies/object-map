@@ -902,7 +902,6 @@ function App() {
         if (w.layout.mode !== "ooux-columns") persist("layout", initial);
         base.current = clone(w.map);
         setLoaded(true);
-        if (!w.map.objects.length) setPanel("discovery");
       })
       .catch((e) => setLoadError(e.message));
     return () => clearTimeout(toastTimer.current);
@@ -1465,14 +1464,14 @@ function App() {
           <span className="brand-mark">
             <Layers size={20} />
           </span>
-          Object Map<span className="beta">Local</span>
+          Object Map
         </a>
-        <div className="header-divider" />
         <button
           className="workspace-name"
           onClick={() => setPanel(panel === "about" ? null : "about")}
         >
           {config.name.charAt(0).toUpperCase() + config.name.slice(1)}
+          <span className="beta">Local</span>
           <ChevronDown size={13} />
         </button>
         <div className="header-right">
@@ -1629,14 +1628,17 @@ function App() {
         {!map.objects.length && (
           <div className={`empty-state ${panel ? "with-panel" : ""}`}>
             <h2>Nothing mapped yet</h2>
-            <p>Paste this to the agent working in this repository.</p>
-            <div className="run-prompt">
+            <section className="run-prompt">
+              <header>
+                <h3>Agent prompt:</h3>
+                <IconButton
+                  icon={Copy}
+                  label="Copy the agent prompt"
+                  onClick={() => copy(RUN_PROMPT)}
+                />
+              </header>
               <p>{RUN_PROMPT}</p>
-              <button className="secondary" onClick={() => copy(RUN_PROMPT)}>
-                <Copy size={14} />
-                Copy
-              </button>
-            </div>
+            </section>
           </div>
         )}
         {creating && (
