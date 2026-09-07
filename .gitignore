@@ -1,0 +1,12 @@
+node_modules/
+dist/
+examples/
+test-results/
+.DS_Store
+skills/object-map/assets/app/
+.env
+.env.*
+!.env.example
+.object-map/runtime/
+.object-map/dev/
+.object-map/backups/

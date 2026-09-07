@@ -1,0 +1,31 @@
+{
+  "name": "object-map",
+  "version": "0.1.0-alpha.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/prepare.mjs && vite --host 127.0.0.1",
+    "build": "vite build",
+    "package:skill": "npm run build && node scripts/package-skill.mjs",
+    "start": "node server/index.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "test:portable": "node tests/portable.mjs",
+    "generate": "node generator/generate.mjs",
+    "install:map": "node scripts/install.mjs",
+    "discover": "node scripts/discover.mjs",
+    "atlas": "node examples/atlas/server.mjs"
+  },
+  "dependencies": {
+    "animejs": "^4.0.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "prettier": "^3.9.6",
+    "vite": "^7.0.0"
+  }
+}

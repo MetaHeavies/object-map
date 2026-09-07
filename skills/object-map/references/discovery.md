@@ -1,0 +1,54 @@
+# Discover and populate a product model
+
+The outcome is a populated, valid map with defensible concepts and explicit uncertainty. “Run Object Map” authorizes discovery and population. It does not require another round of approval for every well-supported object. Report ambiguous decisions; do not silently settle them by treating every table as a product object.
+
+## Establish the boundary
+
+1. Read repository instructions, the builder’s brief/PRD and an existing map before scanning code. Identify the product or monorepo package in scope. If several independent products exist, map the requested one and explain the boundary.
+2. Use `rg --files` or the host’s file search to locate manifests, entry points, schemas, migrations, routes, navigation, forms, services, validation, tests and public documentation. Exclude dependencies, build output, vendored code, secrets, logs, production datasets and Object Map’s own files. Do not read evaluation/expected-model fixtures as discovery evidence.
+3. Identify the stack from files, not assumptions. Examples: Prisma/Django/Rails models, SQL migrations, GraphQL schemas, REST controllers, Next/React routes and forms, Swift models/views, CMS content schemas. Adapt your inspection to the actual stack. A route inventory or ERD alone is insufficient.
+4. For a large codebase, work by product area. Record inspected paths and uninspected boundaries in `.object-map/discovery.md`; never label a partial scan complete.
+
+## New product
+
+1. Extract user-recognizable nouns, relationships, actions, attributes and lifecycle states explicitly stated in the conversation and PRD.
+2. Populate these as `status: "intended"`. Cite the actual PRD path in evidence when available. Explain that a brief is intent evidence, not evidence of working behavior.
+3. Avoid speculative fields. If the brief says Pizza has a size and toppings, do not invent inventory, tax rules or a delivery lifecycle.
+4. Build the requested feature, trace its actual implementation, and mark confirmed entries as observed. A partly built concept may be mixed. Keep the remaining intentions visible in the document.
+
+## Existing product
+
+For each candidate, trace a concrete record or user task through the implementation. Use the following evidence matrix as a working aid, not a rigid schema to dump into the UI:
+
+| Evidence | Extract | Check against |
+| --- | --- | --- |
+| Forms, details, navigation, copy | User-facing vocabulary and meaningful fields | Whether labels alias existing concepts |
+| Schemas, models, migrations, types | Stored identity, field types, references, enum values | Current code rather than obsolete migrations alone |
+| Services, controllers, validators | Operations, allowed transitions, required relationships | Whether the visible control actually invokes this behavior |
+| Tests and runnable UI | Examples, constraints, actual behavior | Whether the test is current and verifies that behavior |
+| PRD and conversation | Intended concepts and outstanding work | Distinguish requested behavior from observed implementation |
+
+1. **Collect candidate nouns.** Prefer things that users recognize, distinguish, act on, collect or refer to over time. A product object can span several implementation entities. A table can contain several product concepts.
+2. **Reconcile names.** For `saved_location` in SQL and “Place” in the UI, propose Place with both evidence paths. Record aliases in the discovery notes. Do not create two objects just because two code identifiers differ. Conversely, do not merge Person and Account merely because both refer to a human.
+3. **Separate implementation machinery.** Sessions, tokens, join rows and caches are usually implementation details. A join can still reveal a meaningful relationship; if it has its own user-visible identity, behavior or lifecycle, it may warrant an object. Explain the evidence.
+4. **Extract attributes.** Capture meaningful fields from visible forms/details and their validated model. Omit internal keys, timestamps used only for bookkeeping and plumbing. Do not omit technical-looking fields that matter to the product: latitude and longitude can be essential Place attributes.
+5. **Extract relationships.** Trace both direct references and join-backed associations. Capture the role at the source object (Owner, Shared with) and the actual target object (Person). Verify direction; many-to-many tables often reveal relationships absent from direct foreign keys. Avoid duplicating a foreign-key attribute when the relationship already represents it.
+6. **Extract actions.** Use operations a user can perform, not every service method. Trace UI handlers or endpoints to real behavior. A button label alone is weak evidence if the handler is a stub. Write “Add to collection,” not an internal function name.
+   Include generic Create/Edit/Delete when they are real product operations the builder should see. Avoid inferring them for every object simply because the storage layer supports CRUD. Record a relationship at its meaningful source; the canvas already reveals inbound references, so do not add inverse duplicates solely to make both columns connected.
+7. **Extract states.** Verify lifecycle values and transitions in current validation/service code. Do not treat every category or taxonomy term as a lifecycle state.
+8. **Resolve the object boundary.** A structured value is not automatically an object. Examine independent identity, reuse, relationships and user actions. When evidence remains ambiguous (Address, Opening Hours, Contact), preserve the current builder choice or record the ambiguity rather than enforcing a guessed ontology.
+9. **Assess confidence per claim.** Strong: agreeing current UI and implementation evidence. Provisional: only one source, conflicting terminology or unreachable behavior. Unknown: inferred purpose without supporting behavior. Record reasoning and repository-relative evidence in `.object-map/discovery.md`. File-name coincidence is not enough.
+10. **Populate in two passes.** Read the current map with its revision. First establish object IDs, reusing existing concepts and preserving all builder entries. Then add attributes, actions, states and relationships targeting those IDs. Add clear observed concepts now; retain ambiguous candidates in the discovery notes instead of fabricating certainty.
+11. **Validate coverage.** Trace at least one representative task per inspected product area through the proposed objects. Check orphaned references, duplicate concepts, missing join relationships and whether user-visible fields/actions were lost. Validate JSON and write with the original revision; handle conflicts as described in SKILL.md.
+12. **Open and report.** Run the bundled viewer, verify that the populated objects render, and give the builder its local URL. Summarize the main concepts, what remains intended, the most consequential unresolved question and any uninspected areas. Avoid claiming exhaustive understanding of a large repository.
+   If the canvas bundle is missing, keep the completed map and validation result. Report that rendering is unverified and use the packaged skill or rebuild it from the Object Map source; do not populate an unrelated sample app or claim the viewer opened.
+
+## Worked reasoning example
+
+A form labels a thing “Place”; its records live in `saved_location`. A collection has an `owner_id`, while `collection_member` relates collections to people who can access them. The product exposes “Share.” A defensible map has Place, Collection and Person, with distinct Owner and Shared with relationships. The join table need not become an object, but its meaning must not disappear. A builder-created Pizza object remains intact even if no source file mentions pizza.
+
+Do not import these example objects into unrelated products. They illustrate the reasoning, not an expected answer.
+
+## Bounded discovery adapter
+
+The optional `scripts/discovery.mjs` implementation supports SQL CREATE TABLE plus JSON page metadata. It is a source of candidates, not a general parser and not the required workflow. For any other stack, inspect implementation directly using the procedure above. Even on supported fixtures, verify join relationships, naming and actual behavior before treating candidates as the completed product model.

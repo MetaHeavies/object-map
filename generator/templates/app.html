@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Atlas — Places worth keeping</title
+  ><style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #f6f5f1;
+      color: #252a25;
+      font: 15px/1.5 system-ui;
+    }
+    header {
+      padding: 24px 5%;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+    header strong {
+      font: 32px Georgia;
+    }
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    button,
+    a {
+      cursor: pointer;
+    }
+    button {
+      font: inherit;
+      padding: 8px 14px;
+      border: 1px solid #d6d8d0;
+      background: white;
+      border-radius: 6px;
+      color: inherit;
+    }
+    button.active,
+    button.primary {
+      background: #344a3c;
+      color: white;
+    }
+    main {
+      max-width: 1150px;
+      margin: 45px auto;
+      padding: 0 24px;
+    }
+    h1 {
+      font: 42px Georgia;
+      margin-bottom: 8px;
+    }
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 30px;
+    }
+    .card {
+      padding: 24px;
+      background: white;
+      border: 1px solid #dedfd7;
+      border-radius: 8px;
+      text-align: left;
+      min-height: 150px;
+    }
+    .card strong {
+      font: 23px Georgia;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .muted {
+      color: #73796e;
+    }
+    form {
+      max-width: 640px;
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    label {
+      display: grid;
+      gap: 5px;
+    }
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #c8cdc3;
+      border-radius: 5px;
+      font: inherit;
+      background: white;
+    }
+    select[multiple] {
+      min-height: 100px;
+    }
+    .related {
+      margin: 30px 0;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    #error {
+      color: #a33227;
+    }
+    a {
+      color: #345d44;
+    }
+    small {
+      display: block;
+    }
+    .pill {
+      font-size: 12px;
+      background: #eff2eb;
+      padding: 3px 7px;
+      border-radius: 4px;
+    }
+  </style>
+  <header>
+    <strong>Atlas<span style="color: #7d8d67">.</span></strong>
+    <nav id="nav"></nav>
+  </header>
+  <main id="app">Loading your places…</main>
+  <script type="module">
+    let state = await fetch("/api").then((r) => r.json()),
+      current = "place";
+    const app = document.querySelector("#app");
+    const esc = (x) =>
+      String(x ?? "").replace(
+        /[&<>"']/g,
+        (c) =>
+          ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          })[c],
+      );
+    const title = (x) => x.name || x.body || x.caption || x.url || x.id;
+    const label = (x) => x.replace(/_ids?$/, "").replaceAll("_", " ");
+    function nav() {
+      document.querySelector("#nav").innerHTML = state.resources
+        .map(
+          (r) =>
+            `<button data-nav="${r.resource}" class="${current === r.resource ? "active" : ""}">${r.plural}</button>`,
+        )
+        .join("");
+      document.querySelectorAll("[data-nav]").forEach(
+        (b) =>
+          (b.onclick = () => {
+            current = b.dataset.nav;
+            list();
+          }),
+      );
+    }
+    function list() {
+      nav();
+      const r = state.resources.find((x) => x.resource === current);
+      app.innerHTML = `<div class="top"><div><span class="muted">YOUR PERSONAL ATLAS</span><h1>${r.plural}</h1><div class="muted">${state.data[current].length} ${r.plural.toLowerCase()} worth keeping.</div></div><button id="new" class="primary">+ Add ${r.label.toLowerCase()}</button></div><div class="grid">${state.data[current].map((x) => `<button class="card" data-id="${esc(x.id)}"><strong>${esc(title(x))}</strong><div class="muted">${esc(x.description || x.email || x.planned_date || x.country || "")}</div>${x.status ? `<span class="pill">${esc(x.status)}</span>` : ""}</button>`).join("")}</div>`;
+      document.querySelector("#new").onclick = () => detail({});
+      document
+        .querySelectorAll("[data-id]")
+        .forEach(
+          (b) =>
+            (b.onclick = () =>
+              detail(state.data[current].find((x) => x.id === b.dataset.id))),
+        );
+    }
+    function detail(record) {
+      const r = state.resources.find((x) => x.resource === current);
+      app.innerHTML = `<button id="back">← ${r.plural}</button><h1>${esc(record.id ? title(record) : `New ${r.label.toLowerCase()}`)}</h1><div class="actions">${record.id && r.actions.includes("Archive") ? '<button id="archive">Archive</button>' : ""}${current === "visit" && record.id ? '<button data-status="completed">Mark completed</button><button data-status="cancelled">Cancel visit</button>' : ""}${current === "collection" && record.id ? '<button id="share">Share collection</button>' : ""}</div><p id="error" role="alert"></p><form id="form">${Object.entries(
+        r.fields,
+      )
+        .map(([key, type]) => {
+          const ref =
+            typeof type === "string" &&
+            state.resources.find((x) => x.resource === type.replace("[]", ""));
+          let field;
+          if (ref) {
+            const multiple = type.endsWith("[]");
+            field = `<select name="${key}" ${multiple ? "multiple" : ""}><option value="">${multiple ? "None" : "Choose…"}</option>${state.data[ref.resource].map((x) => `<option value="${esc(x.id)}" ${(multiple ? (record[key] || []).includes(x.id) : record[key] === x.id) ? "selected" : ""}>${esc(title(x))}</option>`).join("")}</select>`;
+          } else if (Array.isArray(type))
+            field = `<select name="${key}">${type.map((x) => `<option ${record[key] === x ? "selected" : ""}>${x}</option>`).join("")}</select>`;
+          else
+            field = `<input name="${key}" type="${type === "number" ? "number" : type === "date" ? "date" : "text"}" ${type === "number" ? 'step="any"' : ""} value="${esc(record[key])}" ${["name", "body", "url"].includes(key) ? "required" : ""}>`;
+          return `<label>${esc(label(key))}${field}</label>`;
+        })
+        .join(
+          "",
+        )}<div class="actions"><button class="primary">Save ${r.label.toLowerCase()}</button>${record.id ? '<button type="button" id="delete">Delete</button>' : ""}</div></form><div id="related" class="related"></div>`;
+      document.querySelector("#back").onclick = list;
+      document.querySelector("#form").onsubmit = async (e) => {
+        e.preventDefault();
+        const form = new FormData(e.target),
+          next = { ...record };
+        for (const [key, type] of Object.entries(r.fields))
+          next[key] =
+            typeof type === "string" && type.endsWith("[]")
+              ? form.getAll(key).filter(Boolean)
+              : type === "number" && form.get(key) !== ""
+                ? Number(form.get(key))
+                : form.get(key);
+        await save(next);
+      };
+      document
+        .querySelector("#delete")
+        ?.addEventListener("click", () => save(null, record.id));
+      document
+        .querySelector("#archive")
+        ?.addEventListener("click", () =>
+          save({ ...record, status: "archived" }),
+        );
+      document
+        .querySelectorAll("[data-status]")
+        .forEach(
+          (b) =>
+            (b.onclick = () =>
+              save({
+                ...record,
+                status: b.dataset.status,
+                completed_date:
+                  b.dataset.status === "completed"
+                    ? new Date().toISOString().slice(0, 10)
+                    : "",
+              })),
+        );
+      document.querySelector("#share")?.addEventListener("click", () => {
+        document.querySelector('[name="visibility"]').value = "shared";
+        document.querySelector('[name="shared_with_ids"]').focus();
+        document.querySelector("#error").textContent =
+          "Choose people to share with, then save.";
+      });
+      if (record.id) {
+        const related = document.querySelector("#related");
+        for (const other of state.resources) {
+          const keys = Object.entries(other.fields)
+            .filter(([, type]) => type === current || type === current + "[]")
+            .map(([key]) => key);
+          if (!keys.length) continue;
+          const rows = state.data[other.resource].filter((x) =>
+            keys.some((k) =>
+              Array.isArray(x[k])
+                ? x[k].includes(record.id)
+                : x[k] === record.id,
+            ),
+          );
+          const group = document.createElement("section");
+          group.innerHTML = `<h3>${other.plural}</h3>${rows.map((x) => `<button data-related="${esc(x.id)}">${esc(title(x))}</button>`).join(" ")} <button data-add>+ Add ${other.label.toLowerCase()}</button>`;
+          group.querySelectorAll("[data-related]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                current = other.resource;
+                nav();
+                detail(rows.find((x) => x.id === b.dataset.related));
+              }),
+          );
+          group.querySelector("[data-add]").onclick = () => {
+            const next = {
+              [keys[0]]: other.fields[keys[0]].endsWith("[]")
+                ? [record.id]
+                : record.id,
+            };
+            current = other.resource;
+            nav();
+            detail(next);
+          };
+          related.append(group);
+        }
+      }
+    }
+    async function save(record, remove) {
+      try {
+        const response = await fetch("/api", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ resource: current, record, remove }),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error);
+        state = result;
+        list();
+      } catch (e) {
+        document.querySelector("#error").textContent = e.message;
+      }
+    }
+    list();
+  </script>
+</html>
