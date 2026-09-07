@@ -68,6 +68,7 @@ p {
   overflow: hidden;
 }
 .app-header {
+  position: relative;
   height: 76px;
   flex-shrink: 0;
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) 0.006 231);
@@ -112,6 +113,9 @@ p {
   background: var(--chrome-line);
 }
 .workspace-name {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
   display: flex;
   align-items: center;
   gap: 9px;
@@ -1038,16 +1042,13 @@ i.purple {
   margin-top: 10px;
 }
 .setting-group {
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9219) 0.006 231);
-  padding-top: 16px;
   margin-top: 24px;
 }
 .setting-group h3 {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6862) 0.006 231);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--chrome-label);
   margin: 0 0 8px;
 }
 .setting {
@@ -1112,6 +1113,9 @@ i.purple {
 .motion-settings h3 {
   font-size: 12px;
   font-weight: 500;
+}
+.setting-group > button + button {
+  margin-top: 4px;
 }
 .motion-settings p,
 .motion-settings small {
