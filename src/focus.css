@@ -180,7 +180,9 @@
   opacity: 0.46;
 }
 .object-heading {
-  background: #e8edf0;
+  /* Gives the heading's own labels a base for the hover darkening. */
+  --row-bg: #e8edf0;
+  background: var(--row-bg);
   border-color: #d7dfe3;
   transition:
     background-color 160ms ease,
@@ -189,7 +191,8 @@
     transform 120ms var(--ease-focus);
 }
 .object-card.focused .object-heading {
-  background: #dceaf0;
+  --row-bg: #dceaf0;
+  background: var(--row-bg);
   border-color: #7f9eac;
   color: #284a5b;
   box-shadow: 0 0 0 3px #7d9eac12;
@@ -202,7 +205,8 @@
   background: #d1e2e9;
 }
 .object-card.related .object-heading {
-  background: #e7eef1;
+  --row-bg: #e7eef1;
+  background: var(--row-bg);
   border-color: #afc4ce;
 }
 .object-card.dimmed .object-heading {

@@ -441,6 +441,8 @@ i.purple {
   color: #a5a5a5;
 }
 .editable {
+  /* Buttons carry UA padding, which indented every label away from its row edge. */
+  padding: 0;
   border-radius: 3px;
   min-width: 0;
   text-overflow: ellipsis;
@@ -448,7 +450,16 @@ i.purple {
   white-space: nowrap;
 }
 .editable:hover {
-  background: #f0f0f0;
+  /* Darken the row's own fill rather than washing it grey. The spread paints the
+     chip's breathing room outside the box, so nothing shifts on hover. */
+  background: oklch(from var(--row-bg, #e8edf0) calc(l - 0.05) c h);
+  box-shadow: 0 0 0 3px oklch(from var(--row-bg, #e8edf0) calc(l - 0.05) c h);
+}
+@supports not (color: oklch(from #ffffff l c h)) {
+  .editable:hover {
+    background: color-mix(in oklch, var(--row-bg, #e8edf0), #000 6%);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--row-bg, #e8edf0), #000 6%);
+  }
 }
 .inline-input {
   border: 1px solid #c6c6c6;
@@ -562,20 +573,25 @@ i.purple {
 .relationship-edit {
   display: none;
   border-top: 1px solid #e7e7e7;
-  margin-top: 5px;
-  padding-top: 5px;
+  margin-top: 8px;
+  padding-top: 8px;
 }
 .relationship:focus-within .relationship-edit {
   display: block;
 }
 .relationship-edit .editable {
-  font-size: 9px;
+  /* Was 9px. The editor is where a role gets named, so it has to be at least as
+     readable as the row it edits. */
+  font-size: 12px;
   display: block;
   max-width: 100%;
 }
 .relationship-edit select {
   width: 100%;
-  font-size: 9px;
+  font-size: 12px;
+  height: 28px;
+  padding: 0 6px;
+  border-radius: 4px;
   background: white;
   border: 1px solid #dedede;
   margin-top: 4px;
