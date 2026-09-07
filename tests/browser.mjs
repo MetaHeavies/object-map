@@ -46,7 +46,7 @@ await mkdir("test-results", { recursive: true });
 try {
   await page.goto("http://127.0.0.1:5176");
   await page
-    .getByRole("button", { name: "Collapse Place" })
+    .getByRole("button", { name: "Options for Place", exact: true })
     .waitFor({ state: "attached" });
   await page.keyboard.press("f");
   await page.waitForTimeout(500);

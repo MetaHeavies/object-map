@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
 
+async function toggleColumn(page, name) {
+  await page.getByRole("button", { name: `Options for ${name}`, exact: true }).click();
+  await page.getByRole("button", { name: new RegExp(`^(Collapse|Expand) ${name}$`) }).click();
+}
+
 export async function testFocus(page) {
   const city = page.locator('[data-object-id="obj:city"]');
   const place = page.locator('[data-object-id="obj:place"]');
@@ -139,9 +144,7 @@ export async function testFocus(page) {
     .getByRole("button", { name: "Clear selection", exact: true })
     .click();
   // A manually collapsed container must still expose every matching occurrence.
-  await place
-    .getByRole("button", { name: "Collapse Place", exact: true })
-    .click();
+  await toggleColumn(page, "Place");
   await city.getByRole("button", { name: "Select City", exact: true }).click();
   const cityReference = place.locator('[data-motion-id="obj:place/rel:city"]');
   assert.ok(
@@ -165,15 +168,11 @@ export async function testFocus(page) {
     "",
     "Clearing focus restores the manual collapse",
   );
-  await place
-    .getByRole("button", { name: "Expand Place", exact: true })
-    .click();
+  await toggleColumn(page, "Place");
 
   // Alias labels still refer to the same object: both Owned by and Shared with
   // must survive, along with references in other containing objects.
-  await collection
-    .getByRole("button", { name: "Collapse Collection", exact: true })
-    .click();
+  await toggleColumn(page, "Collection");
   await page.getByRole("button", { name: "Find an object (⌘K)" }).click();
   await page
     .getByRole("textbox", { name: "Find an object", exact: true })
@@ -206,11 +205,9 @@ export async function testFocus(page) {
     .getByRole("button", { name: "Clear selection", exact: true })
     .click();
   // Restore only the view preference changed by the test, without changing data.
-  await collection
-    .getByRole("button", { name: "Expand Collection", exact: true })
-    .dispatchEvent("click");
+  await toggleColumn(page, "Collection");
   await page.emulateMedia({ reducedMotion: "no-preference" });
   console.log(
-    "Focus passed: animated zero-height collapse, anchored headers, exact relationships, rapid reversal, pointer noise, and reduced motion.",
+    "Focus passed: animated zero-height collapse, an anchored focus column, exact relationships, rapid reversal, pointer noise, and reduced motion.",
   );
 }

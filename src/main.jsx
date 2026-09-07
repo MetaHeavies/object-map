@@ -12,7 +12,6 @@ import {
   ArrowLeft,
   ArrowRight,
   ChevronDown,
-  ChevronUp,
   ChevronRight,
   Minus,
   X,
@@ -346,11 +345,6 @@ function ObjectCard({
             OBJECT {String(index + 1).padStart(2, "0")}
           </span>
           <div className="card-tools">
-            <IconButton
-              icon={expanded ? ChevronUp : ChevronDown}
-              label={`${expanded ? "Collapse" : "Expand"} ${object.name}`}
-              onClick={() => onToggle(object.id)}
-            />
             <div className="menu-anchor">
               <IconButton
                 icon={MoreHorizontal}
@@ -365,6 +359,14 @@ function ObjectCard({
                     onClick={() => setMenu(false)}
                   />
                   <div className="context-menu">
+                    <button
+                      onClick={() => {
+                        onToggle(object.id);
+                        setMenu(false);
+                      }}
+                    >
+                      {expanded ? "Collapse" : "Expand"} {object.name}
+                    </button>
                     <button
                       onClick={() => {
                         onCopy(object.id);
