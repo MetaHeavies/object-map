@@ -147,6 +147,10 @@ export function validateMap(map) {
         throw new Error('Invalid implementation status.');
       if (item.evidence !== undefined && (!Array.isArray(item.evidence) || item.evidence.some(value => typeof value !== 'string')))
         throw new Error('Evidence must be an array of source paths.');
+      if (item.filterable !== undefined && typeof item.filterable !== 'boolean')
+        throw new Error('Filterable must be true or false.');
+      if (item.cardinality !== undefined && !['one', 'many'].includes(item.cardinality))
+        throw new Error('Cardinality is one or many.');
     }
     for (const r of o.relationships)
       if (!objects.has(r.target))

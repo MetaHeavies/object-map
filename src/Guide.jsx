@@ -38,6 +38,11 @@ export const steps = [
     body: "Available, On loan, Overdue. A state changes over time and usually gates what can be done next — you cannot borrow a book that is already on loan.",
   },
   {
+    target: '[data-motion-id="obj:book/rel:author"] .row-tag',
+    title: "Two marks that decide what gets built",
+    body: "“many” means the source holds more than one — a book can have several authors, so that link needs a list you add to and remove from, where a single one needs a picker. “filter” marks a field the product actually lets you sort or search by, which is what a browse screen is made of.",
+  },
+  {
     target: '[data-object-id="obj:hold"] .object-heading',
     title: "Some of it is not built yet",
     body: "Hold is on the map because the brief asked for it, not because code exists. Intentions stay visible until they are built or dropped, so nothing quietly disappears between conversations.",

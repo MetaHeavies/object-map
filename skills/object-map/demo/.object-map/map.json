@@ -8,6 +8,11 @@
       "description": "A title the library lends. One book, many copies on the shelf.",
       "attributes": [
         {
+          "id": "obj:book/attr:title",
+          "name": "Title",
+          "filterable": true
+        },
+        {
           "id": "obj:book/attr:blurb",
           "name": "Blurb"
         },
@@ -16,28 +21,27 @@
           "name": "Cover"
         },
         {
+          "id": "obj:book/attr:published",
+          "name": "Published",
+          "filterable": true
+        },
+        {
           "id": "obj:book/attr:isbn",
           "name": "ISBN"
-        },
-        {
-          "id": "obj:book/attr:published",
-          "name": "Published"
-        },
-        {
-          "id": "obj:book/attr:title",
-          "name": "Title"
         }
       ],
       "relationships": [
         {
           "id": "obj:book/rel:author",
           "name": "Written by",
-          "target": "obj:author"
+          "target": "obj:author",
+          "cardinality": "many"
         },
         {
           "id": "obj:book/rel:translator",
           "name": "Translated by",
-          "target": "obj:author"
+          "target": "obj:author",
+          "cardinality": "one"
         }
       ],
       "actions": [
@@ -102,16 +106,17 @@
       "description": "Someone who can borrow. Joining is what makes a person a member.",
       "attributes": [
         {
+          "id": "obj:member/attr:name",
+          "name": "Name"
+        },
+        {
           "id": "obj:member/attr:email",
           "name": "Email"
         },
         {
           "id": "obj:member/attr:joined",
-          "name": "Joined"
-        },
-        {
-          "id": "obj:member/attr:name",
-          "name": "Name"
+          "name": "Joined",
+          "filterable": true
         }
       ],
       "relationships": [],
@@ -145,7 +150,8 @@
       "attributes": [
         {
           "id": "obj:loan/attr:due-date",
-          "name": "Due date"
+          "name": "Due date",
+          "filterable": true
         },
         {
           "id": "obj:loan/attr:started",
@@ -156,12 +162,14 @@
         {
           "id": "obj:loan/rel:book",
           "name": "Of",
-          "target": "obj:book"
+          "target": "obj:book",
+          "cardinality": "one"
         },
         {
           "id": "obj:loan/rel:member",
           "name": "Borrowed by",
-          "target": "obj:member"
+          "target": "obj:member",
+          "cardinality": "one"
         }
       ],
       "actions": [
@@ -205,12 +213,14 @@
         {
           "id": "obj:hold/rel:book",
           "name": "For",
-          "target": "obj:book"
+          "target": "obj:book",
+          "cardinality": "one"
         },
         {
           "id": "obj:hold/rel:member",
           "name": "Requested by",
-          "target": "obj:member"
+          "target": "obj:member",
+          "cardinality": "one"
         }
       ],
       "actions": [

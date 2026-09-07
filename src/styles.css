@@ -2010,3 +2010,17 @@ i.purple {
 .primary.danger:hover:not(:disabled) {
   background: oklch(0.5 0.17 27);
 }
+
+/* Two facts that change what has to be built: a relationship holding many, and
+   an attribute the product lets people filter on. Same quiet device for both. */
+.row-tag {
+  margin-left: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--chrome-muted);
+  background: var(--chrome-badge);
+  white-space: nowrap;
+}

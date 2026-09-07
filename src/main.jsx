@@ -488,9 +488,21 @@ function ObjectCard({
                           value={item.name}
                           onSelect={() => onSelectItem(item.id)}
                           selected={selectedItem === item.id}
-                          suffix={section === "relationships" ? (
-                            <span className="relationship-target">{map.objects.find(o => o.id === item.target)?.name}</span>
-                          ) : null}
+                          suffix={
+                            <>
+                              {section === "relationships" && (
+                                <span className="relationship-target">
+                                  {map.objects.find((o) => o.id === item.target)?.name}
+                                </span>
+                              )}
+                              {/* Marked only when it changes the interface: many needs a
+                                  list, filterable needs a control on some browse screen. */}
+                              {item.cardinality === "many" && (
+                                <span className="row-tag">many</span>
+                              )}
+                              {item.filterable && <span className="row-tag">filter</span>}
+                            </>
+                          }
                           onSave={(name) => update(o => {
                             o[section].find(i => i.id === item.id).name = name;
                           })}

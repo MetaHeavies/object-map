@@ -11,8 +11,8 @@ Canonical file: `.object-map/map.json`. Version 1 remains compatible with maps c
       "name": "Pizza",
       "description": "A pizza the customer can configure and order.",
       "status": "intended",
-      "attributes": [{"id": "obj:pizza/attr:size", "name": "Size", "status": "intended"}],
-      "relationships": [],
+      "attributes": [{"id": "obj:pizza/attr:size", "name": "Size", "status": "intended", "filterable": true}],
+      "relationships": [{"id": "obj:pizza/rel:topping", "name": "Topped with", "target": "obj:topping", "cardinality": "many"}],
       "actions": [{"id": "obj:pizza/action:order", "name": "Order", "status": "intended"}],
       "states": [],
       "evidence": ["PRD.md"]
@@ -22,6 +22,8 @@ Canonical file: `.object-map/map.json`. Version 1 remains compatible with maps c
 ```
 
 All four section arrays are required even when empty. IDs are globally unique. Object IDs begin with `obj:`; the conventional item prefixes are `/attr:`, `/rel:`, `/action:` and `/state:`. Relationship entries also require `target`, an existing object ID. Create targets before relationships. Names must be nonempty strings. Preserve IDs when names change; suffix new colliding IDs rather than reusing one. A relationship label expresses its source-side role, while `target` identifies the referenced object.
+
+Optional `filterable` on an attribute marks a field the product actually lets someone sort, filter, group or search by. It is a claim about a control that exists, not about a field that could in principle be filtered, so record it from the sort control, query parameter, facet or index that implements it. Optional `cardinality` on a relationship is `one` or `many` and describes the source side: a Collection that includes many Places is `many`, a Place located in one City is `one`. Missing cardinality means unassessed rather than one. Both are read from the implementation — an array or join table against a single foreign key, a filter control against a plain field — so both can be checked.
 
 Optional `status` on an object or item is `intended`, `observed`, or `mixed`. Missing status means not yet assessed, not observed. Mixed means implemented and intended parts coexist; use item statuses for the distinction. `evidence` is an array of repository-relative paths. A PRD path supports intent, while implementation paths support observed behavior. Do not claim that a path alone proves every property of an object.
 
