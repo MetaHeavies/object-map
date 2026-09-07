@@ -1469,7 +1469,19 @@ function App() {
           data-camera-motion={cameraMotion}
           data-column-motion={!!columnDrag || columnSettling || focusMotion}
           data-zoom={v.zoom}
-          style={{ transform: `translate(${v.x}px,${v.y}px) scale(${v.zoom})` }}
+          style={{
+            transform: `translate(${v.x}px,${v.y}px) scale(${v.zoom})`,
+            // The Motion setting governed only the scripted animations. The
+            // transitions a builder actually watches — focus packing, rows
+            // collapsing — are CSS, so they read the same choice from here.
+            "--focus-duration": `${treatments[treatment].duration}ms`,
+            "--ease-focus":
+              treatment === "elastic"
+                ? "cubic-bezier(.16, 1.3, .3, 1)"
+                : treatment === "momentum"
+                  ? "cubic-bezier(.16, 1, .3, 1)"
+                  : "cubic-bezier(.22, 1, .36, 1)",
+          }}
         >
           {columnDrag && <div className="column-drop-slot" aria-hidden="true" style={{
             left: columnDrag.order.indexOf(columnDrag.id) * COLUMN_STEP,

@@ -8,7 +8,7 @@
   color: var(--chrome-title);
   background: var(--canvas);
   font-synthesis: none;
-  font-size: 14px;
+  font-size: var(--t-read);
   -webkit-font-smoothing: antialiased;
   font-optical-sizing: auto;
 }
@@ -36,7 +36,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.5243) 0.006 231);
+  outline: 2px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.5243) calc(0.006 * var(--tone-c)) 231);
   outline-offset: 3px;
 }
 button {
@@ -71,8 +71,8 @@ p {
   position: relative;
   height: 76px;
   flex-shrink: 0;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) 0.006 231);
-  border-bottom: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) 0.006 231);
+  background: var(--surface);
+  border-bottom: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) calc(0.006 * var(--tone-c)) 231);
   display: flex;
   align-items: center;
   gap: 24px;
@@ -84,8 +84,8 @@ p {
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  font-weight: 650;
-  font-size: 19px;
+  font-weight: 600;
+  font-size: var(--t-display);
   letter-spacing: -0.7px;
   white-space: nowrap;
 }
@@ -93,13 +93,13 @@ p {
   width: 31px;
   height: 34px;
   border-radius: 8px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4017) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4017) calc(0.006 * var(--tone-c)) 231);
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
   display: grid;
   place-items: center;
 }
 .beta {
-  font-size: 10px;
+  font-size: var(--t-micro);
   letter-spacing: 0;
   background: var(--chrome-badge);
   padding: 3px 7px;
@@ -119,20 +119,20 @@ p {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 13px;
-  font-weight: 550;
+  font-size: var(--t-read);
+  font-weight: 500;
 }
 .workspace-name > svg {
   margin-left: 8px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.65) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.65) calc(0.006 * var(--tone-c)) 231);
 }
 .workspace-avatar {
   display: grid;
   place-items: center;
   width: 24px;
   height: 24px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9219) 0.006 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.559) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9219) calc(0.006 * var(--tone-c)) 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.559) calc(0.006 * var(--tone-c)) 231);
   font-family: Georgia;
   border-radius: 5px;
 }
@@ -146,14 +146,14 @@ p {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5624) 0.006 231);
-  font-size: 12px;
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5624) calc(0.006 * var(--tone-c)) 231);
+  font-size: var(--t-body);
   padding: 9px;
   border-radius: 5px;
 }
 .quiet-button:hover,
 .quiet-button.active {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231);
 }
 .primary,
 .secondary {
@@ -163,28 +163,28 @@ p {
   gap: 10px;
   padding: 11px 16px;
   border-radius: 6px;
-  font-size: 12px;
-  font-weight: 550;
+  font-size: var(--t-body);
+  font-weight: 500;
   min-height: 38px;
 }
 .primary {
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4017) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.4017) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4017) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.4017) calc(0.006 * var(--tone-c)) 231);
   box-shadow: 0 1px 2px oklch(0.2686 0.006 231 / 0.125);
 }
 .primary:hover {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3446) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3446) calc(0.006 * var(--tone-c)) 231);
 }
 .secondary {
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4532) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4532) calc(0.006 * var(--tone-c)) 231);
 }
 .count-badge {
-  font-size: 10px;
+  font-size: var(--t-micro);
   padding: 2px 5px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.931) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.931) calc(0.006 * var(--tone-c)) 231);
   border-radius: 4px;
 }
 .canvas {
@@ -192,8 +192,8 @@ p {
   overflow: hidden;
   flex: 1;
   isolation: isolate;
-  background-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) 0.006 231);
-  background-image: radial-gradient(oklch(calc(var(--tone-0) + var(--tone-d) * 0.8483) 0.006 231) 0.7px, transparent 0.7px);
+  background-color: var(--canvas);
+  background-image: radial-gradient(var(--canvas-dot) 0.7px, transparent 0.7px);
   touch-action: none;
 }
 .canvas:before {
@@ -212,30 +212,30 @@ p {
   pointer-events: none;
 }
 .eyebrow {
-  font-size: 9px;
-  font-weight: 650;
+  font-size: var(--t-micro);
+  font-weight: 600;
   letter-spacing: 1.5px;
   display: flex;
   align-items: center;
   gap: 8px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) calc(0.006 * var(--tone-c)) 231);
 }
 .eyebrow > span {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7699) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7699) calc(0.006 * var(--tone-c)) 231);
   padding: 0 5px;
 }
 .canvas-heading h1 {
-  font-weight: 450;
-  font-size: 28px;
+  font-weight: 500;
+  font-size: var(--t-hero);
   letter-spacing: -1.05px;
   margin: 10px 0 5px;
 }
 .canvas-heading h1 > span {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5897) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5897) calc(0.006 * var(--tone-c)) 231);
 }
 .canvas-heading p {
-  font-size: 12px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) 0.006 231);
+  font-size: var(--t-body);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) calc(0.006 * var(--tone-c)) 231);
   margin: 0;
 }
 .canvas-actions {
@@ -246,8 +246,8 @@ p {
   gap: 6px;
   z-index: 5;
   padding: 4px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9128) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9128) calc(0.006 * var(--tone-c)) 231);
   border-radius: 7px;
   box-shadow: 0 2px 5px oklch(0.3446 0.006 231 / 0.0157);
 }
@@ -258,22 +258,22 @@ p {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6567) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6567) calc(0.006 * var(--tone-c)) 231);
   flex-shrink: 0;
   padding: 0;
 }
 .icon-button:hover {
-  background: oklch(from var(--row-bg, oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) 0.006 231)) calc(l - 0.03) calc(c * 1.5) h);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4165) 0.006 231);
+  background: oklch(from var(--row-bg, oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231)) calc(l - 0.03) calc(c * 1.5) h);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4165) calc(0.006 * var(--tone-c)) 231);
 }
 @supports not (color: oklch(from oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0) l c h)) {
   .icon-button:hover {
-    background: color-mix(in oklch, var(--row-bg, oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) 0.006 231)), oklch(calc(var(--tone-0) + var(--tone-d) * 0) 0 0) 5%);
+    background: color-mix(in oklch, var(--row-bg, oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231)), oklch(calc(var(--tone-0) + var(--tone-d) * 0) 0 0) 5%);
   }
 }
 .icon-button[aria-pressed="true"] {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4202) 0.006 231);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9401) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4202) calc(0.006 * var(--tone-c)) 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9401) calc(0.006 * var(--tone-c)) 231);
 }
 .world {
   position: absolute;
@@ -284,8 +284,8 @@ p {
 }
 .object-card {
   position: absolute;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
   border-radius: 10px;
   padding: 20px 21px 0;
   box-shadow:
@@ -299,7 +299,7 @@ p {
   user-select: none;
 }
 .object-card:hover {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7984) 0.006 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7984) calc(0.006 * var(--tone-c)) 231);
   box-shadow: 0 5px 20px oklch(0.3132 0.006 231 / 0.0353);
 }
 .object-card.expanded {
@@ -308,7 +308,7 @@ p {
   box-shadow: 0 9px 40px oklch(0.3132 0.006 231 / 0.0392);
 }
 .object-card.focused {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7252) 0.006 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7252) calc(0.006 * var(--tone-c)) 231);
   box-shadow:
     0 0 0 3px oklch(0.61 0.006 231 / 0.125),
     0 9px 40px oklch(0.3132 0.006 231 / 0.0353);
@@ -335,15 +335,15 @@ p {
   place-items: center;
   width: 23px;
   height: 23px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.559) 0.006 231);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9521) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.559) calc(0.006 * var(--tone-c)) 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9521) calc(0.006 * var(--tone-c)) 231);
   border-radius: 5px;
 }
 .object-index {
   font-family: ui-monospace, SFMono-Regular, monospace;
-  font-size: 8px;
+  font-size: var(--t-micro);
   letter-spacing: 1px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.696) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.696) calc(0.006 * var(--tone-c)) 231);
 }
 .card-tools {
   display: flex;
@@ -355,7 +355,7 @@ p {
   height: 23px;
 }
 .object-title {
-  font-size: 25px;
+  font-size: var(--t-hero);
   font-weight: 500;
   letter-spacing: -0.8px;
   line-height: 1.25;
@@ -366,16 +366,16 @@ p {
   width: 100%;
 }
 .closed-title:hover {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4784) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4784) calc(0.006 * var(--tone-c)) 231);
 }
 .object-title.inline-input {
   height: 32px;
   padding: 0 4px;
 }
 .closed-description {
-  font-size: 11px;
+  font-size: var(--t-small);
   line-height: 1.6;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6665) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6665) calc(0.006 * var(--tone-c)) 231);
   margin: 0;
   height: 34px;
   overflow: hidden;
@@ -385,14 +385,14 @@ p {
   display: flex;
   gap: 16px;
   align-items: center;
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9461) 0.006 231);
+  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9461) calc(0.006 * var(--tone-c)) 231);
   margin-top: 18px;
   height: 37px;
   font:
     10px ui-monospace,
     SFMono-Regular,
     monospace;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6633) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6633) calc(0.006 * var(--tone-c)) 231);
 }
 .card-counts > span {
   display: flex;
@@ -407,20 +407,20 @@ p {
   border-radius: 1px;
 }
 .amber {
-  --section: oklch(calc(var(--tone-0) + var(--tone-d) * 0.65) 0.006 231);
-  --tint: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9612) 0.006 231);
+  --section: oklch(calc(var(--tone-0) + var(--tone-d) * 0.65) calc(0.006 * var(--tone-c)) 231);
+  --tint: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9612) calc(0.006 * var(--tone-c)) 231);
 }
 .blue {
-  --section: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) 0.006 231);
-  --tint: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9612) 0.006 231);
+  --section: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) calc(0.006 * var(--tone-c)) 231);
+  --tint: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9612) calc(0.006 * var(--tone-c)) 231);
 }
 .green {
-  --section: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6401) 0.006 231);
-  --tint: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9581) 0.006 231);
+  --section: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6401) calc(0.006 * var(--tone-c)) 231);
+  --tint: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9581) calc(0.006 * var(--tone-c)) 231);
 }
 .purple {
-  --section: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) 0.006 231);
-  --tint: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9551) 0.006 231);
+  --section: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) calc(0.006 * var(--tone-c)) 231);
+  --tint: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9551) calc(0.006 * var(--tone-c)) 231);
 }
 i.amber,
 i.blue,
@@ -431,13 +431,13 @@ i.purple {
 .card-counts .card-explore {
   margin-left: auto;
   font-family: inherit;
-  font-size: 8px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6665) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6665) calc(0.006 * var(--tone-c)) 231);
   gap: 2px;
 }
 .object-description {
-  font-size: 12px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) 0.006 231);
+  font-size: var(--t-body);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) calc(0.006 * var(--tone-c)) 231);
   padding: 0;
   margin: 0;
   display: block;
@@ -447,7 +447,7 @@ i.purple {
   min-height: 18px;
 }
 .placeholder {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7219) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7219) calc(0.006 * var(--tone-c)) 231);
 }
 .editable {
   /* Buttons carry UA padding, which indented every label away from its row edge. */
@@ -461,19 +461,19 @@ i.purple {
 .editable:hover {
   /* The row's own colour, barely deeper and a little more saturated, so the chip
      reads as that colour rather than as grey. Lightness moves 2%, not 5%. */
-  background: oklch(from var(--row-bg, oklch(calc(var(--tone-0) + var(--tone-d) * 0.9432) 0.006729 233.6)) calc(l - 0.02) calc(c * 1.45) h);
+  background: oklch(from var(--row-bg, oklch(calc(var(--tone-0) + var(--tone-d) * 0.9432) calc(0.006729 * var(--tone-c)) 233.6)) calc(l - 0.02) calc(c * 1.45) h);
 }
 @supports not (color: oklch(from oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0) l c h)) {
   .editable:hover {
-    background: color-mix(in oklch, var(--row-bg, oklch(calc(var(--tone-0) + var(--tone-d) * 0.9432) 0.006729 233.6)), oklch(calc(var(--tone-0) + var(--tone-d) * 0) 0 0) 4%);
+    background: color-mix(in oklch, var(--row-bg, oklch(calc(var(--tone-0) + var(--tone-d) * 0.9432) calc(0.006729 * var(--tone-c)) 233.6)), oklch(calc(var(--tone-0) + var(--tone-d) * 0) 0 0) 4%);
   }
 }
 .inline-input {
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8266) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8266) calc(0.006 * var(--tone-c)) 231);
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
   border-radius: 3px;
   max-width: 100%;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3904) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3904) calc(0.006 * var(--tone-c)) 231);
 }
 .object-sections {
   display: grid;
@@ -493,8 +493,8 @@ i.purple {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 9px;
-  font-weight: 550;
+  font-size: var(--t-micro);
+  font-weight: 500;
   letter-spacing: 0.1px;
   color: var(--section);
   margin: 0 0 13px;
@@ -513,15 +513,15 @@ i.purple {
 }
 .mini-card {
   position: relative;
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.934) 0.006 231);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.934) calc(0.006 * var(--tone-c)) 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) calc(0.006 * var(--tone-c)) 231);
   min-height: 32px;
   border-radius: 4px;
   display: flex;
   align-items: center;
   padding: 6px 8px;
-  font-size: 10px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5452) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5452) calc(0.006 * var(--tone-c)) 231);
 }
 .mini-card > .editable {
   /* Was flex: 1, so the label filled the row and its hover chip ran under the
@@ -534,7 +534,7 @@ i.purple {
 }
 .mini-card > .inline-input {
   width: 100%;
-  font-size: 10px;
+  font-size: var(--t-micro);
   padding: 2px;
 }
 .mini-card .item-tools {
@@ -542,9 +542,9 @@ i.purple {
   position: absolute;
   right: 2px;
   top: 3px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) calc(0.006 * var(--tone-c)) 231);
   border-radius: 3px;
-  box-shadow: -7px 0 8px oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) 0.006 231);
+  box-shadow: -7px 0 8px oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) calc(0.006 * var(--tone-c)) 231);
 }
 .mini-card:hover .item-tools,
 .mini-card:focus-within .item-tools {
@@ -559,8 +559,8 @@ i.purple {
   height: 11px;
 }
 .mini-card.relationship {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9672) 0.006 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.928) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9672) calc(0.006 * var(--tone-c)) 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.928) calc(0.006 * var(--tone-c)) 231);
   display: block;
 }
 .relationship-link {
@@ -570,9 +570,9 @@ i.purple {
   justify-content: space-between;
   width: 100%;
   padding: 0;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6133) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6133) calc(0.006 * var(--tone-c)) 231);
   text-align: left;
-  font-size: 10px;
+  font-size: var(--t-micro);
   min-height: 18px;
 }
 .relationship-link span {
@@ -582,7 +582,7 @@ i.purple {
 }
 .relationship-edit {
   display: none;
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.928) 0.006 231);
+  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.928) calc(0.006 * var(--tone-c)) 231);
   margin-top: 8px;
   padding-top: 8px;
 }
@@ -592,7 +592,7 @@ i.purple {
 .relationship-edit .editable {
   /* Was 9px. The editor is where a role gets named, so it has to be at least as
      readable as the row it edits. */
-  font-size: 12px;
+  font-size: var(--t-body);
   display: inline-block;
   max-width: 100%;
 }
@@ -600,63 +600,63 @@ i.purple {
   /* The global 2px outline is far too loud inside a row-sized panel. Kept visible
      as a quiet ring, since removing focus entirely would strand keyboard users. */
   outline: none;
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.709) 0.03549 228.6);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.709) calc(0.03549 * var(--tone-c)) 228.6);
   box-shadow: 0 0 0 2px oklch(0.709 0.03549 228.6 / 0.149);
 }
 .relationship-edit select {
   width: 100%;
-  font-size: 12px;
+  font-size: var(--t-body);
   height: 28px;
   padding: 0 6px;
   border-radius: 4px;
   background: white;
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
   margin-top: 4px;
 }
 .add-item {
   display: flex;
   align-items: center;
   gap: 5px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7025) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7025) calc(0.006 * var(--tone-c)) 231);
   padding: 8px 3px;
-  font-size: 9px;
+  font-size: var(--t-micro);
   margin-top: 4px;
   width: 100%;
   border-radius: 3px;
   text-align: left;
 }
 .add-item:hover {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5382) 0.006 231);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9521) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5382) calc(0.006 * var(--tone-c)) 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9521) calc(0.006 * var(--tone-c)) 231);
 }
 .object-footer {
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9401) 0.006 231);
+  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9401) calc(0.006 * var(--tone-c)) 231);
   min-height: 37px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 9px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7284) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7284) calc(0.006 * var(--tone-c)) 231);
   gap: 12px;
 }
 .object-footer button {
   display: flex;
   align-items: center;
   gap: 7px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6764) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6764) calc(0.006 * var(--tone-c)) 231);
   font:
     9px ui-monospace,
     monospace;
 }
 .object-footer button > span {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5829) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5829) calc(0.006 * var(--tone-c)) 231);
 }
 .object-footer svg {
   opacity: 0.5;
 }
 .item-composer {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8328) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8328) calc(0.006 * var(--tone-c)) 231);
   border-radius: 4px;
   padding: 7px;
   margin-top: 5px;
@@ -666,7 +666,7 @@ i.purple {
   width: 100%;
   border: none;
   padding: 2px 0;
-  font-size: 10px;
+  font-size: var(--t-micro);
   outline: none;
 }
 .composer-actions {
@@ -679,8 +679,8 @@ i.purple {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 9px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5931) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5931) calc(0.006 * var(--tone-c)) 231);
 }
 .suggestions {
   max-height: 145px;
@@ -693,13 +693,13 @@ i.purple {
   display: flex;
   text-align: left;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: var(--t-micro);
   padding: 6px 3px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9672) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9672) calc(0.006 * var(--tone-c)) 231);
   border-radius: 2px;
 }
 .suggestions small {
-  font-size: 9px;
+  font-size: var(--t-micro);
   line-height: 1.5;
 }
 .menu-anchor {
@@ -718,8 +718,8 @@ i.purple {
   right: 0;
   width: 195px;
   padding: 5px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9097) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9097) calc(0.006 * var(--tone-c)) 231);
   border-radius: 6px;
   box-shadow: 0 6px 30px oklch(0.3829 0.006 231 / 0.0941);
 }
@@ -730,36 +730,36 @@ i.purple {
   text-align: left;
   width: 100%;
   padding: 9px 7px;
-  font-size: 10px;
+  font-size: var(--t-micro);
   border-radius: 3px;
 }
 .context-menu button:hover {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9581) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9581) calc(0.006 * var(--tone-c)) 231);
 }
 .context-menu .danger {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5829) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5829) calc(0.006 * var(--tone-c)) 231);
 }
 .evidence {
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.934) 0.006 231);
+  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.934) calc(0.006 * var(--tone-c)) 231);
   padding: 14px 0;
   user-select: text;
 }
 .evidence > span {
-  font-size: 11px;
+  font-size: var(--t-small);
   display: block;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6862) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6862) calc(0.006 * var(--tone-c)) 231);
   margin-bottom: 8px;
 }
 .evidence code {
   display: block;
-  font-size: 9px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5965) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5965) calc(0.006 * var(--tone-c)) 231);
   line-height: 1.8;
   overflow-wrap: anywhere;
 }
 .evidence p {
-  font-size: 10px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6401) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6401) calc(0.006 * var(--tone-c)) 231);
 }
 .relationship-lines {
   position: absolute;
@@ -772,7 +772,7 @@ i.purple {
 }
 .connection {
   fill: none;
-  stroke: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7155) 0.006 231);
+  stroke: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7155) calc(0.006 * var(--tone-c)) 231);
   stroke-width: 1.2;
   opacity: 0.8;
 }
@@ -794,7 +794,7 @@ i.purple {
 .legend {
   display: flex;
   gap: 13px;
-  font-size: 11px;
+  font-size: var(--t-small);
   color: var(--chrome-muted);
   align-items: center;
   padding: 8px 10px;
@@ -811,7 +811,7 @@ i.purple {
   align-items: center;
   gap: 4px;
   background: var(--raised-veil);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
   padding: 6px;
   border-radius: 9px;
   box-shadow: 0 5px 20px oklch(0.3867 0.006 231 / 0.0627);
@@ -825,7 +825,7 @@ i.purple {
 .toolbar-divider {
   height: 17px;
   width: 1px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9219) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9219) calc(0.006 * var(--tone-c)) 231);
   margin: 0 5px;
 }
 .zoom-label {
@@ -833,27 +833,27 @@ i.purple {
     10px ui-monospace,
     SFMono-Regular,
     monospace;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5897) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5897) calc(0.006 * var(--tone-c)) 231);
   width: 39px;
   padding: 0;
 }
 .canvas-hint {
-  font-size: 9px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7187) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7187) calc(0.006 * var(--tone-c)) 231);
   display: flex;
   align-items: center;
   gap: 9px;
 }
 .statusbar {
   height: 31px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) 0.006 231);
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9097) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) calc(0.006 * var(--tone-c)) 231);
+  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9097) calc(0.006 * var(--tone-c)) 231);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 22px;
-  font-size: 9px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6567) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6567) calc(0.006 * var(--tone-c)) 231);
   flex-shrink: 0;
   gap: 16px;
 }
@@ -864,21 +864,21 @@ i.purple {
 }
 .statusbar button {
   text-decoration: underline;
-  font-size: 9px;
+  font-size: var(--t-micro);
 }
 .saved-dot,
 .error-dot {
   width: 5px;
   height: 5px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) calc(0.006 * var(--tone-c)) 231);
   border-radius: 50%;
 }
 .error-dot {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6201) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6201) calc(0.006 * var(--tone-c)) 231);
 }
 .status-dot {
   padding: 0 5px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7889) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7889) calc(0.006 * var(--tone-c)) 231);
 }
 .footer-note {
   font-style: italic;
@@ -889,8 +889,8 @@ i.purple {
   right: 0;
   bottom: 0;
   width: 390px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9881) 0.006 231);
-  border-left: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9097) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9881) calc(0.006 * var(--tone-c)) 231);
+  border-left: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9097) calc(0.006 * var(--tone-c)) 231);
   z-index: 15;
   padding: 24px;
   overflow: auto;
@@ -909,35 +909,35 @@ i.purple {
   margin-left: auto;
 }
 .side-panel h2 {
-  font-size: 29px;
-  font-weight: 450;
+  font-size: var(--t-hero);
+  font-weight: 500;
   letter-spacing: -1px;
   line-height: 1.2;
   margin: 23px 0 12px;
 }
 .panel-intro {
-  font-size: 12px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) 0.006 231);
+  font-size: var(--t-body);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) calc(0.006 * var(--tone-c)) 231);
   margin: 0 0 23px;
 }
 .candidate {
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) calc(0.006 * var(--tone-c)) 231);
   border-radius: 6px;
   margin-bottom: 7px;
   padding: 8px 10px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) calc(0.006 * var(--tone-c)) 231);
 }
 .candidate.selected {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9672) 0.006 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8975) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9672) calc(0.006 * var(--tone-c)) 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8975) calc(0.006 * var(--tone-c)) 231);
 }
 .candidate-name {
-  font-size: 12px;
+  font-size: var(--t-body);
   font-weight: 500;
   border: none;
   background: transparent;
   width: 100%;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5243) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5243) calc(0.006 * var(--tone-c)) 231);
   padding: 3px 0;
 }
 .change-list {
@@ -947,11 +947,11 @@ i.purple {
   min-height: 80px;
 }
 .change-list > div {
-  font-size: 12px;
+  font-size: var(--t-body);
   line-height: 1.6;
   padding: 12px 0;
-  border-bottom: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.931) 0.006 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5863) 0.006 231);
+  border-bottom: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.931) calc(0.006 * var(--tone-c)) 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5863) calc(0.006 * var(--tone-c)) 231);
   overflow-wrap: anywhere;
 }
 .side-panel > .secondary {
@@ -961,7 +961,7 @@ i.purple {
   margin-top: 24px;
 }
 .setting-group h3 {
-  font-size: 12px;
+  font-size: var(--t-body);
   font-weight: 500;
   letter-spacing: 0;
   color: var(--chrome-label);
@@ -972,8 +972,8 @@ i.purple {
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  font-size: 12px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4568) 0.006 231);
+  font-size: var(--t-body);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4568) calc(0.006 * var(--tone-c)) 231);
   gap: 16px;
 }
 /* A bare checkbox reads as a form field. These are canvas switches, so they
@@ -985,7 +985,7 @@ i.purple {
   height: 18px;
   margin: 0;
   border-radius: 9px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8945) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8945) calc(0.006 * var(--tone-c)) 231);
   position: relative;
   transition: background 160ms ease;
 }
@@ -1002,7 +1002,7 @@ i.purple {
   transition: translate 160ms ease;
 }
 .setting input[role="switch"]:checked {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6793) 0.04193 225.7);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6793) calc(0.04193 * var(--tone-c)) 225.7);
 }
 .setting input[role="switch"]:checked::after {
   translate: 14px 0;
@@ -1015,23 +1015,23 @@ i.purple {
 }
 .setting small {
   display: block;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7252) 0.006 231);
-  font-size: 10px;
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7252) calc(0.006 * var(--tone-c)) 231);
+  font-size: var(--t-micro);
   line-height: 1.5;
   margin-top: 5px;
 }
 .setting input {
-  accent-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5208) 0.006 231);
+  accent-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5208) calc(0.006 * var(--tone-c)) 231);
 }
 .motion-settings h3 {
-  font-size: 12px;
+  font-size: var(--t-body);
   font-weight: 500;
 }
 .motion-settings p,
 .motion-settings small {
-  font-size: 11px;
+  font-size: var(--t-small);
   line-height: 1.6;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) calc(0.006 * var(--tone-c)) 231);
 }
 /* One horizontal group per setting: the options are alternatives, so they read
    as a row of equal choices rather than a stacked list of separate controls. */
@@ -1051,7 +1051,7 @@ i.purple {
   text-align: center;
   padding: 7px 6px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: var(--t-small);
   line-height: 1.3;
   color: var(--chrome-label);
 }
@@ -1064,7 +1064,7 @@ i.purple {
   font:
     10px ui-monospace,
     monospace;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7476) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7476) calc(0.006 * var(--tone-c)) 231);
 }
 .motion-settings button svg {
   margin-left: auto;
@@ -1073,7 +1073,7 @@ i.purple {
 .motion-settings > small {
   display: block;
   margin-top: 18px;
-  font-size: 10px;
+  font-size: var(--t-micro);
 }
 .workspace-detail {
   display: flex;
@@ -1082,14 +1082,14 @@ i.purple {
   margin: 15px 0 30px;
 }
 .workspace-detail > span {
-  font-size: 12px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.696) 0.006 231);
+  font-size: var(--t-body);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.696) calc(0.006 * var(--tone-c)) 231);
   margin-top: 15px;
 }
 .workspace-detail code {
-  font-size: 10px;
+  font-size: var(--t-micro);
   line-height: 1.6;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5795) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5795) calc(0.006 * var(--tone-c)) 231);
   overflow-wrap: anywhere;
 }
 .empty-state {
@@ -1105,7 +1105,7 @@ i.purple {
   left: calc((100% - 390px) / 2);
 }
 .empty-state h2 {
-  font-size: 15px;
+  font-size: var(--t-title);
   font-weight: 500;
   line-height: 22px;
   letter-spacing: 0;
@@ -1131,7 +1131,7 @@ i.purple {
 }
 .run-prompt h3 {
   margin: 0;
-  font-size: 15px;
+  font-size: var(--t-title);
   font-weight: 500;
   line-height: 20px;
   color: var(--chrome-label);
@@ -1141,7 +1141,7 @@ i.purple {
   /* The prompt is text the agent receives verbatim, so it is set as machine
      text rather than as prose about the product. */
   font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 14px;
+  font-size: var(--t-read);
   line-height: 20px;
   color: var(--chrome-label);
 }
@@ -1155,8 +1155,8 @@ i.purple {
   gap: 6px;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) calc(0.006 * var(--tone-c)) 231);
   padding: 16px;
   margin: auto;
 }
@@ -1166,8 +1166,8 @@ i.purple {
   top: 14px;
   z-index: 25;
   width: 360px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8884) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8884) calc(0.006 * var(--tone-c)) 231);
   border-radius: 9px;
   padding: 23px;
   box-shadow: 0 15px 60px oklch(0.3867 0.006 231 / 0.125);
@@ -1179,22 +1179,22 @@ i.purple {
   margin-left: auto;
 }
 .new-object-popover label {
-  font-size: 20px;
+  font-size: var(--t-display);
   letter-spacing: -0.5px;
   display: block;
   margin: 18px 0 15px;
 }
 .new-object-popover > input {
   width: 100%;
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8669) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8669) calc(0.006 * var(--tone-c)) 231);
   background: white;
   border-radius: 5px;
   padding: 11px 9px;
-  font-size: 11px;
+  font-size: var(--t-small);
 }
 .new-object-popover > p {
-  font-size: 10px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7284) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7284) calc(0.006 * var(--tone-c)) 231);
   margin: 10px 0 20px;
 }
 .new-object-popover > .primary {
@@ -1206,8 +1206,8 @@ i.purple {
   right: 38px;
   top: 88px;
   width: 300px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9067) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9067) calc(0.006 * var(--tone-c)) 231);
   box-shadow: 0 5px 25px oklch(0.3753 0.006 231 / 0.0824);
   border-radius: 7px;
   z-index: 20;
@@ -1220,15 +1220,15 @@ i.purple {
   align-items: center;
   gap: 8px;
   padding: 5px 4px;
-  border-bottom: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.928) 0.006 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6731) 0.006 231);
+  border-bottom: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.928) calc(0.006 * var(--tone-c)) 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6731) calc(0.006 * var(--tone-c)) 231);
 }
 .search-popover input {
   width: 100%;
   border: none;
   outline: none;
   background: transparent;
-  font-size: 12px;
+  font-size: var(--t-body);
 }
 .search-popover > button {
   display: flex;
@@ -1237,18 +1237,18 @@ i.purple {
   padding: 10px;
   width: 100%;
   text-align: left;
-  font-size: 12px;
+  font-size: var(--t-body);
   border-radius: 4px;
 }
 .search-popover > button svg:last-child {
   margin-left: auto;
 }
 .search-popover > button:hover {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) calc(0.006 * var(--tone-c)) 231);
 }
 .search-popover p {
-  font-size: 11px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.709) 0.006 231);
+  font-size: var(--t-small);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.709) calc(0.006 * var(--tone-c)) 231);
   padding: 5px 10px;
 }
 .toast {
@@ -1256,13 +1256,13 @@ i.purple {
   bottom: 101px;
   left: 50%;
   transform: translateX(-50%);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3979) 0.006 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.4855) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3979) calc(0.006 * var(--tone-c)) 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.4855) calc(0.006 * var(--tone-c)) 231);
   box-shadow: 0 4px 20px oklch(0.3867 0.006 231 / 0.125);
   padding: 12px 17px;
   border-radius: 7px;
-  font-size: 11px;
+  font-size: var(--t-small);
   z-index: 50;
   display: flex;
   gap: 10px;
@@ -1279,10 +1279,10 @@ i.purple {
   transform: translateX(-50%);
   max-width: 600px;
   padding: 12px 20px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8607) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8607) calc(0.006 * var(--tone-c)) 231);
   border-radius: 6px;
-  font-size: 12px;
+  font-size: var(--t-body);
   z-index: 60;
 }
 .save-error button {
@@ -1299,11 +1299,11 @@ i.purple {
   text-align: center;
 }
 .fatal h1 {
-  font-size: 26px;
-  font-weight: 450;
+  font-size: var(--t-hero);
+  font-weight: 500;
 }
 .fatal p {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) calc(0.006 * var(--tone-c)) 231);
 }
 .panning {
   cursor: grab;
@@ -1312,7 +1312,7 @@ i.purple {
   cursor: grabbing;
 }
 .muted {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6927) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6927) calc(0.006 * var(--tone-c)) 231);
 }
 @media (min-width: 1500px) {
   .canvas-heading {
@@ -1320,7 +1320,7 @@ i.purple {
     top: 42px;
   }
   .canvas-heading h1 {
-    font-size: 31px;
+    font-size: var(--t-hero);
   }
   .canvas-bottom {
     bottom: 33px;
@@ -1342,7 +1342,7 @@ i.purple {
     gap: 8px;
   }
   .canvas-heading h1 {
-    font-size: 24px;
+    font-size: var(--t-hero);
   }
   .side-panel {
     width: 350px;
@@ -1352,7 +1352,7 @@ i.purple {
     width: 350px;
   }
   .empty-state h2 {
-    font-size: 21px;
+    font-size: var(--t-display);
   }
 }
 @media (max-width: 700px) {
@@ -1362,7 +1362,7 @@ i.purple {
     gap: 12px;
   }
   .brand {
-    font-size: 16px;
+    font-size: var(--t-title);
   }
   .brand-mark {
     width: 27px;
@@ -1375,7 +1375,7 @@ i.purple {
     display: none;
   }
   .new-object-button {
-    font-size: 11px;
+    font-size: var(--t-small);
     padding: 9px 11px;
   }
   .header-right {
@@ -1386,17 +1386,17 @@ i.purple {
     left: 22px;
   }
   .canvas-heading h1 {
-    font-size: 22px;
+    font-size: var(--t-display);
   }
   .canvas-heading p {
-    font-size: 10px;
+    font-size: var(--t-micro);
   }
   .canvas-actions {
     top: 20px;
     right: 20px;
   }
   .canvas-heading .eyebrow {
-    font-size: 8px;
+    font-size: var(--t-micro);
   }
   .side-panel {
     width: 100%;
@@ -1404,11 +1404,11 @@ i.purple {
     z-index: 16;
   }
   .side-panel h2 {
-    font-size: 27px;
+    font-size: var(--t-hero);
     margin-top: 16px;
   }
   .panel-intro {
-    font-size: 11px;
+    font-size: var(--t-small);
     margin-bottom: 15px;
   }
   .empty-state,
@@ -1418,7 +1418,7 @@ i.purple {
     top: 49%;
   }
   .empty-state h2 {
-    font-size: 22px;
+    font-size: var(--t-display);
   }
   .empty-diagram {
     margin-bottom: 24px;
@@ -1444,7 +1444,7 @@ i.purple {
   }
   .statusbar {
     padding: 0 12px;
-    font-size: 8px;
+    font-size: var(--t-micro);
   }
   .footer-note {
     display: none !important;
@@ -1480,20 +1480,20 @@ i.purple {
 }
 @media (prefers-reduced-transparency: reduce) {
   .canvas-toolbar {
-    background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) 0.006 231);
+    background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) calc(0.006 * var(--tone-c)) 231);
     backdrop-filter: none;
   }
 }
 @media (prefers-contrast: more) {
   .object-card {
-    border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.559) 0.006 231);
+    border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.559) calc(0.006 * var(--tone-c)) 231);
   }
   .panel-intro,
   .closed-description,
   .canvas-heading p,
   .legend,
   .statusbar {
-    color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4819) 0.006 231);
+    color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4819) calc(0.006 * var(--tone-c)) 231);
   }
 }
 /* Semantic controls remain in the keyboard order even when visually quiet. */
@@ -1508,49 +1508,49 @@ i.purple {
   pointer-events: auto;
 }
 .object-section h3 {
-  font-size: 11px;
+  font-size: var(--t-small);
 }
 .mini-card,
 .mini-card > .inline-input,
 .relationship-link {
-  font-size: 12px;
+  font-size: var(--t-body);
 }
 .add-item,
 .composer-actions button {
-  font-size: 11px;
+  font-size: var(--t-small);
 }
 .object-description,
 .closed-description {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5897) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5897) calc(0.006 * var(--tone-c)) 231);
 }
 .panel-intro {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5965) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5965) calc(0.006 * var(--tone-c)) 231);
 }
 /* OOUX: parallel object columns, with each semantic group stacked beneath its noun. */
 :root {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3211) 0.006 231);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9761) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3211) calc(0.006 * var(--tone-c)) 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9761) calc(0.006 * var(--tone-c)) 231);
 }
 .app-header {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9911) 0.006 231);
+  background: var(--surface);
 }
 .brand-mark,
 .primary {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.2809) 0.006 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.2809) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.2809) calc(0.006 * var(--tone-c)) 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.2809) calc(0.006 * var(--tone-c)) 231);
 }
 .primary:hover {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.1776) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.1776) calc(0.006 * var(--tone-c)) 231);
 }
 .canvas {
-  background-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9761) 0.006 231);
-  background-image: radial-gradient(oklch(calc(var(--tone-0) + var(--tone-d) * 0.8822) 0.006 231) 0.65px, transparent 0.65px);
+  background-color: var(--canvas);
+  background-image: radial-gradient(var(--canvas-dot) 0.65px, transparent 0.65px);
 }
 .canvas:before {
   background: linear-gradient(var(--scrim), transparent 145px);
 }
 .canvas-heading h1 {
-  font-size: 24px;
+  font-size: var(--t-hero);
   letter-spacing: -0.65px;
 }
 .canvas-heading h1 > span {
@@ -1577,8 +1577,8 @@ i.purple {
      heading's subtree is trapped under them: .card-head sets z-index 0, which
      starts a stacking context, and the rows come later in the document. */
   z-index: 5;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8576) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8576) calc(0.006 * var(--tone-c)) 231);
   border-radius: 8px;
   padding: 12px 13px 10px;
   /* Fixed so every column's rows start at the same y. A heading that grew with
@@ -1587,7 +1587,7 @@ i.purple {
   box-sizing: border-box;
 }
 .focused .object-heading {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4495) 0.006 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4495) calc(0.006 * var(--tone-c)) 231);
   box-shadow: 0 0 0 2px oklch(0.252 0.006 231 / 0.0392);
 }
 .card-head {
@@ -1608,7 +1608,7 @@ i.purple {
   gap: 0;
 }
 .card-tools .icon-button {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5521) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5521) calc(0.006 * var(--tone-c)) 231);
   width: 21px;
   height: 21px;
 }
@@ -1623,7 +1623,7 @@ i.purple {
 .object-title.inline-input {
   position: relative;
   z-index: 1;
-  font-size: 15px;
+  font-size: var(--t-title);
   font-weight: 600;
   letter-spacing: -0.2px;
   margin: 0 36px 5px 0;
@@ -1634,7 +1634,7 @@ i.purple {
   height: 20px;
 }
 .object-summary {
-  font-size: 11px;
+  font-size: var(--t-small);
   color: var(--chrome-muted);
   pointer-events: none;
 }
@@ -1647,7 +1647,7 @@ i.purple {
   line-clamp: 2;
   width: 100%;
   height: 32px;
-  font-size: 11px;
+  font-size: var(--t-small);
   line-height: 16px;
   color: var(--chrome-muted);
   text-align: left;
@@ -1683,37 +1683,37 @@ i.purple {
 }
 .mini-card {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
   min-height: 29px;
   padding: 5px 10px;
   border-radius: 5px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3791) 0.006 231);
-  font-size: 12px;
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3791) calc(0.006 * var(--tone-c)) 231);
+  font-size: var(--t-body);
 }
 .mini-card > .editable {
   min-height: 17px;
-  font-size: 12px;
+  font-size: var(--t-body);
 }
 .object-section.amber {
   --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
 }
 .object-section.blue {
-  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) 0.006 231);
+  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) calc(0.006 * var(--tone-c)) 231);
 }
 .object-section.green {
-  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) 0.006 231);
+  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231);
 }
 .object-section.purple {
-  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9702) 0.006 231);
+  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9702) calc(0.006 * var(--tone-c)) 231);
 }
 .object-section .mini-card {
   background: var(--row-bg);
 }
 .object-section.blue .mini-card {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8638) 0.006 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8638) calc(0.006 * var(--tone-c)) 231);
 }
 .object-section.green .mini-card {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8853) 0.006 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8853) calc(0.006 * var(--tone-c)) 231);
 }
 .object-section.purple .mini-card {
   border-style: dashed;
@@ -1724,31 +1724,31 @@ i.purple {
   top: 1px;
 }
 .relationship-link {
-  font-size: 12px;
+  font-size: var(--t-body);
   color: var(--row-label);
   min-height: 17px;
 }
 .relationship-edit {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8452) 0.006 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8452) calc(0.006 * var(--tone-c)) 231);
 }
 .relationship-edit select {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8452) 0.006 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8452) calc(0.006 * var(--tone-c)) 231);
 }
 .add-item {
-  border: 1px dashed oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
+  border: 1px dashed oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
   background: transparent;
   justify-content: center;
   height: 28px;
   padding: 3px;
   min-height: 28px;
   margin-top: 4px;
-  font-size: 10px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6862) 0.006 231);
+  font-size: var(--t-micro);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6862) calc(0.006 * var(--tone-c)) 231);
 }
 .add-item:hover {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) 0.006 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7921) 0.006 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4495) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7921) calc(0.006 * var(--tone-c)) 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4495) calc(0.006 * var(--tone-c)) 231);
 }
 .add-item {
   font-size: 0;
@@ -1759,22 +1759,22 @@ i.purple {
   height: 12px;
 }
 .add-item:focus-visible {
-  font-size: 10px;
+  font-size: var(--t-micro);
   gap: 4px;
 }
 .item-composer {
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7921) 0.006 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7921) calc(0.006 * var(--tone-c)) 231);
 }
 .composer-actions button {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4495) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4495) calc(0.006 * var(--tone-c)) 231);
 }
 .suggestions button {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231);
 }
 .object-footer {
   border: 0;
   min-height: 27px;
-  font-size: 8px;
+  font-size: var(--t-micro);
   opacity: 0;
   transition: opacity 100ms;
 }
@@ -1787,20 +1787,20 @@ i.purple {
 }
 .object-footer button,
 .object-footer button > span {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6268) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6268) calc(0.006 * var(--tone-c)) 231);
 }
 .object-card:not(.expanded) .card-counts {
   display: none;
 }
 .evidence {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) calc(0.006 * var(--tone-c)) 231);
   padding: 12px;
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8975) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8975) calc(0.006 * var(--tone-c)) 231);
   border-radius: 5px;
   margin-top: 5px;
 }
 .evidence .object-description {
-  font-size: 11px;
+  font-size: var(--t-small);
   margin-bottom: 14px;
 }
 .relationship-lines {
@@ -1808,17 +1808,17 @@ i.purple {
 }
 .legend .amber {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.7921) 0.006 231);
+  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.7921) calc(0.006 * var(--tone-c)) 231);
 }
 .legend .blue {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.738) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.738) calc(0.006 * var(--tone-c)) 231);
 }
 .legend .green {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8452) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8452) calc(0.006 * var(--tone-c)) 231);
 }
 .legend .purple {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) 0.006 231);
-  border: 1px dashed oklch(calc(var(--tone-0) + var(--tone-d) * 0.6268) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231);
+  border: 1px dashed oklch(calc(var(--tone-0) + var(--tone-d) * 0.6268) calc(0.006 * var(--tone-c)) 231);
 }
 .legend i {
   width: 8px;
@@ -1827,7 +1827,7 @@ i.purple {
 }
 @media (max-width: 700px) {
   .canvas-heading h1 {
-    font-size: 22px;
+    font-size: var(--t-display);
   }
 }
 /* Selection exposes the immediate semantic neighbourhood without connecting lines. */
@@ -1841,21 +1841,21 @@ i.purple {
   opacity: 0.45;
 }
 .object-card.focused .object-heading {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.325) 0.006 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.325) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.325) calc(0.006 * var(--tone-c)) 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.325) calc(0.006 * var(--tone-c)) 231);
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
   box-shadow: none;
 }
 .object-card.focused .object-summary,
 .object-card.focused .card-tools .icon-button {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8669) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8669) calc(0.006 * var(--tone-c)) 231);
 }
 .object-card.focused .object-title:hover {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4091) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4091) calc(0.006 * var(--tone-c)) 231);
 }
 .object-card.related .object-heading {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6567) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
+  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6567) calc(0.006 * var(--tone-c)) 231);
 }
 .object-card.related .mini-card:not(.is-relevant),
 .object-card.related .add-item {
@@ -1874,18 +1874,18 @@ i.purple {
   align-items: center;
   gap: 4px;
   padding: 8px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) 0.006 231);
+  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) calc(0.006 * var(--tone-c)) 231);
   border-radius: 5px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5693) 0.006 231);
-  font-size: 10px;
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5693) calc(0.006 * var(--tone-c)) 231);
+  font-size: var(--t-micro);
 }
 .clear-focus:hover {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.252) 0.006 231);
+  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.252) calc(0.006 * var(--tone-c)) 231);
 }
 .relationship-target {
   /* This is an object name, so it is not subordinate type. Same size as the role;
      the monospace face carries the distinction instead of a smaller size. */
-  font-size: 12px;
+  font-size: var(--t-body);
   font-weight: 400;
   opacity: 0.7;
 }
@@ -1931,19 +1931,19 @@ i.purple {
 }
 .guide-count {
   margin: 0 0 8px;
-  font-size: 11px;
+  font-size: var(--t-small);
   color: var(--chrome-muted);
 }
 .guide-card h2 {
   margin: 0 0 8px;
-  font-size: 15px;
+  font-size: var(--t-title);
   font-weight: 500;
   line-height: 1.35;
   color: var(--chrome-title);
 }
 .guide-card > p:not(.guide-count) {
   margin: 0 0 16px;
-  font-size: 13px;
+  font-size: var(--t-read);
   line-height: 1.55;
   color: var(--chrome-label);
 }
@@ -1987,14 +1987,14 @@ i.purple {
 }
 .modal-card h2 {
   margin: 0 0 8px;
-  font-size: 15px;
+  font-size: var(--t-title);
   font-weight: 500;
   line-height: 1.35;
   color: var(--chrome-title);
 }
 .modal-card p {
   margin: 0 0 24px;
-  font-size: 13px;
+  font-size: var(--t-read);
   line-height: 1.55;
   color: var(--chrome-label);
 }
@@ -2018,7 +2018,7 @@ i.purple {
   padding: 1px 5px;
   border-radius: 3px;
   font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
+  font-size: var(--t-micro);
   line-height: 1.5;
   /* Deepened out of the row it sits on, so the mark on an amber attribute is
      amber and the one on a blue relationship is blue. Chrome tokens made both
