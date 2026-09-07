@@ -19,7 +19,7 @@ export function ColumnAdd({ name, onChoose }) {
   useLayoutEffect(() => {
     if (!open) return;
     const bounds = trigger.current.getBoundingClientRect();
-    const width = 246, height = 228, above = bounds.bottom + height + 12 > window.innerHeight;
+    const width = 280, height = 236, above = bounds.bottom + height + 12 > window.innerHeight;
     setPosition({
       left: Math.max(12, Math.min(bounds.left, window.innerWidth - width - 12)),
       top: Math.max(12, Math.min(above ? bounds.top - height - 8 : bounds.bottom + 8, window.innerHeight - height - 12)),
