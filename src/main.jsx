@@ -52,6 +52,7 @@ import { motion, treatments } from "./motion";
 import { arrange, columnOrder, reorderColumns, positionsForOrder, COLUMN_STEP } from "./layout.mjs";
 import { Reveal } from "./Reveal";
 import { ColumnAdd } from "./ColumnAdd";
+import { Guide } from "./Guide.jsx";
 import "./styles.css";
 import "./focus.css";
 const initialLayout = {
@@ -686,6 +687,7 @@ function App() {
     [treatment, setTreatment] = useState("restrained"),
     [showStates, setShowStates] = useState(false),
     [showEvidence, setShowEvidence] = useState(false),
+    [guide, setGuide] = useState(false),
     [theme, setTheme] = useState(() => {
       try { return localStorage.getItem("object-map-theme") || "system"; } catch { return "system"; }
     });
@@ -739,6 +741,12 @@ function App() {
         if (w.layout.mode !== "ooux-columns") persist("layout", initial);
         base.current = clone(w.map);
         setLoaded(true);
+        // The demo repository asks for the walkthrough; a real one never does.
+        if (w.config?.guide) {
+          try {
+            if (localStorage.getItem("object-map-guide") !== "seen") setGuide(true);
+          } catch { setGuide(true); }
+        }
       })
       .catch((e) => setLoadError(e.message));
     return () => clearTimeout(toastTimer.current);
@@ -1536,7 +1544,15 @@ function App() {
             />
           </div>
         </div>
-        {panel && (
+        {guide && (
+        <Guide
+          onClose={() => {
+            setGuide(false);
+            try { localStorage.setItem("object-map-guide", "seen"); } catch {}
+          }}
+        />
+      )}
+      {panel && (
           <aside className="side-panel">
             <div className="panel-heading">
               <IconButton

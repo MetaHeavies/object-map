@@ -1906,3 +1906,75 @@ i.purple {
     transition: none;
   }
 }
+
+/* Walkthrough: explains what the primitives mean on the demo repository. */
+.guide {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+.guide-ring {
+  position: fixed;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 2px var(--chrome-title),
+    0 0 0 6px oklch(from var(--chrome-title) l c h / 0.14);
+  transition:
+    top 220ms var(--ease-focus),
+    left 220ms var(--ease-focus),
+    width 220ms var(--ease-focus),
+    height 220ms var(--ease-focus);
+}
+.guide-card {
+  position: fixed;
+  width: 360px;
+  padding: 20px 24px 16px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--chrome-line);
+  box-shadow: var(--shadow-lifted);
+  pointer-events: auto;
+}
+.guide-card.centred {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+.guide-count {
+  margin: 0 0 8px;
+  font-size: 11px;
+  color: var(--chrome-muted);
+}
+.guide-card h2 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--chrome-title);
+}
+.guide-card > p:not(.guide-count) {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--chrome-label);
+}
+.guide-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.guide-actions > div {
+  display: flex;
+  gap: 8px;
+}
+.guide-target {
+  position: relative;
+  z-index: 40;
+}
+@media (prefers-reduced-motion: reduce) {
+  .guide-ring {
+    transition: none;
+  }
+}

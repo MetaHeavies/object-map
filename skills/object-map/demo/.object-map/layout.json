@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "mode": "ooux-columns",
+  "positions": {
+    "obj:book": {
+      "x": 0,
+      "y": 0
+    },
+    "obj:author": {
+      "x": 282,
+      "y": 0
+    },
+    "obj:member": {
+      "x": 564,
+      "y": 0
+    },
+    "obj:loan": {
+      "x": 846,
+      "y": 0
+    },
+    "obj:hold": {
+      "x": 1128,
+      "y": 0
+    }
+  },
+  "viewport": {
+    "x": 70,
+    "y": 150,
+    "zoom": 1
+  }
+}

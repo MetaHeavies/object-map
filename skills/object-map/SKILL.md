@@ -24,6 +24,8 @@ node .agents/skills/object-map/scripts/map.mjs doctor
 node .agents/skills/object-map/scripts/serve.mjs
 ```
 
+To show a builder what the map's parts mean before their own is populated, `scripts/serve.mjs --demo` opens a small worked example with a walkthrough of the vocabulary. It is served from a temporary copy and touches no repository.
+
 The portable skill includes the built canvas; Node 22.12+ is required. Open the URL printed by the server. Atlas is only this tool’s disposable test product, never a required domain, default object vocabulary or expected mapping for another repository.
 
 ## At every user turn

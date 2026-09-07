@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/prepare.mjs && vite --host 127.0.0.1",
+    "demo": "node scripts/demo.mjs",
     "build": "vite build",
     "package:skill": "npm run build && node scripts/package-skill.mjs",
     "start": "node server/index.mjs",

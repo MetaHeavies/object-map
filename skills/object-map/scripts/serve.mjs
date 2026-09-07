@@ -4,7 +4,18 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createApi} from './api.mjs';
 import {findRoot} from './workspace.mjs';
-const root = await findRoot(process.env.OBJECT_MAP_REPO || process.cwd());
+const demo = process.argv.includes('--demo');
+// The shipped demo is copied out so exploring it never edits the installed skill.
+const root = demo
+  ? await (async () => {
+      const {cp, mkdtemp} = await import('node:fs/promises');
+      const os = await import('node:os');
+      const source = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../demo');
+      const target = await mkdtemp(path.join(os.tmpdir(), 'object-map-demo-'));
+      await cp(source, target, {recursive: true});
+      return target;
+    })()
+  : await findRoot(process.env.OBJECT_MAP_REPO || process.cwd());
 const assets = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../assets/app');
 try { await access(path.join(assets, 'index.html')); }
 catch { throw new Error('Canvas bundle missing. Use the packaged Object Map skill, or run npm run package:skill in the Object Map source project before installing.'); }
@@ -24,4 +35,4 @@ const server = http.createServer((req, res) => api(req, res, async () => {
   } catch { res.writeHead(404); res.end('Not found'); }
 }));
 server.on('error', error => {console.error(error.code === 'EADDRINUSE' ? `Port ${port} is busy. Use --port=5174 or another free port.` : error.message); process.exitCode = 1;});
-server.listen(port, '127.0.0.1', () => console.log(`Object Map http://127.0.0.1:${server.address().port}\nRepository: ${root}`));
+server.listen(port, '127.0.0.1', () => console.log(`Object Map http://127.0.0.1:${server.address().port}\n${demo ? 'Demo product — a sandbox copy, your repositories are untouched' : `Repository: ${root}`}`));

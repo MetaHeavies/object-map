@@ -21,6 +21,20 @@ npm run atlas
 
 Open **http://127.0.0.1:4318**. Atlas uses Node alone and persists its working data in `examples/atlas/database/data.json`.
 
+## See it first
+
+```sh
+npm run demo
+```
+
+Opens **Bookshelf** on http://127.0.0.1:5174 — a small library product built to show what the parts mean rather than to be realistic. A walkthrough runs on first open: what an object is, what belongs to it as an attribute, why a relationship carries a name, how the same object appears twice under two roles, and why one concept on the map has no code behind it yet. It explains the vocabulary, not the controls; the agent does the maintaining.
+
+The demo is copied to a temporary directory before it is served, so exploring it never edits anything. From an installed skill:
+
+```sh
+node .agents/skills/object-map/scripts/serve.mjs --demo
+```
+
 ## Work with the map
 
 - Object columns open by default. Each header carries a one-line definition of what the object is in the product; double-click it to edit, or leave it empty rather than filling it with a restatement of the name. A collapsed column shows its group counts instead. Click an object header to select it. Click an attribute, action or state to select its card. Double-click any inline text or press F2 while its label is focused to edit it. Enter saves; Escape cancels.

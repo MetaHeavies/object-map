@@ -1,0 +1,235 @@
+{
+  "version": 1,
+  "objects": [
+    {
+      "id": "obj:book",
+      "name": "Book",
+      "status": "observed",
+      "description": "A title the library lends. One book, many copies on the shelf.",
+      "attributes": [
+        {
+          "id": "obj:book/attr:blurb",
+          "name": "Blurb"
+        },
+        {
+          "id": "obj:book/attr:cover",
+          "name": "Cover"
+        },
+        {
+          "id": "obj:book/attr:isbn",
+          "name": "ISBN"
+        },
+        {
+          "id": "obj:book/attr:published",
+          "name": "Published"
+        },
+        {
+          "id": "obj:book/attr:title",
+          "name": "Title"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:book/rel:author",
+          "name": "Written by",
+          "target": "obj:author"
+        },
+        {
+          "id": "obj:book/rel:translator",
+          "name": "Translated by",
+          "target": "obj:author"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:book/action:borrow",
+          "name": "Borrow"
+        },
+        {
+          "id": "obj:book/action:place-hold",
+          "name": "Place hold"
+        },
+        {
+          "id": "obj:book/action:return",
+          "name": "Return"
+        }
+      ],
+      "states": [
+        {
+          "id": "obj:book/state:available",
+          "name": "Available"
+        },
+        {
+          "id": "obj:book/state:on-loan",
+          "name": "On loan"
+        },
+        {
+          "id": "obj:book/state:overdue",
+          "name": "Overdue"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "id": "obj:author",
+      "name": "Author",
+      "status": "observed",
+      "description": "Someone who wrote or translated a book. Has their own page.",
+      "attributes": [
+        {
+          "id": "obj:author/attr:biography",
+          "name": "Biography"
+        },
+        {
+          "id": "obj:author/attr:name",
+          "name": "Name"
+        }
+      ],
+      "relationships": [],
+      "actions": [
+        {
+          "id": "obj:author/action:follow",
+          "name": "Follow"
+        }
+      ],
+      "states": [],
+      "evidence": []
+    },
+    {
+      "id": "obj:member",
+      "name": "Member",
+      "status": "observed",
+      "description": "Someone who can borrow. Joining is what makes a person a member.",
+      "attributes": [
+        {
+          "id": "obj:member/attr:email",
+          "name": "Email"
+        },
+        {
+          "id": "obj:member/attr:joined",
+          "name": "Joined"
+        },
+        {
+          "id": "obj:member/attr:name",
+          "name": "Name"
+        }
+      ],
+      "relationships": [],
+      "actions": [
+        {
+          "id": "obj:member/action:edit-details",
+          "name": "Edit details"
+        },
+        {
+          "id": "obj:member/action:suspend",
+          "name": "Suspend"
+        }
+      ],
+      "states": [
+        {
+          "id": "obj:member/state:active",
+          "name": "Active"
+        },
+        {
+          "id": "obj:member/state:suspended",
+          "name": "Suspended"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "id": "obj:loan",
+      "name": "Loan",
+      "status": "observed",
+      "description": "One book in one member’s hands, from the day it left to the day it came back.",
+      "attributes": [
+        {
+          "id": "obj:loan/attr:due-date",
+          "name": "Due date"
+        },
+        {
+          "id": "obj:loan/attr:started",
+          "name": "Started"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:loan/rel:book",
+          "name": "Of",
+          "target": "obj:book"
+        },
+        {
+          "id": "obj:loan/rel:member",
+          "name": "Borrowed by",
+          "target": "obj:member"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:loan/action:extend",
+          "name": "Extend"
+        },
+        {
+          "id": "obj:loan/action:return",
+          "name": "Return"
+        }
+      ],
+      "states": [
+        {
+          "id": "obj:loan/state:open",
+          "name": "Open"
+        },
+        {
+          "id": "obj:loan/state:overdue",
+          "name": "Overdue"
+        },
+        {
+          "id": "obj:loan/state:returned",
+          "name": "Returned"
+        }
+      ],
+      "evidence": []
+    },
+    {
+      "id": "obj:hold",
+      "name": "Hold",
+      "status": "intended",
+      "description": "A member’s claim on a book that is out. Asked for in the brief; no code yet.",
+      "attributes": [
+        {
+          "id": "obj:hold/attr:placed",
+          "name": "Placed"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "obj:hold/rel:book",
+          "name": "For",
+          "target": "obj:book"
+        },
+        {
+          "id": "obj:hold/rel:member",
+          "name": "Requested by",
+          "target": "obj:member"
+        }
+      ],
+      "actions": [
+        {
+          "id": "obj:hold/action:cancel",
+          "name": "Cancel"
+        }
+      ],
+      "states": [
+        {
+          "id": "obj:hold/state:waiting",
+          "name": "Waiting"
+        },
+        {
+          "id": "obj:hold/state:ready",
+          "name": "Ready"
+        }
+      ],
+      "evidence": []
+    }
+  ]
+}
