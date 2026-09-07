@@ -243,6 +243,10 @@
 }
 .mini-card .item-tools {
   transition: opacity 100ms ease;
+  /* Was pinned near the top edge, so the icons sat high in a taller row. */
+  top: 50%;
+  translate: 0 -50%;
+  align-items: center;
 }
 .world[data-camera-motion="true"] {
   transition: transform 260ms var(--ease-focus);

@@ -22,8 +22,6 @@ import {
   Check,
   Scan,
   Maximize,
-  MousePointer2,
-  Hand,
   Layers,
   Link2,
   MoreHorizontal,
@@ -62,6 +60,8 @@ const initialLayout = {
   positions: {},
   viewport: { x: 70, y: 100, zoom: 1 },
 };
+const RUN_PROMPT =
+  "Run Object Map on this repository. Inspect the implementation, populate the map, and tell me what you were unsure about.";
 const sectionLabels = {
   attributes: "Attributes",
   relationships: "Relationships",
@@ -689,14 +689,10 @@ function Discovery({ map, onAccept, onClose }) {
         <span>Discover objects</span>
         <IconButton icon={X} label="Close discovery" onClick={onClose} />
       </div>
-      <h2>
-        A starting point.
-        <br />
-        You decide the model.
-      </h2>
+      <h2>Candidates</h2>
       <p className="panel-intro">
-        These concepts were found in your code. Keep what belongs in the
-        product, rename it, or leave it behind.
+        Read from this repository's SQL schemas and page metadata. Keep what
+        belongs in the product; nothing is added until you accept it.
       </p>
       {error ? (
         <div role="alert">
@@ -862,8 +858,7 @@ function App() {
     [history, setHistory] = useState({ past: [], future: [] }),
     [treatment, setTreatment] = useState("restrained"),
     [showStates, setShowStates] = useState(false),
-    [showEvidence, setShowEvidence] = useState(false),
-    [tool, setTool] = useState("select");
+    [showEvidence, setShowEvidence] = useState(false);
   const revisions = useRef({}),
     pending = useRef({}),
     saving = useRef(false),
@@ -1306,13 +1301,10 @@ function App() {
     if ((e.button !== 0 && e.button !== 1) || !e.isPrimary) return;
     if (
       e.target.closest(
-        tool === "hand"
-          ? "button,input,select,textarea,aside,.canvas-actions,.canvas-toolbar,.search-popover,.new-object-popover"
-          : "button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover,.new-object-popover",
+        "button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover,.new-object-popover",
       )
     )
       return;
-    if (tool === "hand") e.stopPropagation();
     e.preventDefault();
     setCameraMotion(false);
     const el = e.currentTarget,
@@ -1480,9 +1472,6 @@ function App() {
           className="workspace-name"
           onClick={() => setPanel(panel === "about" ? null : "about")}
         >
-          <span className="workspace-avatar">
-            {config.name.slice(0, 1).toUpperCase()}
-          </span>
           {config.name.charAt(0).toUpperCase() + config.name.slice(1)}
           <ChevronDown size={13} />
         </button>
@@ -1507,10 +1496,9 @@ function App() {
         </div>
       </header>
       <main
-        className={`canvas ${tool === "hand" ? "hand-tool" : ""}`}
+        className="canvas"
         ref={canvasRef}
-        onPointerDown={tool === "hand" ? undefined : pan}
-        onPointerDownCapture={tool === "hand" ? pan : undefined}
+        onPointerDown={pan}
         onDoubleClick={(e) => {
           if (activeDrag.current || e.target.closest('button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover,.new-object-popover')) return;
           e.preventDefault();
@@ -1640,32 +1628,15 @@ function App() {
         </div>
         {!map.objects.length && (
           <div className={`empty-state ${panel ? "with-panel" : ""}`}>
-            <div className="empty-diagram">
-              <div className="empty-object">
-                <Layers size={17} />
-                <span>A meaningful thing</span>
-                <i />
-                <i />
-              </div>
-              <div className="empty-connector" />
-              <div className="empty-object small">
-                <Layers size={14} />
-                <span>Another thing</span>
-              </div>
+            <h2>Nothing mapped yet</h2>
+            <p>Paste this to the agent working in this repository.</p>
+            <div className="run-prompt">
+              <p>{RUN_PROMPT}</p>
+              <button className="secondary" onClick={() => copy(RUN_PROMPT)}>
+                <Copy size={14} />
+                Copy
+              </button>
             </div>
-            <h2>What is your product made of?</h2>
-            <p>
-              Discover the concepts already in your code,
-              <br />
-              or put your first idea on the canvas.
-            </p>
-            <button className="primary" onClick={() => setPanel("discovery")}>
-              <Scan size={15} />
-              Discover from repository
-            </button>
-            <button className="text-button" onClick={() => setCreating(true)}>
-              Start with a new object <ArrowUpRight size={13} />
-            </button>
           </div>
         )}
         {creating && (
@@ -1696,19 +1667,6 @@ function App() {
             {sections.map(section => <span key={section}><i className={sectionColors[section]} />{sectionLabels[section]}</span>)}
           </div>
           <div className="canvas-toolbar">
-            <IconButton
-              icon={MousePointer2}
-              label="Select tool"
-              aria-pressed={tool === "select"}
-              onClick={() => setTool("select")}
-            />
-            <IconButton
-              icon={Hand}
-              label="Pan tool"
-              aria-pressed={tool === "hand"}
-              onClick={() => setTool("hand")}
-            />
-            <span className="toolbar-divider" />
             <IconButton
               icon={Minus}
               label="Zoom out"
@@ -1768,18 +1726,11 @@ function App() {
             {panel === "changes" ? (
               <>
                 <h2>Session changes</h2>
-                <p className="panel-intro">
-                  A compact record of your design decisions, ready for your
-                  coding agent.
-                </p>
                 <div className="change-list">
                   {changes.length ? (
                     changes.map((c, i) => <div key={i}>{c}</div>)
                   ) : (
-                    <div className="muted">
-                      No semantic changes this session. Moving objects only
-                      changes your layout.
-                    </div>
+                    <div className="muted">No semantic changes this session.</div>
                   )}
                 </div>
                 <button
@@ -1801,30 +1752,32 @@ function App() {
               </>
             ) : panel === "settings" ? (
               <>
-                <label className="setting">
-                  <span>
-                    Show optional states
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={showStates}
-                    onChange={(e) => {
-                      before.current = motion.capture();
-                      setShowStates(e.target.checked);
-                    }}
-                  />
-                </label>
-                <label className="setting">
-                  <span>
-                    Implementation evidence
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={showEvidence}
-                    onChange={(e) => setShowEvidence(e.target.checked)}
-                  />
-                </label>
-                <div className="motion-settings">
+                <h2>Canvas settings</h2>
+                <div className="setting-group">
+                  <h3>Display</h3>
+                  <label className="setting">
+                    <span>Optional states</span>
+                    <input
+                      type="checkbox"
+                      role="switch"
+                      checked={showStates}
+                      onChange={(e) => {
+                        before.current = motion.capture();
+                        setShowStates(e.target.checked);
+                      }}
+                    />
+                  </label>
+                  <label className="setting">
+                    <span>Implementation evidence</span>
+                    <input
+                      type="checkbox"
+                      role="switch"
+                      checked={showEvidence}
+                      onChange={(e) => setShowEvidence(e.target.checked)}
+                    />
+                  </label>
+                </div>
+                <div className="setting-group motion-settings">
                   <h3>Motion</h3>
                   {Object.entries(treatments).map(([key, value]) => (
                     <button

@@ -259,8 +259,13 @@ p {
   padding: 0;
 }
 .icon-button:hover {
-  background: #eeeeee;
+  background: oklch(from var(--row-bg, #eeeeee) calc(l - 0.03) calc(c * 1.5) h);
   color: #4c4c4c;
+}
+@supports not (color: oklch(from #ffffff l c h)) {
+  .icon-button:hover {
+    background: color-mix(in oklch, var(--row-bg, #eeeeee), #000 5%);
+  }
 }
 .icon-button[aria-pressed="true"] {
   color: #4d4d4d;
@@ -1022,11 +1027,9 @@ i.purple {
   min-height: 80px;
 }
 .change-list > div {
-  font:
-    10px/1.7 ui-monospace,
-    SFMono-Regular,
-    monospace;
-  padding: 10px 0;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 12px 0;
   border-bottom: 1px solid #e8e8e8;
   color: #7c7c7c;
   overflow-wrap: anywhere;
@@ -1034,15 +1037,64 @@ i.purple {
 .side-panel > .secondary {
   margin-top: 10px;
 }
+.setting-group {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 16px;
+  margin-top: 24px;
+}
+.setting-group h3 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  margin: 0 0 8px;
+}
 .setting {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #e5e5e5;
-  padding: 20px 0;
+  padding: 8px 0;
   font-size: 12px;
-  color: #777777;
-  gap: 15px;
+  color: #575757;
+  gap: 16px;
+}
+/* A bare checkbox reads as a form field. These are canvas switches, so they
+   match the motion controls sitting directly beneath them. */
+.setting input[role="switch"] {
+  appearance: none;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 18px;
+  margin: 0;
+  border-radius: 9px;
+  background: #dcdcdc;
+  position: relative;
+  transition: background 160ms ease;
+}
+.setting input[role="switch"]::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 2px #00000024;
+  transition: translate 160ms ease;
+}
+.setting input[role="switch"]:checked {
+  background: #7d9eac;
+}
+.setting input[role="switch"]:checked::after {
+  translate: 14px 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .setting input[role="switch"],
+  .setting input[role="switch"]::after {
+    transition: none;
+  }
 }
 .setting small {
   display: block;
@@ -1054,10 +1106,8 @@ i.purple {
 .setting input {
   accent-color: #696969;
 }
-.motion-settings {
-  border-top: 1px solid #e5e5e5;
-  margin-top: 10px;
-  padding-top: 25px;
+.motion-settings > button + button {
+  margin-top: 4px;
 }
 .motion-settings h3 {
   font-size: 12px;
@@ -1130,66 +1180,35 @@ i.purple {
 .empty-state.with-panel {
   left: calc((100% - 390px) / 2);
 }
-.empty-diagram {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 35px;
-  height: 113px;
-}
-.empty-object {
-  width: 155px;
-  height: 104px;
-  border: 1px solid #d1d1d1;
-  background: #fefefe;
-  padding: 16px;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 9px;
-  border-radius: 7px;
-  text-align: left;
-  transform: rotate(-5deg);
-  box-shadow: 0 8px 22px #43434309;
-  color: #9b9b9b;
-}
-.empty-object span {
-  font-size: 10px;
-  color: #787878;
-}
-.empty-object i {
-  height: 3px;
-  width: 60px;
-  background: #eaeaea;
-  border-radius: 2px;
-}
-.empty-object i:last-child {
-  width: 39px;
-}
-.empty-object.small {
-  width: 125px;
-  height: 76px;
-  transform: rotate(7deg);
-  margin-top: 16px;
-}
-.empty-connector {
-  width: 56px;
-  border-top: 1px dashed #b6b6b6;
-}
 .empty-state h2 {
-  font-size: 23px;
-  font-weight: 450;
-  letter-spacing: -0.7px;
-  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  margin: 0 0 8px;
+  color: #4a4a4a;
 }
 .empty-state p {
   font-size: 12px;
-  line-height: 1.8;
-  color: #9a9a9a;
-  margin: 0 0 24px;
+  line-height: 1.6;
+  color: #8f8f8f;
+  margin: 0 0 16px;
 }
-.empty-state .primary {
-  margin: auto;
+.run-prompt {
+  border: 1px solid #dfe4e7;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+.run-prompt p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #3f3f3f;
 }
 .text-button {
   display: flex;
@@ -1351,7 +1370,6 @@ i.purple {
   font-size: 12px;
   color: #959595;
 }
-.hand-tool,
 .panning {
   cursor: grab;
 }
