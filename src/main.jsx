@@ -80,6 +80,22 @@ const icons = {
   actions: ArrowUpRight,
   states: RotateCcw,
 };
+const summaryNouns = {
+  attributes: ["attribute", "attributes"],
+  relationships: ["relationship", "relationships"],
+  actions: ["action", "actions"],
+  states: ["state", "states"],
+};
+function objectSummary(object) {
+  const parts = Object.keys(summaryNouns)
+    .filter((section) => object[section].length)
+    .map((section) => {
+      const count = object[section].length;
+      const [one, many] = summaryNouns[section];
+      return `${count} ${count === 1 ? one : many}`;
+    });
+  return parts.length ? parts.join(" \u00b7 ") : "Empty";
+}
 async function api(url, options) {
   const response = await fetch(url, options);
   const result = await response.json();
@@ -389,10 +405,7 @@ function ObjectCard({
           value={object.name}
           onSave={(name) => update((o) => (o.name = name))}
         />
-        <div className="object-summary">
-          {object.attributes.length} attributes · {object.actions.length}{" "}
-          actions
-        </div>
+        <div className="object-summary">{objectSummary(object)}</div>
       </div>
       <div className={`object-sections columns-${visible.length}`}>
         {visible.map((section) => {
