@@ -267,6 +267,7 @@ function ObjectCard({
   onToggle,
   onChange,
   onPromote,
+  nameRelationship,
   onDelete,
   onDemote,
   onCopy,
@@ -293,6 +294,12 @@ function ObjectCard({
     [menu, setMenu] = useState(false),
     [evidence, setEvidence] = useState(false),
     [editingRelationship, setEditingRelationship] = useState(null);
+  // A freshly promoted relationship carries the attribute's name as a placeholder
+  // role. Open its editor so naming it is part of the promotion, not a later chore.
+  useEffect(() => {
+    if (nameRelationship && object.relationships.some((r) => r.id === nameRelationship))
+      setEditingRelationship(nameRelationship);
+  }, [nameRelationship, object.relationships]);
   const hasFocus = focused || related || dimmed;
   const showDetails = expanded && (!hasFocus || focused);
   useEffect(() => {
@@ -836,6 +843,7 @@ function App() {
     [config, setConfig] = useState({ name: "Atlas" }),
     [repository, setRepository] = useState("");
   const [expanded, setExpanded] = useState([]),
+    [nameRelationship, setNameRelationship] = useState(null),
     [focused, setFocused] = useState(null),
     [selectedItem, setSelectedItem] = useState(null),
     [panel, setPanel] = useState(null),
@@ -1130,6 +1138,7 @@ function App() {
       expanded: [...expanded, result.object.id],
       focused: objectId,
     });
+    setNameRelationship(result.relationship.id);
     notify(
       `${result.object.name} is now an object. A relationship connects it to its origin.`,
     );
@@ -1601,6 +1610,7 @@ function App() {
               onToggle={focus}
               onChange={change}
               onPromote={promoteAttribute}
+              nameRelationship={nameRelationship}
               onDemote={demoteObject}
               onDelete={(id) => {
                 change(removeObject(map, id), {

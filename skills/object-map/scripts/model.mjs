@@ -63,14 +63,18 @@ export function promote(map, objectId, attributeId) {
     object = makeObject(next, attribute.name);
   object.promotedFrom = { objectId, attribute: clone(attribute) };
   parent.attributes.splice(index, 1);
-  parent.relationships.push({
+  // The attribute's name is only a placeholder role: it necessarily repeats the
+  // new object's name, which says nothing about how the two relate. The caller
+  // is expected to ask for a predicate while the builder is still in the gesture.
+  const relationship = {
     id: uniqueId(`${parent.id}/rel:${slug(attribute.name)}`, ids(next)),
     name: attribute.name,
     target: object.id,
     promotedFrom: attribute.id,
-  });
+  };
+  parent.relationships.push(relationship);
   next.objects.splice(next.objects.indexOf(parent) + 1, 0, object);
-  return { map: next, object };
+  return { map: next, object, relationship };
 }
 export function demote(map, objectId) {
   const next = clone(map),
