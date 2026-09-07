@@ -1573,6 +1573,10 @@ i.purple {
 }
 .object-heading {
   position: relative;
+  /* The options menu opens downward over the rows below. Without this the
+     heading's subtree is trapped under them: .card-head sets z-index 0, which
+     starts a stacking context, and the rows come later in the document. */
+  z-index: 5;
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) 0.006 231);
   border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8576) 0.006 231);
   border-radius: 8px;

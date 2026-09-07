@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   ArrowRight,
   ChevronDown,
+  ChevronUp,
   ChevronRight,
   Minus,
   X,
@@ -365,6 +366,11 @@ function ObjectCard({
                         setMenu(false);
                       }}
                     >
+                      {expanded ? (
+                        <ChevronUp size={14} />
+                      ) : (
+                        <ChevronDown size={14} />
+                      )}
                       {expanded ? "Collapse" : "Expand"} {object.name}
                     </button>
                     <button
