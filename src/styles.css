@@ -2020,7 +2020,10 @@ i.purple {
   font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 10px;
   line-height: 1.5;
-  color: var(--chrome-muted);
-  background: var(--chrome-badge);
+  /* Deepened out of the row it sits on, so the mark on an amber attribute is
+     amber and the one on a blue relationship is blue. Chrome tokens made both
+     grey, which is the one colour the row is not. */
+  color: oklch(from var(--row-label) l calc(c * 1.15) h);
+  background: oklch(from var(--row-bg) calc(l - 0.075) calc(c * 2.1) h);
   white-space: nowrap;
 }
