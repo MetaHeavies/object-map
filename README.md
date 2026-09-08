@@ -28,10 +28,10 @@ Requires Node 20 or newer (`node --version`). From inside the repository you wan
 
 ```bash
 curl -fsSL https://github.com/MetaHeavies/object-map/releases/latest/download/object-map-skill.tgz | tar xz -C /tmp
-node /tmp/object-map/scripts/install.mjs .
+node /tmp/object-map/scripts/install.mjs
 ```
 
-The skill unpacks to `/tmp`, so the only things added to your repository are the files listed below. To install into a different repository, pass its path instead of `.`.
+The skill unpacks to `/tmp`, so the only things added to your repository are the files listed below. The installer works on the directory you run it from. To install into a different repository, pass its path as an argument.
 
 ### 2. Launch the Canvas
 
