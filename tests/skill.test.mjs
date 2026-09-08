@@ -119,9 +119,9 @@ test('both installed hook commands inject fresh context from nested cwd and requ
 
 test('the documented Node minimum is enforced before anything is written', async () => {
   const {nodeIsSupported, requireNode, MINIMUM_NODE} = await import('../skills/object-map/scripts/workspace.mjs');
-  assert.equal(MINIMUM_NODE, '22.12.0');
-  for (const version of ['18.20.4', '20.11.0', '22.11.0']) assert.equal(nodeIsSupported(version), false, version);
-  for (const version of ['22.12.0', '22.14.1', '24.0.0']) assert.equal(nodeIsSupported(version), true, version);
-  assert.throws(() => requireNode('20.11.0'), /Node 22\.12\.0 or newer. This is Node 20\.11\.0/);
+  assert.equal(MINIMUM_NODE, '20.0.0');
+  for (const version of ['16.20.2', '18.20.4']) assert.equal(nodeIsSupported(version), false, version);
+  for (const version of ['20.0.0', '20.20.0', '22.12.0', '24.0.0']) assert.equal(nodeIsSupported(version), true, version);
+  assert.throws(() => requireNode('18.20.4'), /Node 20\.0\.0 or newer. This is Node 18\.20\.4/);
   assert.equal(nodeIsSupported(), true, 'the test runner itself meets the documented minimum');
 });

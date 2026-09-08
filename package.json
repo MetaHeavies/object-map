@@ -1,6 +1,6 @@
 {
   "name": "object-map",
-  "version": "0.1.0-beta.6",
+  "version": "0.1.0-beta.7",
   "private": true,
   "description": "A shared product model your coding agent maintains while it builds: an OOUX object map installed into a repository, populated from the implementation and read on a local canvas.",
   "license": "MIT",

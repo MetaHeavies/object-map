@@ -121,14 +121,19 @@ export async function installMain(args = process.argv.slice(2)) {
   console.log(JSON.stringify(result, null, 2));
   const rel = path.relative(process.cwd(), root);
   const where = !rel ? '.' : rel.startsWith('..') ? root : rel;
+  // Extracting the tarball inside the repository being mapped leaves a copy of
+  // the skill in it that is not the installed one. Say so rather than let it
+  // sit there looking official.
+  const extractedInside = source === root || source.startsWith(root + path.sep);
   console.log([
     '',
     'Installed. Restart or trust the host so the project hooks activate.',
+    ...(extractedInside ? ['', `This unpacked copy sits inside the repository. Delete ${path.relative(root, source) || '.'}/ — the installed skill is in .agents/skills/object-map.`] : []),
     ...(result.viewer ? [] : ['', 'This build has no canvas. Package the skill from the Object Map source to get the viewer.']),
     '',
     'Open the map:',
     '',
-    `  cd ${where}`,
+    ...(where === '.' ? [] : [`  cd ${where}`]),
     '  node .agents/skills/object-map/scripts/serve.mjs',
     '',
     'Then give the agent this:',

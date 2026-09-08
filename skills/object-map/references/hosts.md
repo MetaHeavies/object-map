@@ -20,7 +20,7 @@ Hooks do not parse application code or maintain the model themselves. They ensur
 
 ## Activate and verify
 
-1. Use Node 22.12+ on the host’s PATH. Install into a repository path you can write. Project hooks execute local code, so the host must trust/allow the repository configuration.
+1. Use Node 20+ on the host’s PATH. Install into a repository path you can write. Project hooks execute local code, so the host must trust/allow the repository configuration.
 2. Restart the agent session after installation if the host has not loaded the new configuration. Check the host’s hook listing or diagnostics. The local development machine has Codex CLI 0.153.4 with hooks reported stable/enabled; that does not establish the configuration of a recipient’s host.
 3. Run `node .agents/skills/object-map/scripts/map.mjs doctor` from the repository root. It checks file presence and model validity, not host activation.
 4. Submit a fresh prompt. Verify that Object Map context includes the current map revision and a review token. Complete a task, reconcile the model and record a review with that token. Verify the next prompt sees the resulting revision.

@@ -24,19 +24,20 @@ Concepts present in your brief but not yet implemented in code remain on the map
 
 ### 1. Install
 
-Requires Node 22.12 or newer. Extract the skill anywhere, then point the installer at your repository:
+Requires Node 20 or newer (`node --version`). From inside the repository you want mapped:
 
 ```bash
-curl -L https://github.com/MetaHeavies/object-map/releases/latest/download/object-map-skill.tgz | tar xz
-node object-map/scripts/install.mjs /absolute/path/to/your/repository
+curl -fsSL https://github.com/MetaHeavies/object-map/releases/latest/download/object-map-skill.tgz | tar xz -C /tmp
+node /tmp/object-map/scripts/install.mjs .
 ```
+
+The skill unpacks to `/tmp`, so the only things added to your repository are the files listed below. To install into a different repository, pass its path instead of `.`.
 
 ### 2. Launch the Canvas
 
-Start the local server:
+Start the local server from the same repository:
 
 ```bash
-cd /absolute/path/to/your/repository
 node .agents/skills/object-map/scripts/serve.mjs
 ```
 
@@ -51,7 +52,7 @@ For a new project without existing code, point the agent at your spec or product
 ## System Requirements & Integration
 
 - **Language Agnostic**: Your agent reads your code. Object Map never parses or runs it. Your product can be written in Python, Ruby, Go, PHP, TypeScript, or any other stack.
-- **Node Runtime**: Node is only required locally on your machine to run the CLI and canvas server. It adds no dependencies to your project's `package.json` or build process.
+- **Node Runtime**: Node 20 or newer is only required locally on your machine to run the installer and canvas server. It adds no dependencies to your project's `package.json` or build process.
 - **Agent Support**: Configures hooks automatically for Claude Code and Codex (use `--hosts=claude` or `--hosts=codex` to specify one). For other agents, standard instructions are added to `AGENTS.md`.
 
 ## What Gets Added to Your Project
@@ -104,7 +105,7 @@ If the hooks do not appear to fire, run `node .agents/skills/object-map/scripts/
 
 ## Development
 
-To contribute to Object Map or build from source:
+Building from source needs Node 22.12 or newer, which is Vite's floor rather than the skill's.
 
 ```bash
 npm install
