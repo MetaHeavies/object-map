@@ -246,11 +246,6 @@ p {
   display: flex;
   gap: 6px;
   z-index: 5;
-  padding: 4px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) calc(0.006 * var(--tone-c)) 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9128) calc(0.006 * var(--tone-c)) 231);
-  border-radius: 7px;
-  box-shadow: 0 2px 5px oklch(0.3446 0.006 231 / 0.0157);
 }
 .icon-button {
   width: 28px;
@@ -2080,7 +2075,7 @@ i.purple {
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: var(--t-micro);
   color: var(--chrome-muted);
-  background: var(--chrome-badge);
+  background: color-mix(in oklch, var(--surface), var(--chrome-title) 7%);
   border-radius: 4px;
   padding: 2px 5px;
 }
