@@ -104,7 +104,9 @@ The map is a plain JSON file in your repository, `.object-map/map.json`, which y
 
 You and your agent can both be working at once. Saves are revision-checked, so a write from a stale copy is rejected rather than overwriting newer work.
 
-Hooks keep the map in the conversation. They cannot prove it is correct — that judgement is what the canvas is for, and it is why the install prompt asks your agent to report what it was unsure about.
+Hooks keep the map in the conversation. They cannot prove it is correct. That judgement is what the canvas is for. It is also why the install prompt asks your agent to report what it was unsure about.
+
+If the hooks do not appear to fire, run `node .agents/skills/object-map/scripts/map.mjs doctor` in your repository. It lists every file the install wrote and marks any that are missing. Files on disk do not prove your host loaded them. Restart or re-trust the host, then check whether a fresh prompt carries the map.
 
 ## Development
 
@@ -126,6 +128,16 @@ npm test
 npm run build
 npm run package:skill
 ```
+
+## Current Boundary
+
+Object Map is in beta. These are the edges.
+
+- **Drift detection is mechanical, not semantic.** The Stop hook sees that implementation files changed while the map did not. It cannot tell you that a name on the map has become wrong.
+- **No parser ships with it.** There is no built-in schema reader. A schema reader only sees schema-backed products, and it cannot tell a product object from a database table. Your agent does the reading, and you check its work.
+- **You cannot create an object from the canvas.** You can add attributes, relationships, actions and states to an object that exists. A new object comes from your agent.
+- **Windows and host activation are unverified.** Development and testing ran on macOS, with Claude Code and Codex. Report what happens elsewhere.
+- **Almost nothing leaves your machine.** There are no accounts, no cloud storage, no telemetry and no generated product code. Object Map writes files in your repository and serves the canvas on 127.0.0.1. The canvas loads its typeface from Google Fonts, which is the one request it makes off your machine.
 
 ## License
 
