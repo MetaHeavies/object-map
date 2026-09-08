@@ -12,7 +12,6 @@ import {
   validateMap,
   changesBetween,
 } from "../src/model.mjs";
-import { generate } from "./fixtures/generator/generate.mjs";
 import { Store, initialize } from "../server/store.mjs";
 import { install } from "../scripts/install.mjs";
 const empty = () => ({ version: 1, objects: [] });
@@ -67,25 +66,6 @@ test("semantic change summaries include actions and renames while stable IDs sur
   assert.ok(changes.some((x) => x.includes("actions: Archive")));
   assert.equal(next.objects[0].id, original.objects[0].id);
 });
-test("generator is deterministic and keeps runnable metadata separate from evaluation", async () => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "object-map-generator-"));
-  await generate(path.join(root, "one"), { seed: 42 });
-  await generate(path.join(root, "two"), { seed: 42 });
-  const one = await readFile(
-      path.join(root, "one/database/seed/data.json"),
-      "utf8",
-    ),
-    two = await readFile(
-      path.join(root, "two/database/seed/data.json"),
-      "utf8",
-    );
-  assert.equal(one, two);
-  const data = JSON.parse(one);
-  assert.equal(data.place.length, 24);
-  assert.equal(data.note.length, 36);
-  await assert.rejects(access(path.join(root, "one/.object-map")));
-  await assert.rejects(generate(path.join(root, "one")), /already exists/);
-});
 test("layout writes leave semantic bytes unchanged and stale semantic saves fail", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "object-map-store-"));
   await initialize(root);
@@ -120,38 +100,6 @@ test("installer preserves existing agent instructions and an existing map", asyn
   await store.write("map", fixture(), old.revision);
   await install(root);
   assert.deepEqual((await store.read("map")).data, fixture());
-});
-
-test("implementation scenarios preserve the existing conceptual map and migrate live fixture data", async () => {
-  const { applyScenario } = await import("./fixtures/generator/scenario.mjs");
-  const temporary = await mkdtemp(
-    path.join(os.tmpdir(), "object-map-scenario-"),
-  );
-  const root = path.join(temporary, "atlas");
-  await generate(root);
-  await install(root);
-  const original = await readFile(
-    path.join(root, ".object-map/map.json"),
-    "utf8",
-  );
-  await applyScenario(root, "opening-hours");
-  await applyScenario(root, "companions");
-  await applyScenario(root, "drift");
-  assert.equal(
-    await readFile(path.join(root, ".object-map/map.json"), "utf8"),
-    original,
-  );
-  const data = JSON.parse(
-    await readFile(path.join(root, "database/seed/data.json"), "utf8"),
-  );
-  assert.equal(data.opening_hours.length, 24);
-  assert.equal(data.place[0].opening_hours, undefined);
-  assert.ok(data.place[0].opening_hours_id);
-  assert.deepEqual(data.visit[0].companion_ids, []);
-  // The scenario has to reach the implementation, not just the working data.
-  const schema = await readFile(path.join(root, "database/schema/place_contact.sql"), "utf8");
-  assert.match(schema, /CREATE TABLE place_contact/);
-  await assert.rejects(applyScenario(root, "drift"), /already been applied/);
 });
 
 test("selection highlights incoming and outgoing relationships, but excludes two-hop objects", async () => {

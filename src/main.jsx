@@ -730,7 +730,7 @@ function App() {
     [layout, setLayout] = useState(initialLayout),
     [loaded, setLoaded] = useState(false),
     [loadError, setLoadError] = useState(""),
-    [config, setConfig] = useState({ name: "Atlas" }),
+    [config, setConfig] = useState({ name: "" }),
     [repository, setRepository] = useState("");
   const [expanded, setExpanded] = useState([]),
     [nameRelationship, setNameRelationship] = useState(null),
@@ -1321,7 +1321,8 @@ function App() {
           Try again
         </button>
         <p>
-          Run <code>npm run dev</code> to prepare the local Atlas workspace.
+          Run <code>npm run dev</code> to open a local workspace, or set{" "}
+          <code>OBJECT_MAP_REPO</code> to the repository you want to map.
         </p>
       </div>
     );

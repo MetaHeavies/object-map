@@ -1,6 +1,6 @@
 {
   "name": "object-map",
-  "version": "0.1.0-beta.3",
+  "version": "0.1.0-beta.4",
   "private": true,
   "description": "A shared product model your coding agent maintains while it builds: an OOUX object map installed into a repository, populated from the implementation and read on a local canvas.",
   "license": "MIT",
@@ -25,9 +25,7 @@
     "test": "node --test tests/*.test.mjs",
     "test:browser": "node tests/browser.mjs",
     "test:portable": "node tests/portable.mjs",
-    "generate": "node tests/fixtures/generator/generate.mjs",
-    "install:map": "node scripts/install.mjs",
-    "atlas": "node examples/atlas/server.mjs"
+    "install:map": "node scripts/install.mjs"
   },
   "dependencies": {
     "animejs": "^4.0.0",

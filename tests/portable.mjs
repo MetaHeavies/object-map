@@ -13,7 +13,7 @@ execFileSync(process.execPath,[installer,product],{encoding:'utf8'});
 const script=path.join(product,'.agents/skills/object-map/scripts/map.mjs');
 const run=args=>JSON.parse(execFileSync(process.execPath,[script,...args],{cwd:product,encoding:'utf8'}));
 const snapshot=run(['read']);
-assert.equal(snapshot.data.objects.length,0,'Installing never seeds Atlas into another product');
+assert.equal(snapshot.data.objects.length,0,'Installing never seeds a map into another product');
 const map={version:1,objects:[{id:'obj:pizza',name:'Pizza',description:'A pizza a customer can configure.',status:'intended',attributes:[{id:'obj:pizza/attr:size',name:'Size',status:'intended'}],relationships:[],actions:[],states:[],evidence:['PRD.md']}]};
 const candidate=path.join(temporary,'candidate.json');
 await writeFile(candidate,JSON.stringify(map));
@@ -41,5 +41,5 @@ try {
   assert.deepEqual(workspace.map,map);
   assert.equal(workspace.config.name,'kitchen');
   assert.ok((await readFile(path.join(product,'AGENTS.md'),'utf8')).includes('Object Map'));
-  console.log('Portable bundle passed: extracted skill installs into a new product, writes Pizza, serves the bundled canvas and its own map without project dependencies or Atlas.');
+  console.log('Portable bundle passed: extracted skill installs into a new product, writes Pizza, serves the bundled canvas and its own map without project dependencies.');
 } finally {server.kill();}

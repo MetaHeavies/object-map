@@ -117,9 +117,9 @@ npm install
 npm run dev
 ```
 
-The dev server runs on http://127.0.0.1:5173. To test against the included fixture project, run `npm run atlas` (http://127.0.0.1:4318).
+The dev server runs on http://127.0.0.1:5173. Set `OBJECT_MAP_REPO` to the repository you want it to open. With none set it opens an empty scratch repository.
 
-Background documents live in `docs/`: the [open questions](docs/product-questions.md) behind the current design. Test fixtures and their expectations live under `tests/fixtures/`.
+Background documents live in `docs/`: the [open questions](docs/product-questions.md) behind the current design.
 
 ### Testing & Packaging
 

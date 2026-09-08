@@ -1,5 +1,4 @@
 import { chromium } from "@playwright/test";
-import { testAtlas } from "./atlas-browser.mjs";
 import { testFocus } from "./focus-browser.mjs";
 import { testSpacing } from "./spacing-browser.mjs";
 import { testDrag } from "./drag-browser.mjs";
@@ -10,17 +9,16 @@ import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
-import { generate } from "./fixtures/generator/generate.mjs";
 import { install } from "../scripts/install.mjs";
 const temporary = await mkdtemp(path.join(os.tmpdir(), "object-map-browser-"));
-const root = path.join(temporary, "atlas");
-await generate(root);
+const root = path.join(temporary, "product");
+await mkdir(root, { recursive: true });
 await install(root);
 // The canvas is populated by an agent, so the journey starts from a written map
 // rather than from anything the viewer itself can extract.
 await writeFile(
   path.join(root, ".object-map/map.json"),
-  await readFile(new URL("./atlas-map.json", import.meta.url), "utf8"),
+  await readFile(new URL("./canvas-map.json", import.meta.url), "utf8"),
 );
 const server = spawn(
   process.execPath,
@@ -178,7 +176,6 @@ try {
   )
     throw new Error("Mobile document overflows");
   if (errors.length) throw new Error(errors.join("\n"));
-  await testAtlas(browser, root);
   console.log(
     "Browser journey passed: inline editing, promotion, undo/redo, handoff, persistence, mobile.",
   );
