@@ -147,7 +147,7 @@ Not implemented: fully automatic semantic drift detection, generic deterministic
 
 Deliberately absent: a built-in schema extractor. A schema reader only sees schema-backed products, it cannot tell a product object from a table, and having one in the canvas implied the map could populate itself. Mapping is the agent's job.
 
-Original intent and scope: [PRD.md](PRD.md), [PROJECT.md](PROJECT.md). Host compatibility: [host integration](skills/object-map/references/hosts.md). The maintenance contract the agent follows: [the skill](skills/object-map/SKILL.md).
+Original intent and scope: [PRD.md](PRD.md), [PROJECT.md](PROJECT.md), and the open questions behind them in [PRODUCT-QUESTIONS.md](PRODUCT-QUESTIONS.md). Host compatibility: [host integration](skills/object-map/references/hosts.md). The maintenance contract the agent follows: [the skill](skills/object-map/SKILL.md).
 
 ## Licence
 

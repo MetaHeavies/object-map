@@ -781,7 +781,7 @@ i.purple {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  box-shadow: var(--shadow-lifted);
+  box-shadow: var(--shadow-raised);
 }
 .run-prompt header {
   display: flex;

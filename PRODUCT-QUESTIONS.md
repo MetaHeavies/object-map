@@ -4,7 +4,7 @@ September 7 clarification: the audience is builders using agents. The agent must
 
 Discussion opened September 6, 2026. These are questions and working hypotheses, not agreed requirements. The user wants to explore subjects, taxonomy and information architecture alongside OOUX, and extract the core of an implemented product into an understandable, editable surface.
 
-The current application discovers candidates from SQL schemas and JSON page metadata. Its evidence paths do not yet establish a complete account of runtime behavior, user understanding, taxonomy, navigation or permissions. No broader extraction capability is implied by this discussion.
+At the time of writing, the application discovered candidates from SQL schemas and JSON page metadata. That built-in extractor was removed before release: a schema reader only sees schema-backed products, it cannot tell a product object from a table, and its presence implied the map could populate itself. Mapping is the agent's job. The questions below predate that decision and are kept as a record of the reasoning.
 
 The current interface direction is a quiet canvas, single-click selection, double-click inline editing, and distinct controls for following references. Relationship roles lead, and target object names appear as secondary text when different. This labeling hierarchy is a working assumption awaiting discussion: “Owner → Person” and “Shared with → Person” express different relationships to the same object type.
 

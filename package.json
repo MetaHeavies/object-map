@@ -1,8 +1,21 @@
 {
   "name": "object-map",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "private": true,
+  "description": "A shared product model your coding agent maintains while it builds: an OOUX object map installed into a repository, populated from the implementation and read on a local canvas.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MetaHeavies/object-map.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MetaHeavies/object-map/issues"
+  },
+  "homepage": "https://github.com/MetaHeavies/object-map#readme",
   "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "node scripts/prepare.mjs && vite --host 127.0.0.1",
     "demo": "node scripts/demo.mjs",
