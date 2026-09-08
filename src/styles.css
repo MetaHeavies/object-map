@@ -2123,3 +2123,20 @@ i.purple {
     transform: none;
   }
 }
+
+/* An icon inside a row belongs to that row. The base .icon-button colour is a
+   chrome grey, which is right in the header and wrong on an amber attribute —
+   the same mistake as the label, the hover and the tag, one level further in. */
+.mini-card .icon-button {
+  color: color-mix(in oklch, var(--row-label), var(--row-bg) 28%);
+}
+.mini-card .icon-button:hover,
+.mini-card .icon-button:focus-visible {
+  color: var(--row-label);
+}
+.card-tools .icon-button {
+  color: var(--chrome-muted);
+}
+.card-tools .icon-button:hover {
+  color: var(--chrome-title);
+}
