@@ -1,4 +1,4 @@
-# Dummy Project Generator
+# Atlas: the test fixture generator
 
 ## Purpose
 
