@@ -22,13 +22,9 @@ Object Map describes your product as the set of things it is made of, laid out s
 
 Concepts present in your brief but not yet implemented in code remain on the map as unbuilt items, allowing you to design the product before writing code.
 
-## What the Map Is For
+## Who This Is For
 
-- **OOUX without the workshop.** Object-oriented UX starts with a workshop: a room, sticky notes, one pass at the object model. An agent changes the product faster than a workshop can repeat. This builds the model from the repository instead, and keeps it there.
-- **What the product is, not what the code says.** Implementation churns. The set of things your product is made of changes slowly. The map holds that set, so you can check what exists without reading the code that builds it.
-- **Structural mistakes are visible.** The map shows one concept stored under two names, an object nobody can act on, a relationship whose label says nothing. A diff does not show these. Columns do.
-- **One set of names for you and your agent.** You both work from the same objects and the same words for them. What you correct on the map is still correct in the next session.
-- **Objects you have not built yet.** An object you described but never implemented stays on the map, marked as unbuilt. It is not lost between conversations.
+You can't one-shot a product, no matter what anyone says. The "design" part of product design means having an intentional, careful consideration of the parts, so the right relationships can be created between them. This is getting harder to do with powerful models that can take everything you throw at them. By keeping a visual map of the "objects" that make up your product, you can better understand the pieces that make up the whole, define and refine relationships between them, and iterate in a way that feels structured.
 
 ## Quick Start
 
