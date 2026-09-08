@@ -58,6 +58,33 @@ test('installed writer preserves intended concepts, rejects stale writes and sha
   assert.equal(results.filter(r=>r.status==='rejected').length,1);
 });
 
+test('the stop hook stays quiet on a turn that changed nothing and names the files when the product moved without the map', async () => {
+  const root = await temporary();
+  const git = (...args) =>
+    execFileSync('git', ['-c', 'user.email=t@t', '-c', 'user.name=t', ...args], {cwd: root, stdio: 'ignore'});
+  git('init', '-q');
+  await writeFile(path.join(root, 'product.js'), 'export const price = 1;\n');
+  git('add', '-A');
+  git('commit', '-qm', 'base');
+  await install(root);
+  const config = JSON.parse(await readFile(path.join(root, '.claude/settings.json'), 'utf8'));
+  const hook = config.hooks.UserPromptSubmit[0].hooks[0].command;
+  const run = (input) =>
+    JSON.parse(execFileSync('/bin/sh', ['-c', hook], {cwd: root, input: JSON.stringify({cwd: root, session_id: 'drift', ...input}), encoding: 'utf8'}));
+
+  run({hook_event_name: 'UserPromptSubmit'});
+  assert.deepEqual(run({hook_event_name: 'Stop'}), {}, 'A turn that changed nothing is not asked to review it');
+
+  run({hook_event_name: 'UserPromptSubmit'});
+  await writeFile(path.join(root, 'product.js'), 'export const price = 2;\n');
+  const blocked = run({hook_event_name: 'Stop'});
+  assert.equal(blocked.decision, 'block', 'Changing the product without the map is stopped');
+  assert.match(blocked.reason, /product\.js/, 'The reminder names what moved');
+
+  run({hook_event_name: 'UserPromptSubmit'});
+  await writeFile(path.join(root, '.object-map/runtime/scratch.json'), '{}');
+  assert.deepEqual(run({hook_event_name: 'Stop'}), {}, "Object Map's own files are not product changes");
+});
 test('both installed hook commands inject fresh context from nested cwd and require a bounded review', async () => {
   for (const host of ['claude','codex']) {
     const root=await temporary();

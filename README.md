@@ -98,26 +98,37 @@ The product repo needs Node 22.12+, but no Vite/React installation. This is a lo
 
 ## Install into a product
 
-```sh
-npm run package:skill
-```
-
-Extract `dist/object-map-skill.tgz` and install it into the repository you want to map:
+Requires Node 22.12+ in the target repository. Nothing else — no clone, no npm install, no build.
 
 ```sh
-node /path/to/extracted/object-map/scripts/install.mjs /absolute/path/to/product
+curl -L https://github.com/MetaHeavies/object-map/releases/latest/download/object-map-skill.tgz | tar xz
+node object-map/scripts/install.mjs /absolute/path/to/your/repository
 ```
 
 The installer prints the build fingerprint, the command to open the canvas, and the prompt to give the agent. Restart or trust the host so the project hooks activate, then:
 
 ```sh
-cd /absolute/path/to/product
+cd /absolute/path/to/your/repository
 node .agents/skills/object-map/scripts/serve.mjs
 ```
 
 > Run Object Map on this repository. Inspect the implementation, populate the map, and tell me what you were unsure about.
 
-Use `--hosts=claude` or `--hosts=codex` to configure one host instead of both. `--upgrade` replaces older or customized skill files, keeping backups. `--dev` additionally records local hook, review and write diagnostics under git-ignored `.object-map/dev/`, which is only useful when reporting a problem with Object Map itself; see [feedback details](skills/object-map/references/feedback.md).
+Installation writes the skill to `.agents/skills/object-map` and `.claude/skills/object-map`, a marked block in `AGENTS.md` and `CLAUDE.md`, host hooks in `.claude/settings.json` and `.codex/hooks.json`, and empty model files under `.object-map/`. Existing instructions, settings and maps are preserved. `--hosts=claude` or `--hosts=codex` configures one host instead of both; `--upgrade` replaces older or customized skill files, keeping backups.
+
+To remove it, delete `.agents/skills/object-map`, `.claude/skills/object-map`, `.object-map/`, the marked blocks, and the Object Map entries in the host hook files.
+
+### From a source checkout
+
+```sh
+npm install
+npm run package:skill
+node scripts/install.mjs /absolute/path/to/your/repository
+```
+
+The canvas is build output and is not committed, so installing straight from a clone gives the agent integration without the viewer; `package:skill` builds it first.
+
+`--dev` records local hook, review and write diagnostics under git-ignored `.object-map/dev/`, which is only useful when reporting a problem with Object Map itself. See [feedback details](skills/object-map/references/feedback.md).
 
 ## Repeatable Atlas fixtures
 

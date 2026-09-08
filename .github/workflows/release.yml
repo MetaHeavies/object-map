@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.12"
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run package:skill
+      - run: npm run test:portable
+      - name: Attach the installable skill
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/object-map-skill.tgz
+          generate_release_notes: true

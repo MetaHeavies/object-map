@@ -1,11 +1,43 @@
 import {readFile, writeFile, mkdir} from 'node:fs/promises';
 import {createHash, randomBytes} from 'node:crypto';
 import path from 'node:path';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {Store} from './store.mjs';
 import {findRoot, isMain} from './workspace.mjs';
 import {validateMap} from './model.mjs';
 import {recordEvent, mapCounts, devConfig} from './feedback.mjs';
+
+const runGit = promisify(execFile);
+// What the turn did to the product, ignoring Object Map's own files so that
+// writing the map never counts as changing the product. Null when git cannot
+// answer, in which case the reminder falls back to firing on every turn.
+async function sourceState(root) {
+  const ignored = (file) =>
+    !file ||
+    file.startsWith('.object-map/') ||
+    file.startsWith('.agents/') ||
+    file.startsWith('.claude/') ||
+    file.startsWith('.codex/') ||
+    file.includes('node_modules/');
+  const options = {cwd: root, timeout: 4000, maxBuffer: 8e6};
+  try {
+    const [status, numstat] = await Promise.all([
+      runGit('git', ['status', '--porcelain', '-uall'], options),
+      runGit('git', ['diff', 'HEAD', '--numstat'], options),
+    ]);
+    const lines = [
+      ...status.stdout.split('\n').map((line) => [line, line.slice(3).trim().split(' -> ').pop()]),
+      ...numstat.stdout.split('\n').map((line) => [line, line.split('\t')[2]]),
+    ].filter(([, file]) => !ignored(file));
+    const files = [...new Set(lines.map(([, file]) => file))].sort();
+    const signature = createHash('sha256').update(lines.map(([line]) => line).join('\n')).digest('hex').slice(0, 32);
+    return {files, signature};
+  } catch {
+    return null;
+  }
+}
 
 export async function handleHook(input) {
   const started=performance.now();
@@ -30,16 +62,30 @@ export async function handleHook(input) {
       await recordEvent(root,'hook',{phase:event,turn:state.token,outcome:receipt.review?.revision===current.revision?'reviewed':'continued',durationMs:performance.now()-started});
       return {};
     }
+    // A turn that changed neither the product nor the map has nothing to
+    // reconcile, so asking for a review of it is noise.
+    const after = await sourceState(root);
+    const before = receipt.source;
+    const sourceMoved = !!(before && after && before.signature !== after.signature);
+    if (before && after && !sourceMoved && receipt.revision === current.revision) {
+      await recordEvent(root,'hook',{phase:event,turn:state.token,outcome:'unchanged',durationMs:performance.now()-started});
+      return {};
+    }
+    const appeared = sourceMoved ? after.files.filter((file) => !before.files.includes(file)) : [];
+    const named = (appeared.length ? appeared : sourceMoved ? after.files : []).slice(0, 6);
     receipt.reminded = true;
     await writeFile(path.join(runtime, `${state.token}.json`), JSON.stringify(receipt));
     await recordEvent(root,'hook',{phase:event,turn:state.token,outcome:'reminded',durationMs:performance.now()-started});
-    return {decision: 'block', reason: `Review the Object Map against this turn’s work before finishing. Maintain the map for authorized product changes; preserve unimplemented builder intentions. Then run node .agents/skills/object-map/scripts/map.mjs review ${state.token} "what changed, or why no map update was needed". If review is blocked, report the limitation. This reminder runs at most once.`};
+    const drift = sourceMoved && receipt.revision === current.revision
+      ? `This turn changed the product but not the map${named.length ? `: ${named.join(', ')}` : ''}. Reconcile the concepts those changes affect, or record why the model is already correct. `
+      : '';
+    return {decision: 'block', reason: `${drift}Review the Object Map against this turn’s work before finishing. Maintain the map for authorized product changes; preserve unimplemented builder intentions. Then run node .agents/skills/object-map/scripts/map.mjs review ${state.token} "what changed, or why no map update was needed". If review is blocked, report the limitation. This reminder runs at most once.`};
   }
   let token;
   if (event === 'UserPromptSubmit') {
     await mkdir(runtime, {recursive: true});
     token = randomBytes(16).toString('hex');
-    await writeFile(path.join(runtime, `${token}.json`), JSON.stringify({revision: current.revision, at: new Date().toISOString()}));
+    await writeFile(path.join(runtime, `${token}.json`), JSON.stringify({revision: current.revision, at: new Date().toISOString(), source: await sourceState(root)}));
     await writeFile(pointer, JSON.stringify({token}));
   }
   const full = JSON.stringify(current.data);
