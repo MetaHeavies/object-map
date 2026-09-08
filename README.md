@@ -22,12 +22,13 @@ Object Map describes your product as the set of things it is made of, laid out s
 
 Concepts present in your brief but not yet implemented in code remain on the map as unbuilt items, allowing you to design the product before writing code.
 
-## Why It Helps
+## What the Map Is For
 
-- **You can read your product in a minute.** The map is the whole product on one surface, so checking what exists does not mean rereading generated code or scrolling back through a chat history.
-- **It makes the wrong shapes visible.** One concept living in two places under two names, an object that has swollen to carry everything, an action with nowhere to happen — these are obvious on the map and nearly invisible in a diff.
-- **Your agent stops rediscovering your product.** Every session starts from the same model and the same names, instead of re-deriving them from the code and guessing at your intent.
-- **You can design ahead of the build.** Concepts you have only described sit next to the ones that exist, marked as unbuilt, so a decision made in conversation is not lost by the next one.
+- **OOUX without the workshop.** Object-oriented UX starts with a workshop: a room, sticky notes, one pass at the object model. An agent changes the product faster than a workshop can repeat. This builds the model from the repository instead, and keeps it there.
+- **What the product is, not what the code says.** Implementation churns. The set of things your product is made of changes slowly. The map holds that set, so you can check what exists without reading the code that builds it.
+- **Structural mistakes are visible.** The map shows one concept stored under two names, an object nobody can act on, a relationship whose label says nothing. A diff does not show these. Columns do.
+- **One set of names for you and your agent.** You both work from the same objects and the same words for them. What you correct on the map is still correct in the next session.
+- **Objects you have not built yet.** An object you described but never implemented stays on the map, marked as unbuilt. It is not lost between conversations.
 
 ## Quick Start
 
