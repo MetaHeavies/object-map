@@ -654,10 +654,14 @@ function ObjectCard({
           </span>
         </footer>
       </Reveal>
-      <ColumnAdd name={object.name} zoom={zoom} onChoose={section=>{
-        onSelect(object.id);
-        setComposer(section);
-      }} />
+      {/* Under focus the connected columns are context, so their add controls
+          are noise below a single revealed row. */}
+      {(!hasFocus || focused) && (
+        <ColumnAdd name={object.name} zoom={zoom} onChoose={section=>{
+          onSelect(object.id);
+          setComposer(section);
+        }} />
+      )}
     </article>
   );
 }

@@ -1784,10 +1784,7 @@ i.purple {
 .object-card.focused .object-title:hover {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4091) calc(0.006 * var(--tone-c)) 231);
 }
-.object-card.related .object-heading {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6567) calc(0.006 * var(--tone-c)) 231);
-}
+
 .object-card.related .mini-card:not(.is-relevant),
 .object-card.related .add-item {
   opacity: 0.25;

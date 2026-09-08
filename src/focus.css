@@ -18,7 +18,7 @@
 
   --tone-0: 0;
   --tone-d: 1;
-  --tone-c: 1;
+  --tone-c: 0.12;
   --c-scale: 1.55;
   color-scheme: light;
 
@@ -78,10 +78,10 @@
     0 211px 84px oklch(0 0 0 / 0.01),
     0 330px 92px oklch(0 0 0 / 0);
 
-  --scrim: oklch(0.976 0.006 var(--h-chrome) / 0.94);
-  --veil: oklch(0.964 0.006 var(--h-chrome) / 0.91);
-  --raised-veil: oklch(0.997 0.006 var(--h-chrome) / 0.93);
-  --drop-tint: oklch(0.916 0.011 var(--h-relationship) / 0.16);
+  --scrim: oklch(0.976 0.001 var(--h-chrome) / 0.94);
+  --veil: oklch(0.964 0.001 var(--h-chrome) / 0.91);
+  --raised-veil: oklch(0.997 0.001 var(--h-chrome) / 0.93);
+  --drop-tint: oklch(0.916 0.004 var(--h-chrome) / 0.16);
 
   --object-row-gap: 4px;
 }
@@ -395,9 +395,9 @@
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9022) calc(0.02058 * var(--tone-c)) 224.3);
 }
 .object-card.related .object-heading {
-  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9447) calc(0.008526 * var(--tone-c)) 225.1);
+  --row-bg: var(--chrome-fill);
   background: var(--row-bg);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8076) calc(0.02693 * var(--tone-c)) 228);
+  border-color: var(--chrome-border);
 }
 .object-card.dimmed .object-heading {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9461) calc(0.006 * var(--tone-c)) 231);
