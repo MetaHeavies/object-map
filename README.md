@@ -1,7 +1,5 @@
 # Object Map
 
-Create an object model of your project that your coding agent maintains as it builds.
-
 As coding agents grow more capable, maintaining visibility into what is actually being built becomes increasingly difficult. Domain logic, data structures, and feature choices quickly get fragmented across long chat histories, PRDs, pull requests, and generated code. When you hand an agent a prompt and say "build this," it is easy to lose track of your system's core primitives.
 
 Object Map gives you and your coding agent a shared, continuously updated single source of truth. Your agent reads the repository — routes, forms, schemas, services, tests — and records the core building blocks of your product: objects, attributes, relationships, actions, and states. The model it keeps is [Object-Oriented UX](https://alistapart.com/article/object-oriented-ux/) (OOUX), Sophia Prater's method for describing a product as the things its users recognize, rather than as the screens they pass through.
@@ -21,10 +19,6 @@ Object Map describes your product as the set of things it is made of, laid out s
 - **States**: Lifecycle stages an object moves through (e.g., Available, On Loan, Overdue).
 
 Concepts present in your brief but not yet implemented in code remain on the map as unbuilt items, allowing you to design the product before writing code.
-
-## Who This Is For
-
-You can't one-shot a product, no matter what anyone says. The "design" part of product design means having an intentional, careful consideration of the parts, so the right relationships can be created between them. This is getting harder to do with powerful models that can take everything you throw at them. By keeping a visual map of the "objects" that make up your product, you can better understand the pieces that make up the whole, define and refine relationships between them, and iterate in a way that feels structured.
 
 ## Quick Start
 

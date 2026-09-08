@@ -747,7 +747,20 @@ function App() {
     [confirm, setConfirm] = useState(null),
     [theme, setTheme] = useState(() => {
       try { return localStorage.getItem("object-map-theme") || "system"; } catch { return "system"; }
-    });
+    }),
+    // "system" is a real setting but not a button. The toggle shows which of
+    // the two the viewer is actually looking at, so it follows the OS.
+    [systemDark, setSystemDark] = useState(
+      () => window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false,
+    );
+  const appearance = theme === "system" ? (systemDark ? "dark" : "light") : theme;
+  useEffect(() => {
+    const media = window.matchMedia?.("(prefers-color-scheme: dark)");
+    if (!media) return;
+    const onChange = (event) => setSystemDark(event.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
   // Fixed presentation: the motion treatment is the shipped one, empty state
   // groups stay hidden, and evidence shows wherever the agent recorded it.
   const treatment = "restrained",
@@ -1396,8 +1409,8 @@ function App() {
             ([key, label, Icon]) => (
               <button
                 key={key}
-                className={theme === key ? "selected" : ""}
-                aria-pressed={theme === key}
+                className={appearance === key ? "selected" : ""}
+                aria-pressed={appearance === key}
                 aria-label={label}
                 title={label}
                 onClick={() => setTheme(key)}
