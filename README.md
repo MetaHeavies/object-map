@@ -10,7 +10,7 @@ Instead of digging through chat logs or reading thousands of lines of generated 
 
 ## Core Concepts
 
-Object Map shows your product as the things it is made of, in columns you can read side by side. Each object is one thing your users recognize. Each carries five kinds of structure:
+Object Map shows your product as the things it is made of, in columns you can read side by side. Each object is one thing (or concept) a user would recognize, and can have up tp five kinds of structure:
 
 - **Object**: A core noun in your product that users recognize and interact with (e.g., Book, Author, Member).
 - **Attributes**: Properties that describe the object (e.g., Title, ISBN, Publish Date).
