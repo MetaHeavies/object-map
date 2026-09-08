@@ -3,7 +3,8 @@ import {readFile, access} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createApi} from './api.mjs';
-import {findRoot} from './workspace.mjs';
+import {findRoot, requireNode} from './workspace.mjs';
+requireNode();
 const demo = process.argv.includes('--demo');
 // The shipped demo is copied out so exploring it never edits the installed skill.
 const root = demo

@@ -80,31 +80,15 @@ p {
   text-decoration: none;
   font-weight: 500;
   font-size: var(--t-display);
-  letter-spacing: -0.7px;
   white-space: nowrap;
-}
-.brand-mark {
-  width: 31px;
-  height: 34px;
-  border-radius: 8px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4017) calc(0.006 * var(--tone-c)) 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
-  display: grid;
-  place-items: center;
 }
 .beta {
   font-size: var(--t-micro);
-  letter-spacing: 0;
   background: var(--chrome-badge);
   padding: 3px 7px;
   border-radius: 4px;
   color: var(--chrome-label);
   margin-left: 2px;
-}
-.header-divider {
-  height: 22px;
-  width: 1px;
-  background: var(--chrome-line);
 }
 .workspace-name {
   position: absolute;
@@ -120,34 +104,11 @@ p {
   margin-left: 8px;
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.65) calc(0.006 * var(--tone-c)) 231);
 }
-.workspace-avatar {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9219) calc(0.006 * var(--tone-c)) 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.559) calc(0.006 * var(--tone-c)) 231);
-  font-family: Georgia;
-  border-radius: 5px;
-}
 .header-right {
   margin-left: auto;
   display: flex;
   gap: 18px;
   align-items: center;
-}
-.quiet-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5624) calc(0.006 * var(--tone-c)) 231);
-  font-size: var(--t-body);
-  padding: 9px;
-  border-radius: 5px;
-}
-.quiet-button:hover,
-.quiet-button.active {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231);
 }
 .primary,
 .secondary {
@@ -175,12 +136,6 @@ p {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4532) calc(0.006 * var(--tone-c)) 231);
 }
-.count-badge {
-  font-size: var(--t-micro);
-  padding: 2px 5px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.931) calc(0.006 * var(--tone-c)) 231);
-  border-radius: 4px;
-}
 .canvas {
   position: relative;
   overflow: hidden;
@@ -197,40 +152,6 @@ p {
   pointer-events: none;
   background: linear-gradient(var(--scrim), transparent 200px);
   z-index: 1;
-}
-.canvas-heading {
-  position: absolute;
-  left: 44px;
-  top: 33px;
-  z-index: 3;
-  pointer-events: none;
-}
-.eyebrow {
-  font-size: var(--t-micro);
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) calc(0.006 * var(--tone-c)) 231);
-}
-.eyebrow > span {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7699) calc(0.006 * var(--tone-c)) 231);
-  padding: 0 5px;
-}
-.canvas-heading h1 {
-  font-weight: 500;
-  font-size: var(--t-hero);
-  letter-spacing: -1.05px;
-  margin: 10px 0 5px;
-}
-.canvas-heading h1 > span {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5897) calc(0.006 * var(--tone-c)) 231);
-}
-.canvas-heading p {
-  font-size: var(--t-body);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6434) calc(0.006 * var(--tone-c)) 231);
-  margin: 0;
 }
 .canvas-actions {
   position: absolute;
@@ -331,7 +252,6 @@ p {
 .object-index {
   font-family: ui-monospace, SFMono-Regular, monospace;
   font-size: var(--t-micro);
-  letter-spacing: 1px;
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.696) calc(0.006 * var(--tone-c)) 231);
 }
 .card-tools {
@@ -346,7 +266,6 @@ p {
 .object-title {
   font-size: var(--t-hero);
   font-weight: 500;
-  letter-spacing: -0.8px;
   line-height: 1.25;
   text-align: left;
   display: block;
@@ -354,42 +273,11 @@ p {
   padding: 0;
   width: 100%;
 }
-.closed-title:hover {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4784) calc(0.006 * var(--tone-c)) 231);
-}
 .object-title.inline-input {
   height: 32px;
   padding: 0 4px;
 }
-.closed-description {
-  font-size: var(--t-small);
-  line-height: 1.6;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6665) calc(0.006 * var(--tone-c)) 231);
-  margin: 0;
-  height: 34px;
-  overflow: hidden;
-  max-width: 205px;
-}
-.card-counts {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9461) calc(0.006 * var(--tone-c)) 231);
-  margin-top: 18px;
-  height: 37px;
-  font:
-    10px ui-monospace,
-    SFMono-Regular,
-    monospace;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6633) calc(0.006 * var(--tone-c)) 231);
-}
-.card-counts > span {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-.card-counts i,
-.legend i {
+.legend i{
   display: inline-block;
   width: 5px;
   height: 5px;
@@ -416,24 +304,6 @@ i.blue,
 i.green,
 i.purple {
   background: var(--section);
-}
-.card-counts .card-explore {
-  margin-left: auto;
-  font-family: inherit;
-  font-size: var(--t-micro);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6665) calc(0.006 * var(--tone-c)) 231);
-  gap: 2px;
-}
-.object-description {
-  font-size: var(--t-body);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) calc(0.006 * var(--tone-c)) 231);
-  padding: 0;
-  margin: 0;
-  display: block;
-  text-align: left;
-  width: 100%;
-  line-height: 1.5;
-  min-height: 18px;
 }
 .placeholder {
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7219) calc(0.006 * var(--tone-c)) 231);
@@ -484,7 +354,6 @@ i.purple {
   gap: 5px;
   font-size: var(--t-micro);
   font-weight: 500;
-  letter-spacing: 0.1px;
   color: var(--section);
   margin: 0 0 13px;
 }
@@ -601,22 +470,6 @@ i.purple {
   background: white;
   border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
   margin-top: 4px;
-}
-.add-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7025) calc(0.006 * var(--tone-c)) 231);
-  padding: 8px 3px;
-  font-size: var(--t-micro);
-  margin-top: 4px;
-  width: 100%;
-  border-radius: 3px;
-  text-align: left;
-}
-.add-item:hover {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5382) calc(0.006 * var(--tone-c)) 231);
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9521) calc(0.006 * var(--tone-c)) 231);
 }
 .object-footer {
   border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9401) calc(0.006 * var(--tone-c)) 231);
@@ -750,15 +603,6 @@ i.purple {
   font-size: var(--t-micro);
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6401) calc(0.006 * var(--tone-c)) 231);
 }
-.relationship-lines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: visible;
-}
 .connection {
   fill: none;
   stroke: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7155) calc(0.006 * var(--tone-c)) 231);
@@ -826,52 +670,6 @@ i.purple {
   width: 39px;
   padding: 0;
 }
-.canvas-hint {
-  font-size: var(--t-micro);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7187) calc(0.006 * var(--tone-c)) 231);
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-.statusbar {
-  height: 31px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) calc(0.006 * var(--tone-c)) 231);
-  border-top: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9097) calc(0.006 * var(--tone-c)) 231);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 22px;
-  font-size: var(--t-micro);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6567) calc(0.006 * var(--tone-c)) 231);
-  flex-shrink: 0;
-  gap: 16px;
-}
-.statusbar > span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.statusbar button {
-  text-decoration: underline;
-  font-size: var(--t-micro);
-}
-.saved-dot,
-.error-dot {
-  width: 5px;
-  height: 5px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) calc(0.006 * var(--tone-c)) 231);
-  border-radius: 50%;
-}
-.error-dot {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6201) calc(0.006 * var(--tone-c)) 231);
-}
-.status-dot {
-  padding: 0 5px;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7889) calc(0.006 * var(--tone-c)) 231);
-}
-.footer-note {
-  font-style: italic;
-}
 .side-panel {
   position: absolute;
   top: 0;
@@ -898,42 +696,52 @@ i.purple {
   margin-left: auto;
 }
 .side-panel h2 {
-  font-size: var(--t-hero);
+  font-size: var(--t-title);
   font-weight: 500;
-  letter-spacing: -1px;
   line-height: 1.2;
-  margin: 23px 0 12px;
+  margin: 0;
 }
-.panel-intro {
-  font-size: var(--t-body);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) calc(0.006 * var(--tone-c)) 231);
-  margin: 0 0 23px;
+/* Each repository path is something you paste somewhere else, so each one
+   carries its own copy control rather than a shared button. */
+.repo-fields {
+  display: grid;
+  gap: 8px;
 }
-.candidate {
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9158) calc(0.006 * var(--tone-c)) 231);
+.repo-field {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 8px 40px 8px 12px;
   border-radius: 6px;
-  margin-bottom: 7px;
-  padding: 8px 10px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9821) calc(0.006 * var(--tone-c)) 231);
+  background: var(--chrome-fill);
 }
-.candidate.selected {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9672) calc(0.006 * var(--tone-c)) 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8975) calc(0.006 * var(--tone-c)) 231);
+.repo-field > span {
+  font-size: var(--t-micro);
+  color: var(--chrome-muted);
 }
-.candidate-name {
-  font-size: var(--t-body);
-  font-weight: 500;
-  border: none;
-  background: transparent;
-  width: 100%;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5243) calc(0.006 * var(--tone-c)) 231);
-  padding: 3px 0;
+.repo-field code {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--chrome-title);
+  overflow-wrap: anywhere;
+}
+.repo-field > .icon-button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  color: var(--chrome-muted);
+}
+.repo-field > .icon-button:hover {
+  background: var(--chrome-badge);
+  color: var(--chrome-title);
 }
 .change-list {
-  margin: 4px 0 24px;
+  margin: 0 0 16px;
   flex: 1;
   overflow: auto;
-  min-height: 80px;
 }
 .change-list > div {
   font-size: var(--t-body);
@@ -943,143 +751,14 @@ i.purple {
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5863) calc(0.006 * var(--tone-c)) 231);
   overflow-wrap: anywhere;
 }
-.side-panel > .secondary {
-  margin-top: 10px;
-}
 .setting-group {
-  margin-top: 24px;
+  margin-top: 32px;
 }
 .setting-group h3 {
   font-size: var(--t-body);
   font-weight: 500;
-  letter-spacing: 0;
   color: var(--chrome-label);
   margin: 0 0 8px;
-}
-.setting {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  font-size: var(--t-body);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4568) calc(0.006 * var(--tone-c)) 231);
-  gap: 16px;
-}
-/* A bare checkbox reads as a form field. These are canvas switches, so they
-   match the motion controls sitting directly beneath them. */
-.setting input[role="switch"] {
-  appearance: none;
-  flex: 0 0 auto;
-  width: 32px;
-  height: 18px;
-  margin: 0;
-  border-radius: 9px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8945) calc(0.006 * var(--tone-c)) 231);
-  position: relative;
-  transition: background 160ms ease;
-}
-.setting input[role="switch"]::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
-  box-shadow: 0 1px 2px oklch(0 0 0 / 0.141);
-  transition: translate 160ms ease;
-}
-.setting input[role="switch"]:checked {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6793) calc(0.04193 * var(--tone-c)) 225.7);
-}
-.setting input[role="switch"]:checked::after {
-  translate: 14px 0;
-}
-@media (prefers-reduced-motion: reduce) {
-  .setting input[role="switch"],
-  .setting input[role="switch"]::after {
-    transition: none;
-  }
-}
-.setting small {
-  display: block;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7252) calc(0.006 * var(--tone-c)) 231);
-  font-size: var(--t-micro);
-  line-height: 1.5;
-  margin-top: 5px;
-}
-.setting input {
-  accent-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5208) calc(0.006 * var(--tone-c)) 231);
-}
-.motion-settings h3 {
-  font-size: var(--t-body);
-  font-weight: 500;
-}
-.motion-settings p,
-.motion-settings small {
-  font-size: var(--t-small);
-  line-height: 1.6;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.683) calc(0.006 * var(--tone-c)) 231);
-}
-/* One horizontal group per setting: the options are alternatives, so they read
-   as a row of equal choices rather than a stacked list of separate controls. */
-.setting-group .options {
-  display: flex;
-  gap: 2px;
-  padding: 2px;
-  border-radius: 8px;
-  background: var(--chrome-badge);
-}
-.setting-group .options button {
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 7px 6px;
-  border-radius: 6px;
-  font-size: var(--t-small);
-  line-height: 1.3;
-  color: var(--chrome-label);
-}
-.setting-group .options button.selected {
-  background: var(--surface);
-  color: var(--chrome-title);
-  font-weight: 500;
-}
-.motion-settings button > span {
-  font:
-    10px ui-monospace,
-    monospace;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7476) calc(0.006 * var(--tone-c)) 231);
-}
-.motion-settings button svg {
-  margin-left: auto;
-}
-
-.motion-settings > small {
-  display: block;
-  margin-top: 18px;
-  font-size: var(--t-micro);
-}
-.workspace-detail {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 15px 0 30px;
-}
-.workspace-detail > span {
-  font-size: var(--t-body);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.696) calc(0.006 * var(--tone-c)) 231);
-  margin-top: 15px;
-}
-.workspace-detail code {
-  font-size: var(--t-micro);
-  line-height: 1.6;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5795) calc(0.006 * var(--tone-c)) 231);
-  overflow-wrap: anywhere;
 }
 .empty-state {
   position: absolute;
@@ -1097,7 +776,6 @@ i.purple {
   font-size: var(--t-title);
   font-weight: 500;
   line-height: 22px;
-  letter-spacing: 0;
   margin: 0 0 16px;
   color: var(--chrome-title);
 }
@@ -1148,47 +826,6 @@ i.purple {
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6698) calc(0.006 * var(--tone-c)) 231);
   padding: 16px;
   margin: auto;
-}
-.new-object-popover {
-  position: absolute;
-  right: 28px;
-  top: 14px;
-  z-index: 25;
-  width: 360px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) calc(0.006 * var(--tone-c)) 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8884) calc(0.006 * var(--tone-c)) 231);
-  border-radius: 9px;
-  padding: 23px;
-  box-shadow: 0 15px 60px oklch(0.3867 0.006 231 / 0.125);
-}
-.composer-heading {
-  display: flex;
-}
-.composer-heading .icon-button {
-  margin-left: auto;
-}
-.new-object-popover label {
-  font-size: var(--t-display);
-  letter-spacing: -0.5px;
-  display: block;
-  margin: 18px 0 15px;
-}
-.new-object-popover > input {
-  width: 100%;
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8669) calc(0.006 * var(--tone-c)) 231);
-  background: white;
-  border-radius: 5px;
-  padding: 11px 9px;
-  font-size: var(--t-small);
-}
-.new-object-popover > p {
-  font-size: var(--t-micro);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7284) calc(0.006 * var(--tone-c)) 231);
-  margin: 10px 0 20px;
-}
-.new-object-popover > .primary {
-  width: 100%;
-  justify-content: space-between;
 }
 .toast {
   position: fixed;
@@ -1250,17 +887,7 @@ i.purple {
 .panning {
   cursor: grabbing;
 }
-.muted {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6927) calc(0.006 * var(--tone-c)) 231);
-}
 @media (min-width: 1500px) {
-  .canvas-heading {
-    left: 55px;
-    top: 42px;
-  }
-  .canvas-heading h1 {
-    font-size: var(--t-hero);
-  }
   .canvas-bottom {
     bottom: 33px;
   }
@@ -1269,9 +896,6 @@ i.purple {
   .legend {
     gap: 8px;
   }
-  .canvas-hint {
-    display: none;
-  }
   .canvas-toolbar {
     left: auto;
     right: 0;
@@ -1279,9 +903,6 @@ i.purple {
   }
   .header-right {
     gap: 8px;
-  }
-  .canvas-heading h1 {
-    font-size: var(--t-hero);
   }
   .side-panel {
     width: 350px;
@@ -1303,52 +924,21 @@ i.purple {
   .brand {
     font-size: var(--t-title);
   }
-  .brand-mark {
-    width: 27px;
-    height: 30px;
-  }
   .beta,
-  .header-divider,
-  .workspace-name,
-  .quiet-button {
+  .workspace-name {
     display: none;
-  }
-  .new-object-button {
-    font-size: var(--t-small);
-    padding: 9px 11px;
   }
   .header-right {
     margin-left: auto;
-  }
-  .canvas-heading {
-    top: 25px;
-    left: 22px;
-  }
-  .canvas-heading h1 {
-    font-size: var(--t-display);
-  }
-  .canvas-heading p {
-    font-size: var(--t-micro);
   }
   .canvas-actions {
     top: 20px;
     right: 20px;
   }
-  .canvas-heading .eyebrow {
-    font-size: var(--t-micro);
-  }
   .side-panel {
     width: 100%;
     padding: 22px;
     z-index: 16;
-  }
-  .side-panel h2 {
-    font-size: var(--t-hero);
-    margin-top: 16px;
-  }
-  .panel-intro {
-    font-size: var(--t-small);
-    margin-bottom: 15px;
   }
   .empty-state,
   .empty-state.with-panel {
@@ -1358,9 +948,6 @@ i.purple {
   }
   .empty-state h2 {
     font-size: var(--t-display);
-  }
-  .empty-diagram {
-    margin-bottom: 24px;
   }
   .canvas-bottom {
     left: 15px;
@@ -1381,27 +968,9 @@ i.purple {
   .toolbar-divider {
     margin: 0 3px;
   }
-  .statusbar {
-    padding: 0 12px;
-    font-size: var(--t-micro);
-  }
-  .footer-note {
-    display: none !important;
-  }
-  .new-object-popover {
-    right: 15px;
-    width: calc(100% - 30px);
-    top: 15px;
-  }
   .toast {
     bottom: 95px;
     width: max-content;
-  }
-  .discovery-footer {
-    padding-top: 10px;
-  }
-  .discovery-footer details {
-    margin-top: 7px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1422,11 +991,7 @@ i.purple {
   .object-card {
     border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.559) calc(0.006 * var(--tone-c)) 231);
   }
-  .panel-intro,
-  .closed-description,
-  .canvas-heading p,
-  .legend,
-  .statusbar {
+  .legend {
     color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4819) calc(0.006 * var(--tone-c)) 231);
   }
 }
@@ -1449,24 +1014,15 @@ i.purple {
 .relationship-link {
   font-size: var(--t-body);
 }
-.add-item,
-.composer-actions button {
+.composer-actions button{
   font-size: var(--t-small);
-}
-.object-description,
-.closed-description {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5897) calc(0.006 * var(--tone-c)) 231);
-}
-.panel-intro {
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.5965) calc(0.006 * var(--tone-c)) 231);
 }
 /* OOUX: parallel object columns, with each semantic group stacked beneath its noun. */
 :root {
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3211) calc(0.006 * var(--tone-c)) 231);
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9761) calc(0.006 * var(--tone-c)) 231);
 }
-.brand-mark,
-.primary {
+.primary{
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.2809) calc(0.006 * var(--tone-c)) 231);
   border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.2809) calc(0.006 * var(--tone-c)) 231);
 }
@@ -1479,13 +1035,6 @@ i.purple {
 }
 .canvas:before {
   background: linear-gradient(var(--scrim), transparent 145px);
-}
-.canvas-heading h1 {
-  font-size: var(--t-hero);
-  letter-spacing: -0.65px;
-}
-.canvas-heading h1 > span {
-  display: none;
 }
 .object-card,
 .object-card.expanded,
@@ -1556,7 +1105,6 @@ i.purple {
   z-index: 1;
   font-size: var(--t-title);
   font-weight: 500;
-  letter-spacing: -0.2px;
   margin: 0 36px 5px 0;
   width: calc(100% - 38px);
   line-height: 1.25;
@@ -1665,34 +1213,6 @@ i.purple {
 .relationship-edit select {
   border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8452) calc(0.006 * var(--tone-c)) 231);
 }
-.add-item {
-  border: 1px dashed oklch(calc(var(--tone-0) + var(--tone-d) * 0.9006) calc(0.006 * var(--tone-c)) 231);
-  background: transparent;
-  justify-content: center;
-  height: 28px;
-  padding: 3px;
-  min-height: 28px;
-  margin-top: 4px;
-  font-size: var(--t-micro);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6862) calc(0.006 * var(--tone-c)) 231);
-}
-.add-item:hover {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9491) calc(0.006 * var(--tone-c)) 231);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7921) calc(0.006 * var(--tone-c)) 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4495) calc(0.006 * var(--tone-c)) 231);
-}
-.add-item {
-  font-size: 0;
-  gap: 0;
-}
-.add-item svg {
-  width: 12px;
-  height: 12px;
-}
-.add-item:focus-visible {
-  font-size: var(--t-micro);
-  gap: 4px;
-}
 .item-composer {
   border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.7921) calc(0.006 * var(--tone-c)) 231);
 }
@@ -1720,22 +1240,12 @@ i.purple {
 .object-footer button > span {
   color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6268) calc(0.006 * var(--tone-c)) 231);
 }
-.object-card:not(.expanded) .card-counts {
-  display: none;
-}
 .evidence {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9851) calc(0.006 * var(--tone-c)) 231);
   padding: 12px;
   border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.8975) calc(0.006 * var(--tone-c)) 231);
   border-radius: 5px;
   margin-top: 5px;
-}
-.evidence .object-description {
-  font-size: var(--t-small);
-  margin-bottom: 14px;
-}
-.relationship-lines {
-  opacity: 0.55;
 }
 .legend .amber {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 1) 0 0);
@@ -1757,9 +1267,6 @@ i.purple {
   border-radius: 2px;
 }
 @media (max-width: 700px) {
-  .canvas-heading h1 {
-    font-size: var(--t-display);
-  }
 }
 /* Selection exposes the immediate semantic neighbourhood without connecting lines. */
 .object-card {
@@ -1783,10 +1290,7 @@ i.purple {
 }
 .object-card.focused .object-title:hover {
   background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.4091) calc(0.006 * var(--tone-c)) 231);
-}
-
-.object-card.related .mini-card:not(.is-relevant),
-.object-card.related .add-item {
+}.object-card.related .mini-card:not(.is-relevant){
   opacity: 0.25;
 }
 .object-card.related .mini-card:not(.is-relevant):focus-within {
@@ -2021,18 +1525,12 @@ i.purple {
   justify-content: space-between;
 }
 .panel-heading h2 { margin: 0; font-size: var(--t-title); font-weight: 500; }
-.side-panel > h2 { display: none; }
-.setting-buttons { display: flex; gap: 8px; margin-top: 12px; }
+.setting-buttons { display: flex; gap: 8px; margin-top: 16px; }
 .setting-buttons .secondary { flex: 1; justify-content: center; }
-.change-group .change-list { max-height: 220px; margin: 0 0 12px; }
-
-/* Selection is ink, not a colour. The blue that turned on with a switch had
-   nothing to do with anything else on screen. */
-.setting input[role="switch"]:checked { background: var(--accent); }
-.setting-group .options button.selected {
-  background: var(--accent);
-  color: var(--accent-fg);
-}
+/* The log takes the panel's remaining height so its action sits at the foot. */
+.change-group { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.change-group .change-list { margin: 0 0 16px; }
+.change-group .secondary { align-self: flex-start; }
 
 /* No focus rings anywhere, by request. Editing state is shown by the field
    itself changing to an input with its own border and background. */
@@ -2050,21 +1548,16 @@ textarea:focus-visible,
 [tabindex]:focus-visible {
   outline: none;
   box-shadow: none;
-}
-
-/* Pressable things answer the press. */
+}/* Pressable things answer the press. */
 .primary:active:not(:disabled),
 .secondary:active:not(:disabled),
-.setting-group .options button:active,
-.icon-button:active:not(:disabled) {
+.icon-button:active:not(:disabled){
   transform: scale(0.97);
 }
-@media (prefers-reduced-motion: reduce) {
-  .canvas-find:active,
+@media (prefers-reduced-motion: reduce) {.canvas-find:active,
   .primary:active:not(:disabled),
   .secondary:active:not(:disabled),
-  .setting-group .options button:active,
-  .icon-button:active:not(:disabled) {
+  .icon-button:active:not(:disabled){
     transform: none;
   }
 }

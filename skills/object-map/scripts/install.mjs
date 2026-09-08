@@ -3,7 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {initialize} from './store.mjs';
-import {isMain} from './workspace.mjs';
+import {isMain, requireNode} from './workspace.mjs';
 import {recordEvent} from './feedback.mjs';
 
 const source = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -110,6 +110,7 @@ export async function install(destination, {hosts = ['codex', 'claude'], hooks =
   return {root, hosts, hooks, dev:devEnabled, build, changed: writes.length, backups: backups.length, viewer: contents.includes(path.join('assets','app','index.html'))};
 }
 export async function installMain(args = process.argv.slice(2)) {
+  requireNode();
   for (const arg of args.filter(arg=>arg.startsWith('--'))) {
     if (!['--no-hooks','--upgrade','--dev','--no-dev'].includes(arg) && !arg.startsWith('--hosts=')) throw new Error(`Unknown option: ${arg}`);
   }

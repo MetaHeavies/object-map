@@ -1,11 +1,11 @@
-import { animate, createSpring } from "animejs";
+import { animate, spring } from "animejs";
 const active = new Map();
 export const treatments = {
   restrained: { label: "Restrained", duration: 300, ease: "outQuart" },
   elastic: {
     label: "Elastic separation",
     duration: 550,
-    ease: createSpring({ stiffness: 180, damping: 19, mass: 1 }),
+    ease: spring({ stiffness: 180, damping: 19, mass: 1 }),
   },
   momentum: { label: "Momentum", duration: 420, ease: "outExpo" },
 };

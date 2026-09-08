@@ -17,3 +17,17 @@ export async function findRoot(start = process.cwd()) {
 export function isMain(url) {
   return !!process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(url);
 }
+
+// The tooling is Node regardless of what the product is written in, so a
+// version that predates the documented minimum should say so, not fail deep
+// inside an unrelated call.
+export const MINIMUM_NODE = '22.12.0';
+export function nodeIsSupported(version = process.versions.node) {
+  const [major, minor] = version.split('.').map(Number);
+  const [needMajor, needMinor] = MINIMUM_NODE.split('.').map(Number);
+  return major > needMajor || (major === needMajor && minor >= needMinor);
+}
+export function requireNode(version = process.versions.node) {
+  if (!nodeIsSupported(version))
+    throw new Error(`Object Map needs Node ${MINIMUM_NODE} or newer. This is Node ${version}.`);
+}

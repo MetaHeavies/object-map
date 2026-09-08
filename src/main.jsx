@@ -743,14 +743,16 @@ function App() {
     [saveStatus, setSaveStatus] = useState("Saved"),
     [saveError, setSaveError] = useState(""),
     [history, setHistory] = useState({ past: [], future: [] }),
-    [treatment, setTreatment] = useState("restrained"),
-    [showStates, setShowStates] = useState(false),
-    [showEvidence, setShowEvidence] = useState(false),
     [guide, setGuide] = useState(false),
     [confirm, setConfirm] = useState(null),
     [theme, setTheme] = useState(() => {
       try { return localStorage.getItem("object-map-theme") || "system"; } catch { return "system"; }
     });
+  // Fixed presentation: the motion treatment is the shipped one, empty state
+  // groups stay hidden, and evidence shows wherever the agent recorded it.
+  const treatment = "restrained",
+    showStates = false,
+    showEvidence = false;
   useEffect(() => {
     // "system" leaves the attribute off so the prefers-color-scheme block wins.
     const root = document.documentElement;
@@ -1631,13 +1633,22 @@ function App() {
             </div>
             <div className="setting-group">
               <h3>Repository</h3>
-              <div className="workspace-detail">
-                <span>Path</span>
-                <code>{repository}</code>
-                <span>Model</span>
-                <code>.object-map/map.json</code>
-                <span>Layout</span>
-                <code>.object-map/layout.json</code>
+              <div className="repo-fields">
+                {[
+                  ["Path", repository],
+                  ["Model", ".object-map/map.json"],
+                  ["Layout", ".object-map/layout.json"],
+                ].map(([label, value]) => (
+                  <div className="repo-field" key={label}>
+                    <span>{label}</span>
+                    <code>{value}</code>
+                    <IconButton
+                      icon={Copy}
+                      label={`Copy ${label.toLowerCase()}`}
+                      onClick={() => copy(value)}
+                    />
+                  </div>
+                ))}
               </div>
               <div className="setting-buttons">
                 <button
@@ -1658,69 +1669,13 @@ function App() {
                 </button>
               </div>
             </div>
-            <div className="setting-group">
-              <h3>Display</h3>
-              <label className="setting">
-                <span>Optional states</span>
-                <input
-                  type="checkbox"
-                  role="switch"
-                  checked={showStates}
-                  onChange={(e) => {
-                    before.current = motion.capture();
-                    setShowStates(e.target.checked);
-                  }}
-                />
-              </label>
-              <label className="setting">
-                <span>Implementation evidence</span>
-                <input
-                  type="checkbox"
-                  role="switch"
-                  checked={showEvidence}
-                  onChange={(e) => setShowEvidence(e.target.checked)}
-                />
-              </label>
-            </div>
-            <div className="setting-group">
-              <h3 id="appearance-label">Appearance</h3>
-              <div className="options" role="group" aria-labelledby="appearance-label">
-                {[["system", "System"], ["light", "Light"], ["dark", "Dark"]].map(([key, label]) => (
-                  <button
-                    className={theme === key ? "selected" : ""}
-                    aria-pressed={theme === key}
-                    key={key}
-                    onClick={() => setTheme(key)}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="setting-group motion-settings">
-              <h3 id="motion-label">Motion</h3>
-              <div className="options" role="group" aria-labelledby="motion-label">
-                {Object.entries(treatments).map(([key, value]) => (
-                  <button
-                    className={treatment === key ? "selected" : ""}
-                    aria-pressed={treatment === key}
-                    key={key}
-                    onClick={() => setTreatment(key)}
-                  >
-                    {value.label}
-                  </button>
-                ))}
-              </div>
-            </div>
             {/* A log, so it reads bottom-of-panel like one. */}
             <div className="setting-group change-group">
               <h3>Session changes</h3>
               <div className="change-list">
-                {changes.length ? (
-                  changes.map((c, i) => <div key={i}>{c}</div>)
-                ) : (
-                  <div className="muted">Nothing changed this session.</div>
-                )}
+                {changes.map((c, i) => (
+                  <div key={i}>{c}</div>
+                ))}
               </div>
               <button
                 className="secondary"

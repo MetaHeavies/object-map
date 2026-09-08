@@ -15,7 +15,7 @@ If `.object-map/map.json` is absent, run this skill’s `scripts/install.mjs /ab
 
 The default installer configures Claude Code and Codex. `--hosts=claude` or `--hosts=codex` limits host configuration. It preserves unrelated instructions/settings and existing map data. If older or customized skill files conflict, `--upgrade` preserves backups before replacing them. See [hosts.md](references/hosts.md) for activation, limitations and verification.
 
-For field testing, install with `--dev`. When prompt context says development feedback is enabled, read [feedback.md](references/feedback.md) and record actual mapping problems, builder corrections or integration difficulties as they occur. Automatic diagnostics remain local; export only when the builder asks. `--no-dev` stops recording without uninstalling the integration.
+When a problem with Object Map itself is being reported, the builder installs with `--dev`. When prompt context says development feedback is enabled, read [feedback.md](references/feedback.md) and record actual mapping problems, builder corrections or integration difficulties as they occur. Automatic diagnostics remain local; export only when the builder asks. `--no-dev` stops recording without uninstalling the integration.
 
 Run from the target repository:
 

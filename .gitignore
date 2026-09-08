@@ -10,3 +10,4 @@ skills/object-map/assets/app/
 .object-map/runtime/
 .object-map/dev/
 .object-map/backups/
+.playwright-mcp/
