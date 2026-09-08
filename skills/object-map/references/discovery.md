@@ -61,6 +61,6 @@ A form labels a thing “Place”; its records live in `saved_location`. A colle
 
 Do not import these example objects into unrelated products. They illustrate the reasoning, not an expected answer.
 
-## Bounded discovery adapter
+## There is no parser
 
-The optional `scripts/discovery.mjs` implementation supports SQL CREATE TABLE plus JSON page metadata. It is a source of candidates, not a general parser and not the required workflow. For any other stack, inspect implementation directly using the procedure above. Even on supported fixtures, verify join relationships, naming and actual behavior before treating candidates as the completed product model.
+No script extracts objects. Nothing in this skill reads a schema and proposes a model. You inspect the implementation using the procedure above, and you record the evidence for every claim. A schema reader would only see schema-backed products, and it could not tell a product object from a table.
