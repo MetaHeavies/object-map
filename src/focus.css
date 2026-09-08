@@ -485,13 +485,20 @@
   width: 100%;
   height: 28px;
   margin-top: var(--object-row-gap);
-  border: 1px dashed oklch(calc(var(--tone-0) + var(--tone-d) * 0.8764) calc(0.006 * var(--tone-c)) 231);
+  border: 0;
   border-radius: 7px;
-  background: transparent;
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6055) calc(0.01683 * var(--tone-c)) 229.1);
+  /* Sits between the canvas and the card it belongs to, so it reads as part of
+     the column rather than a hole in it. Both ends come from theme tokens, so
+     it cannot drift into a hue of its own. */
+  background: color-mix(in oklch, var(--canvas), var(--surface) 55%);
+  color: var(--chrome-muted);
   transition: background-color 120ms ease, transform 120ms var(--ease-focus);
 }
-.column-add:hover, .column-add[aria-expanded="true"] { background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9429) calc(0.006012 * var(--tone-c)) 223.5); color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.3825) calc(0.02749 * var(--tone-c)) 230); }
+.column-add:hover,
+.column-add[aria-expanded="true"] {
+  background: color-mix(in oklch, var(--canvas), var(--surface) 90%);
+  color: var(--chrome-title);
+}
 .column-add:active { transform: scale(.98); }
 .object-heading { cursor: grab; touch-action: none; }
 .object-heading .object-title { cursor: grab; }
