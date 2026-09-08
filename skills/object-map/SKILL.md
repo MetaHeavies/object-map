@@ -61,6 +61,14 @@ node .agents/skills/object-map/scripts/map.mjs validate /path/to/candidate.json
 node .agents/skills/object-map/scripts/map.mjs write /path/to/candidate.json --revision REVISION_FROM_READ
 ```
 
+After writing, read the map back the way the builder will:
+
+```sh
+node .agents/skills/object-map/scripts/map.mjs check
+```
+
+It names the objects worth a second look: one that connects to nothing, one nobody can act on, a missing definition, a relationship label that only repeats its target, a claim with no evidence. Resolve or explain each before reporting the run finished. An object flagged twice is usually an attribute or implementation machinery that should not have become an object.
+
 The writer validates the complete model, uses a shared file lock and atomically replaces the model only if the revision still matches. On a conflict, reread, reconcile the builder’s edits and retry once. If it conflicts again, keep the candidate and report the concurrent edit instead of repeatedly overwriting. Never bypass this by directly redirecting output into map.json.
 
 When the current prompt supplies a review token, use that exact token after inspecting the result:

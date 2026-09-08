@@ -6,6 +6,35 @@ import {validateMap} from './model.mjs';
 import {findRoot, isMain} from './workspace.mjs';
 import {recordEvent, addFeedback, exportFeedback, devConfig} from './feedback.mjs';
 
+// A reading of the map you can act on: what connects to nothing, what nobody
+// can act on, what has no definition, and labels that only repeat their target.
+export function checkMap(map) {
+  const plain = value => (value || '').toLowerCase().replace(/[^a-z]/g, '');
+  const inbound = Object.fromEntries(map.objects.map(object => [object.id, 0]));
+  for (const object of map.objects)
+    for (const relationship of object.relationships || [])
+      if (inbound[relationship.target] !== undefined) inbound[relationship.target]++;
+  return map.objects.map(object => {
+    const out = object.relationships || [], into = inbound[object.id], warnings = [];
+    if (!out.length && !into) warnings.push('connects to nothing');
+    if (!(object.actions || []).length && !into) warnings.push('nothing can be done to it');
+    if (!object.description) warnings.push('no definition');
+    const echoes = out.filter(relationship => {
+      const target = map.objects.find(candidate => candidate.id === relationship.target);
+      return target && plain(relationship.name) === plain(target.name);
+    });
+    if (echoes.length) warnings.push(`label repeats its target: ${echoes.map(r => r.name).join(', ')}`);
+    if (object.status !== 'intended' && !(object.evidence || []).length) warnings.push('no evidence recorded');
+    return {
+      name: object.name, status: object.status,
+      attributes: (object.attributes || []).length, relationships: out.length, inbound: into,
+      actions: (object.actions || []).length, states: (object.states || []).length,
+      filterable: (object.attributes || []).filter(a => a.filterable).map(a => a.name),
+      warnings,
+    };
+  });
+}
+
 export async function main(args = process.argv.slice(2)) {
   const [command, ...rest] = args;
   const root = await findRoot();
@@ -34,6 +63,11 @@ export async function main(args = process.argv.slice(2)) {
     await recordEvent(root,'review',{turn:token,outcome:receipt.revision===current.revision?'unchanged':'updated'});
     return {reviewed: true, revision: current.revision};
   }
+  if (command === 'check') {
+    const current = await store.read('map');
+    validateMap(current.data);
+    return {root, objects: checkMap(current.data)};
+  }
   if (command === 'doctor') {
     const checks = [];
     for (const relative of ['AGENTS.md', 'CLAUDE.md', '.agents/skills/object-map/SKILL.md', '.claude/skills/object-map/SKILL.md', '.codex/hooks.json', '.claude/settings.json', '.agents/skills/object-map/assets/app/index.html']) {
@@ -60,8 +94,26 @@ export async function main(args = process.argv.slice(2)) {
     }
     return addFeedback(root,category,summary,fields);
   }
-  throw new Error('Commands: read, write FILE --revision REVISION, validate [FILE], review TOKEN NOTE, doctor. Run scripts/serve.mjs to open the canvas.');
+  throw new Error('Commands: read, write FILE --revision REVISION, validate [FILE], review TOKEN NOTE, check, doctor. Run scripts/serve.mjs to open the canvas.');
+}
+function report(objects) {
+  const width = Math.max(...objects.map(object => object.name.length));
+  const lines = objects.map(object => {
+    const counts = `${object.attributes}a ${object.relationships}->${object.inbound}<- ${object.actions}c ${object.states}s`;
+    const mark = object.status === 'intended' ? 'o' : '*';
+    return `${mark} ${object.name.padEnd(width)}  ${counts}${object.warnings.length ? `   ! ${object.warnings.join('; ')}` : ''}`;
+  });
+  const filterable = objects.flatMap(object => object.filterable.map(name => `${object.name}.${name}`));
+  const flagged = objects.filter(object => object.warnings.length).length;
+  return [
+    ...lines,
+    '',
+    `${objects.length} objects, ${flagged} worth a second look. * observed, o intended. 2->3<- is two links out, three in.`,
+    `Filterable: ${filterable.length ? filterable.join(', ') : 'nothing marked'}`,
+  ].join('\n');
 }
 if (isMain(import.meta.url)) {
-  main().then(result => console.log(JSON.stringify(result, null, 2))).catch(error => {console.error(error.message); process.exitCode = 1;});
+  main()
+    .then(result => console.log(process.argv[2] === 'check' ? report(result.objects) : JSON.stringify(result, null, 2)))
+    .catch(error => {console.error(error.message); process.exitCode = 1;});
 }

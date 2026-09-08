@@ -125,3 +125,30 @@ test('the documented Node minimum is enforced before anything is written', async
   assert.throws(() => requireNode('18.20.4'), /Node 20\.0\.0 or newer. This is Node 18\.20\.4/);
   assert.equal(nodeIsSupported(), true, 'the test runner itself meets the documented minimum');
 });
+
+test('check names what a reader should look at twice without touching the map', async () => {
+  const {checkMap} = await import('../skills/object-map/scripts/map.mjs');
+  const map = {version:1, objects:[
+    {id:'obj:place', name:'Place', description:'Somewhere saved.', status:'observed', evidence:['src/place.js'],
+     attributes:[{id:'obj:place/attr:name', name:'Name', filterable:true}],
+     relationships:[{id:'obj:place/rel:city', name:'Located in', target:'obj:city'}],
+     actions:[{id:'obj:place/action:save', name:'Save'}], states:[]},
+    {id:'obj:visit', name:'Visit', description:'A trip to a place.', status:'observed', evidence:['src/visit.js'],
+     attributes:[], relationships:[{id:'obj:visit/rel:place', name:'Place', target:'obj:place'}],
+     actions:[{id:'obj:visit/action:log', name:'Log'}], states:[]},
+    {id:'obj:city', name:'City', description:'', status:'observed', evidence:[],
+     attributes:[], relationships:[], actions:[], states:[]},
+    {id:'obj:orphan', name:'Orphan', description:'Nothing points here.', status:'intended',
+     attributes:[], relationships:[], actions:[], states:[]},
+  ]};
+  const [place, visit, city, orphan] = checkMap(map);
+  assert.deepEqual(place.warnings, [], 'a connected, defined, evidenced object is quiet');
+  assert.deepEqual(place.filterable, ['Name']);
+  assert.equal(place.inbound, 1, 'being a target counts as connected');
+  assert.deepEqual(visit.warnings, ['label repeats its target: Place'],
+    'a role that only restates its target says the two are related and nothing more');
+  assert.deepEqual(city.warnings, ['no definition', 'no evidence recorded'],
+    'an inbound-only object is still checked for its definition and evidence');
+  assert.deepEqual(orphan.warnings, ['connects to nothing', 'nothing can be done to it'],
+    'an intended object is not asked for evidence it cannot have');
+});

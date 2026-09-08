@@ -101,6 +101,8 @@ You and your agent can both be working at once. Saves are revision-checked, so a
 
 The hooks make sure your agent has the map and notices when it is out of date. They cannot check whether the map is correct. You do that by reading the canvas, which is why the install prompt asks your agent to report what it was unsure about.
 
+To read the finished map without opening the canvas, run `node .agents/skills/object-map/scripts/map.mjs check` in your repository. It lists every object with its counts and names the ones worth a second look: an object that connects to nothing, one nobody can act on, a missing definition, a relationship label that only repeats its target, a claim with no evidence behind it.
+
 If the hooks do not appear to fire, run `node .agents/skills/object-map/scripts/map.mjs doctor` in your repository. It lists every file the install wrote and marks any that are missing. Files on disk do not prove your host loaded them. Restart or re-trust the host, then check whether a fresh prompt carries the map.
 
 ## Development
