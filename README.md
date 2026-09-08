@@ -96,26 +96,28 @@ node .agents/skills/object-map/scripts/serve.mjs
 
 The product repo needs Node 22.12+, but no Vite/React installation. This is a local portable bundle, not a published marketplace release. See [host integration](skills/object-map/references/hosts.md) for compatibility and activation, and [the skill](skills/object-map/SKILL.md) for the maintenance contract.
 
-## Field testing and development feedback
-
-Use a branch of an existing product for the first trial. From this source checkout, build the portable skill and install it with local feedback enabled:
+## Install into a product
 
 ```sh
 npm run package:skill
-npm run install:map -- /absolute/path/to/product --hosts=codex --dev
 ```
 
-Use `--hosts=claude` when testing Claude Code. The installer prints the skill build fingerprint. Restart/trust the host, run `map.mjs doctor`, then ask the agent to run Object Map on the product and use it through ordinary tasks. Follow [the field-test guide](TESTING.md) for the complete loop.
-
-`--dev` records local hook, review and write diagnostics plus structured findings the agent or builder explicitly adds. Logs stay in git-ignored `.object-map/dev/`. There is no automatic upload. Automatic diagnostics exclude product code, prompts, object labels, paths and review text; authored feedback notes contain supplied text.
-
-From the product repo:
+Extract `dist/object-map-skill.tgz` and install it into the repository you want to map:
 
 ```sh
-node .agents/skills/object-map/scripts/map.mjs feedback export > /tmp/object-map-feedback.json
+node /path/to/extracted/object-map/scripts/install.mjs /absolute/path/to/product
 ```
 
-Review that report before sharing it here or in a GitHub issue. Add `--metrics-only` to omit qualitative notes. Reinstall with `--upgrade --dev` for a new build, or `--no-dev` to stop recording. See [feedback details](skills/object-map/references/feedback.md).
+The installer prints the build fingerprint, the command to open the canvas, and the prompt to give the agent. Restart or trust the host so the project hooks activate, then:
+
+```sh
+cd /absolute/path/to/product
+node .agents/skills/object-map/scripts/serve.mjs
+```
+
+> Run Object Map on this repository. Inspect the implementation, populate the map, and tell me what you were unsure about.
+
+Use `--hosts=claude` or `--hosts=codex` to configure one host instead of both. `--upgrade` replaces older or customized skill files, keeping backups. `--dev` additionally records local hook, review and write diagnostics under git-ignored `.object-map/dev/`, which is only useful when reporting a problem with Object Map itself; see [feedback details](skills/object-map/references/feedback.md).
 
 ## Repeatable Atlas fixtures
 

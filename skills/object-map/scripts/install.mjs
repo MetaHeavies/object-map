@@ -118,6 +118,23 @@ export async function installMain(args = process.argv.slice(2)) {
   const hostOption = args.find(arg => arg.startsWith('--hosts='));
   const result = await install(root, {hosts: hostOption ? hostOption.slice(8).split(',') : undefined, hooks: !args.includes('--no-hooks'), upgrade: args.includes('--upgrade'), dev:args.includes('--dev') ? true : args.includes('--no-dev') ? false : undefined});
   console.log(JSON.stringify(result, null, 2));
-  console.log('Restart the agent if needed and trust this repository to activate project hooks. Run scripts/map.mjs doctor, then verify fresh prompt context.');
+  const rel = path.relative(process.cwd(), root);
+  const where = !rel ? '.' : rel.startsWith('..') ? root : rel;
+  console.log([
+    '',
+    'Installed. Restart or trust the host so the project hooks activate.',
+    ...(result.viewer ? [] : ['', 'This build has no canvas. Package the skill from the Object Map source to get the viewer.']),
+    '',
+    'Open the map:',
+    '',
+    `  cd ${where}`,
+    '  node .agents/skills/object-map/scripts/serve.mjs',
+    '',
+    'Then give the agent this:',
+    '',
+    '  Run Object Map on this repository. Inspect the implementation,',
+    '  populate the map, and tell me what you were unsure about.',
+    '',
+  ].join('\n'));
 }
 if (isMain(import.meta.url)) installMain().catch(error => {console.error(error.message); process.exitCode = 1;});
