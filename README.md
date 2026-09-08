@@ -56,7 +56,7 @@ For a new project without existing code, point the agent at your spec or product
 
 ## System Requirements & Integration
 
-- **Language Agnostic**: Your agent reads your code; Object Map never parses or runs it. Your product can be written in Python, Ruby, Go, PHP, TypeScript, or any other stack.
+- **Language Agnostic**: Your agent reads your code. Object Map never parses or runs it. Your product can be written in Python, Ruby, Go, PHP, TypeScript, or any other stack.
 - **Node Runtime**: Node is only required locally on your machine to run the CLI and canvas server. It adds no dependencies to your project's `package.json` or build process.
 - **Agent Support**: Configures hooks automatically for Claude Code and Codex (use `--hosts=claude` or `--hosts=codex` to specify one). For other agents, standard instructions are added to `AGENTS.md`.
 
@@ -96,9 +96,9 @@ Edits save automatically to `.object-map/map.json`. The canvas updates live when
 
 ## How It Stays Current
 
-The map is a plain JSON file in your repository, `.object-map/map.json`, which your agent reads and writes through the installed skill. Keeping it accurate is not left to the agent's memory. Installation registers three **hooks** — short commands your agent host runs by itself at fixed points in a session, configured in `.claude/settings.json` and `.codex/hooks.json`:
+The map is a plain JSON file in your repository, `.object-map/map.json`, which your agent reads and writes through the installed skill. Keeping it accurate is not left to the agent's memory. Installation registers three **hooks**. A hook is a short command your agent host runs by itself at a fixed point in a session. Object Map configures its three in `.claude/settings.json` and `.codex/hooks.json`:
 
-- **SessionStart**: Fires when a session begins. Puts the current map in front of your agent, so it starts from your model and your names instead of re-deriving them from the code.
+- **SessionStart**: Fires when a session begins. Puts the current map in front of your agent. It starts from your model and your names instead of re-deriving them from the code.
 - **UserPromptSubmit**: Fires on every prompt you send. Re-supplies the map so it stays in context through a long session.
 - **Stop**: Fires when your agent finishes a turn. It compares what moved: if implementation files changed and the map did not, it names those files and asks for the model to be reconciled. One reminder at most, and silence when nothing changed.
 
