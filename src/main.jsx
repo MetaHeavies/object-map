@@ -17,6 +17,8 @@ import {
   Minus,
   X,
   Search,
+  Sun,
+  Moon,
   Undo2,
   Redo2,
   Copy,
@@ -1169,7 +1171,7 @@ function App() {
     if ((e.button !== 0 && e.button !== 1) || !e.isPrimary) return;
     if (
       e.target.closest(
-        "button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover",
+        "button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.canvas-search",
       )
     )
       return;
@@ -1231,7 +1233,7 @@ function App() {
     const el = canvasRef.current;
     if (!el) return;
     const wheel = (e) => {
-      if (e.target.closest("aside,.search-popover,.new-object-popover,.item-composer,.relationship-editor,.context-menu,.object-type-menu,.canvas-toolbar,.canvas-actions")) return;
+      if (e.target.closest("aside,.canvas-search,.item-composer,.relationship-editor,.context-menu,.object-type-menu,.canvas-toolbar,.canvas-actions")) return;
       e.preventDefault();
       if (activeDrag.current) return;
       setCameraMotion(false);
@@ -1349,7 +1351,7 @@ function App() {
         ref={canvasRef}
         onPointerDown={pan}
         onDoubleClick={(e) => {
-          if (activeDrag.current || e.target.closest('button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover')) return;
+          if (activeDrag.current || e.target.closest('button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.canvas-search')) return;
           e.preventDefault();
           const rect = canvasRef.current.getBoundingClientRect();
           zoom(e.shiftKey ? 1 / 1.5 : 1.5, { x: e.clientX - rect.left, y: e.clientY - rect.top });
@@ -1365,21 +1367,41 @@ function App() {
               Clear selection
             </button>
         )}
-        {/* Finding sits where you look for it, centred under the bar. */}
+        {/* The control becomes the field. Clicking it should not open an
+            interface somewhere else on the screen. */}
         <div className="canvas-actions">
-          <button
-            className="canvas-find"
-            aria-label="Find an object (⌘K)"
-            onClick={() => setSearchOpen(!searchOpen)}
-          >
-            <Search size={15} />
-            Find an object
-            <kbd>⌘K</kbd>
-          </button>
+          {!searchOpen && (
+            <button
+              className="canvas-find"
+              aria-label="Find an object (⌘K)"
+              onClick={() => setSearchOpen(true)}
+            >
+              <Search size={15} />
+              Find an object
+              <kbd>⌘K</kbd>
+            </button>
+          )}
+        </div>
+        {/* Mirrors the find control across the canvas: same top, same height. */}
+        <div className="canvas-appearance" role="group" aria-label="Appearance">
+          {[["light", "Light", Sun], ["dark", "Dark", Moon]].map(
+            ([key, label, Icon]) => (
+              <button
+                key={key}
+                className={theme === key ? "selected" : ""}
+                aria-pressed={theme === key}
+                aria-label={label}
+                title={label}
+                onClick={() => setTheme(key)}
+              >
+                <Icon size={15} />
+              </button>
+            ),
+          )}
         </div>
         {searchOpen && (
-          <div className="search-popover">
-            <div>
+          <div className="canvas-search">
+            <div className="canvas-search-field">
               <Search size={15} />
               <input
                 autoFocus

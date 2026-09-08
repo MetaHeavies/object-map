@@ -32,13 +32,6 @@ button:disabled {
   cursor: default;
   opacity: 0.35;
 }
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible {
-  outline: 2px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.5243) calc(0.006 * var(--tone-c)) 231);
-  outline-offset: 3px;
-}
 button {
   touch-action: manipulation;
 }
@@ -1197,56 +1190,6 @@ i.purple {
   width: 100%;
   justify-content: space-between;
 }
-.search-popover {
-  position: absolute;
-  right: 38px;
-  top: 88px;
-  width: 300px;
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.997) calc(0.006 * var(--tone-c)) 231);
-  border: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.9067) calc(0.006 * var(--tone-c)) 231);
-  box-shadow: 0 5px 25px oklch(0.3753 0.006 231 / 0.0824);
-  border-radius: 7px;
-  z-index: 20;
-  padding: 6px;
-  max-height: 350px;
-  overflow: auto;
-}
-.search-popover > div {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 4px;
-  border-bottom: 1px solid oklch(calc(var(--tone-0) + var(--tone-d) * 0.928) calc(0.006 * var(--tone-c)) 231);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.6731) calc(0.006 * var(--tone-c)) 231);
-}
-.search-popover input {
-  width: 100%;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: var(--t-body);
-}
-.search-popover > button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  width: 100%;
-  text-align: left;
-  font-size: var(--t-body);
-  border-radius: 4px;
-}
-.search-popover > button svg:last-child {
-  margin-left: auto;
-}
-.search-popover > button:hover {
-  background: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9642) calc(0.006 * var(--tone-c)) 231);
-}
-.search-popover p {
-  font-size: var(--t-small);
-  color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.709) calc(0.006 * var(--tone-c)) 231);
-  padding: 5px 10px;
-}
 .toast {
   position: fixed;
   bottom: 101px;
@@ -1449,11 +1392,6 @@ i.purple {
     right: 15px;
     width: calc(100% - 30px);
     top: 15px;
-  }
-  .search-popover {
-    right: 15px;
-    width: calc(100% - 30px);
-    top: 72px;
   }
   .toast {
     bottom: 95px;
@@ -2101,8 +2039,18 @@ i.purple {
 
 /* No focus rings anywhere, by request. Editing state is shown by the field
    itself changing to an input with its own border and background. */
-:where(button, a, input, select, textarea, [tabindex]):focus,
-:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+button:focus,
+button:focus-visible,
+a:focus,
+a:focus-visible,
+input:focus,
+input:focus-visible,
+select:focus,
+select:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+[tabindex]:focus,
+[tabindex]:focus-visible {
   outline: none;
   box-shadow: none;
 }
@@ -2139,4 +2087,103 @@ i.purple {
 }
 .card-tools .icon-button:hover {
   color: var(--chrome-title);
+}
+
+/* The find control opens in place: same box, now holding a field and its
+   results, rather than a panel appearing elsewhere on the screen. */
+.canvas-search {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 20;
+  width: 300px;
+  max-height: 360px;
+  overflow: auto;
+  padding: 0 4px 4px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--chrome-line);
+  box-shadow: var(--shadow-lifted);
+  overflow: hidden;
+}
+.canvas-search-field {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 6px 0 12px;
+  color: var(--chrome-muted);
+}
+.canvas-search-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--chrome-title);
+  font-size: var(--t-body);
+}
+.canvas-search-field input::placeholder { color: var(--chrome-muted); }
+.canvas-search > button,
+.canvas-search > p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 7px 8px;
+  border-radius: 6px;
+  font-size: var(--t-body);
+  color: var(--chrome-title);
+  text-align: left;
+}
+.canvas-search > button:first-of-type { margin-top: 4px; }
+.canvas-search > button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  font-size: var(--t-body);
+  color: var(--chrome-title);
+  text-align: left;
+}
+.canvas-search > button svg:last-child { margin-left: auto; opacity: 0.5; }
+.canvas-search > button:hover {
+  background: color-mix(in oklch, var(--surface), var(--chrome-title) 8%);
+}
+
+/* Mirrors the find control across the canvas: same top, same height, same radius. */
+.canvas-appearance {
+  position: absolute;
+  top: 24px;
+  right: 38px;
+  z-index: 6;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--chrome-line);
+  background: var(--surface);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.04);
+}
+.canvas-appearance button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  border-radius: 6px;
+  color: var(--chrome-muted);
+  transition:
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.canvas-appearance button:hover { color: var(--chrome-title); }
+.canvas-appearance button:active { transform: scale(0.94); }
+.canvas-appearance button.selected {
+  background: var(--accent);
+  color: var(--accent-fg);
 }

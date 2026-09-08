@@ -12,7 +12,7 @@ export async function testLiveMap(page, root) {
   assert.equal(await page.getByRole('button', {name:'Undo (⌘Z)',exact:true}).isDisabled(),true,'An old undo snapshot cannot overwrite an external agent update');
   await page.getByRole('button',{name:'Find an object (⌘K)'}).click();
   await page.getByRole('textbox',{name:'Find an object',exact:true}).fill('City');
-  await page.locator('.search-popover').getByRole('button',{name:'City',exact:true}).click();
+  await page.locator('.canvas-search').getByRole('button',{name:'City',exact:true}).click();
   const city=page.locator('[data-object-id="obj:city"]');
   await city.getByRole('button',{name:'Select Country',exact:true}).dblclick();
   const draft=city.getByRole('textbox',{name:'Country',exact:true});

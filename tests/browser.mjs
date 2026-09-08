@@ -62,7 +62,7 @@ try {
     .getByRole("textbox", { name: "Find an object", exact: true })
     .fill("Place");
   await page
-    .locator(".search-popover")
+    .locator(".canvas-search")
     .getByRole("button", { name: "Place", exact: true })
     .click();
   const place = page.locator('[data-object-id="obj:place"]');
@@ -94,7 +94,7 @@ try {
     .getByRole("textbox", { name: "Find an object", exact: true })
     .fill("Place");
   await page
-    .locator(".search-popover")
+    .locator(".canvas-search")
     .getByRole("button", { name: "Place", exact: true })
     .click();
   await page.waitForTimeout(700);
@@ -111,7 +111,7 @@ try {
     .getByRole("textbox", { name: "Find an object", exact: true })
     .fill("Contact");
   await page
-    .locator(".search-popover")
+    .locator(".canvas-search")
     .getByRole("button", { name: "Contact", exact: true })
     .click();
   const contact = page.locator('[data-object-id="obj:contact"]');

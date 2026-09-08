@@ -179,7 +179,7 @@ export async function testFocus(page) {
     .getByRole("textbox", { name: "Find an object", exact: true })
     .fill("Person");
   await page
-    .locator(".search-popover")
+    .locator(".canvas-search")
     .getByRole("button", { name: "Person", exact: true })
     .click();
   for (const id of [

@@ -51,6 +51,7 @@ node .agents/skills/object-map/scripts/serve.mjs --demo
 - Undo/redo semantic changes with the toolbar or Cmd/Ctrl-Z and Shift-Cmd/Ctrl-Z. A promoted object can also be demoted from its menu if it has no added structure or additional inbound relationships.
 - Copy stable references from an item's controls or an object's menu. The session log in settings provides a compact agent handoff and an export of the model.
 - One panel holds everything that is not the map: repository paths, show saved map, export, display switches, appearance, motion and the session log. The header carries the product name, the repository you are in, and the control that opens it. The motion choice sets the duration and easing for both the scripted animations and the canvas transitions, so focus and collapse follow it too. The appearance choice is remembered in this browser. Reduced-motion settings take priority.
+- Finding sits centred under the bar and opens in place: the control becomes the field, focused, with matches beneath it. A light/dark toggle mirrors it on the other side at the same height.
 - Keyboard shortcuts: **F** fits the model, **Cmd/Ctrl-K** finds an object, **Escape** dismisses panels.
 
 Saves go to the selected repository's `.object-map/map.json` and `.object-map/layout.json` independently. Semantic identifiers survive renaming. Stale revisions are rejected instead of overwriting a newer file. If a save fails, export your unsaved work before reloading.
