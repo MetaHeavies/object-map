@@ -2,49 +2,11 @@ import {readFile, writeFile, access} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {Store} from './store.mjs';
-import {validateMap} from './model.mjs';
+import {validateMap, checkMap, unresolvedQuestions} from './model.mjs';
 import {findRoot, isMain} from './workspace.mjs';
 import {recordEvent, addFeedback, exportFeedback, devConfig} from './feedback.mjs';
 
-// The agent records what it could not settle in .object-map/discovery.md. It is
-// the most useful thing it writes and nothing surfaced it, so check reads it back.
-export function unresolvedQuestions(notes) {
-  const lines = (notes || '').split('\n');
-  const start = lines.findIndex(line => /^##\s+unresolved questions\s*$/i.test(line.trim()));
-  if (start < 0) return [];
-  const end = lines.findIndex((line, index) => index > start && /^##\s/.test(line));
-  return lines.slice(start + 1, end < 0 ? undefined : end).join('\n').trim().split(/\n(?=\s*(?:\d+\.|[-*])\s)/)
-    .map(entry => entry.trim()).filter(Boolean);
-}
-
-// A reading of the map you can act on: what connects to nothing, what nobody
-// can act on, what has no definition, and labels that only repeat their target.
-export function checkMap(map) {
-  const plain = value => (value || '').toLowerCase().replace(/[^a-z]/g, '');
-  const inbound = Object.fromEntries(map.objects.map(object => [object.id, 0]));
-  for (const object of map.objects)
-    for (const relationship of object.relationships || [])
-      if (inbound[relationship.target] !== undefined) inbound[relationship.target]++;
-  return map.objects.map(object => {
-    const out = object.relationships || [], into = inbound[object.id], warnings = [];
-    if (!out.length && !into) warnings.push('connects to nothing');
-    if (!(object.actions || []).length && !into) warnings.push('nothing can be done to it');
-    if (!object.description) warnings.push('no definition');
-    const echoes = out.filter(relationship => {
-      const target = map.objects.find(candidate => candidate.id === relationship.target);
-      return target && plain(relationship.name) === plain(target.name);
-    });
-    if (echoes.length) warnings.push(`label repeats its target: ${echoes.map(r => r.name).join(', ')}`);
-    if (object.status !== 'intended' && !(object.evidence || []).length) warnings.push('no evidence recorded');
-    return {
-      name: object.name, status: object.status,
-      attributes: (object.attributes || []).length, relationships: out.length, inbound: into,
-      actions: (object.actions || []).length, states: (object.states || []).length,
-      filterable: (object.attributes || []).filter(a => a.filterable).map(a => a.name),
-      warnings,
-    };
-  });
-}
+export {checkMap, unresolvedQuestions};
 
 export async function main(args = process.argv.slice(2)) {
   const [command, ...rest] = args;

@@ -49,6 +49,7 @@ import {
   changesBetween,
   validateMap,
   focusContext,
+  checkMap,
 } from "./model.mjs";
 import { motion, treatments } from "./motion";
 import { arrange, columnOrder, reorderColumns, positionsForOrder, COLUMN_STEP } from "./layout.mjs";
@@ -104,6 +105,15 @@ async function api(url, options) {
   if (!response.ok)
     throw new Error(result.error || "Unable to connect to the repository.");
   return result;
+}
+// The notes are Markdown written for a person. Only the two marks the agent
+// actually uses need rendering: emphasis, and code for identifiers.
+function inlineMarkdown(text) {
+  return text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).map((part, index) => {
+    if (part.startsWith("**")) return <strong key={index}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith("`")) return <code key={index}>{part.slice(1, -1)}</code>;
+    return part;
+  });
 }
 function IconButton({ icon: Icon, label, ...props }) {
   return (
@@ -257,6 +267,8 @@ function ItemComposer({ section, object, map, onAdd, onCancel, onReveal }) {
 function ObjectCard({
   object,
   index,
+  warnings,
+  onReview,
   zoom,
   expanded,
   focused,
@@ -347,6 +359,20 @@ function ObjectCard({
           <span className="object-index">
             OBJECT {String(index + 1).padStart(2, "0")}
           </span>
+          {warnings?.length > 0 && (
+            <button
+              type="button"
+              className="object-flag"
+              title={warnings.join("; ")}
+              aria-label={`${object.name}: ${warnings.join("; ")}`}
+              onClick={(event) => {
+                event.stopPropagation();
+                onReview();
+              }}
+            >
+              <Info size={12} />
+            </button>
+          )}
           <div className="card-tools">
             <div className="menu-anchor">
               <IconButton
@@ -731,6 +757,7 @@ function App() {
     [loaded, setLoaded] = useState(false),
     [loadError, setLoadError] = useState(""),
     [config, setConfig] = useState({ name: "" }),
+    [questions, setQuestions] = useState([]),
     [repository, setRepository] = useState("");
   const [expanded, setExpanded] = useState([]),
     [nameRelationship, setNameRelationship] = useState(null),
@@ -763,6 +790,8 @@ function App() {
   }, []);
   // Fixed presentation: the motion treatment is the shipped one, empty state
   // groups stay hidden, and evidence shows wherever the agent recorded it.
+  const review = React.useMemo(() => checkMap(map), [map]);
+  const flagged = review.filter((entry) => entry.warnings.length);
   const treatment = "restrained",
     showStates = false,
     showEvidence = false;
@@ -818,6 +847,7 @@ function App() {
               };
         setLayout(initial);
         setConfig(w.config);
+        setQuestions(w.questions || []);
         setRepository(w.repository);
         revisions.current = w.revisions;
         if (w.layout.mode !== "ooux-columns") persist("layout", initial);
@@ -890,6 +920,7 @@ function App() {
       const expected = {...revisions.current};
       try {
         const latest = await api('/api/workspace');
+        setQuestions(latest.questions || []);
         if (stopped || busy() || revisions.current.map !== expected.map || revisions.current.layout !== expected.layout) return;
         if (latest.revisions.map !== expected.map) {
           validateMap(latest.map);
@@ -1552,6 +1583,8 @@ function App() {
               onRevealComposer={revealComposer}
               selectedItem={selectedItem}
               onSelectItem={setSelectedItem}
+              warnings={review.find((entry) => entry.id === object.id)?.warnings}
+              onReview={() => setPanel("review")}
               showStates={showStates}
               showEvidence={showEvidence}
               notify={notify}
@@ -1575,6 +1608,17 @@ function App() {
         )}
         {!!map.objects.length && (
         <div className="canvas-bottom">
+          {(flagged.length > 0 || questions.length > 0) && (
+            <button
+              type="button"
+              className="review-open"
+              aria-label={`Review ${flagged.length} flagged ${flagged.length === 1 ? "object" : "objects"} and ${questions.length} open ${questions.length === 1 ? "question" : "questions"}`}
+              onClick={() => setPanel(panel === "review" ? null : "review")}
+            >
+              <Info size={13} />
+              {flagged.length ? `${flagged.length} to review` : `${questions.length} open`}
+            </button>
+          )}
           <div className="legend" aria-label="Color key">
             {sections.map(section => <span key={section}><i className={sectionColors[section]} />{sectionLabels[section]}</span>)}
           </div>
@@ -1636,7 +1680,62 @@ function App() {
           }}
         />
       )}
-      {panel && (
+      {panel === "review" && (
+        <aside className="side-panel">
+          <div className="panel-heading">
+            <h2>Review</h2>
+            <IconButton
+              icon={X}
+              label="Close review"
+              onClick={() => setPanel(null)}
+            />
+          </div>
+          <div className="setting-group">
+            <h3>Worth a second look</h3>
+            {flagged.length ? (
+              <div className="review-list">
+                {flagged.map((entry) => (
+                  <button
+                    key={entry.id}
+                    type="button"
+                    className="review-item"
+                    onClick={() => {
+                      setPanel(null);
+                      traverse(entry.id);
+                    }}
+                  >
+                    <span className="review-name">{entry.name}</span>
+                    <span className="review-why">{entry.warnings.join(" · ")}</span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <p className="review-none">
+                Every object connects to something, can be acted on, is defined
+                and carries evidence.
+              </p>
+            )}
+          </div>
+          <div className="setting-group">
+            <h3>Open questions</h3>
+            {questions.length ? (
+              <div className="review-questions">
+                {questions.map((question, index) => (
+                  <p key={index}>
+                    {inlineMarkdown(question.replace(/\s*\n\s*/g, " "))}
+                  </p>
+                ))}
+              </div>
+            ) : (
+              <p className="review-none">
+                The agent recorded no unresolved questions in
+                <code> .object-map/discovery.md</code>.
+              </p>
+            )}
+          </div>
+        </aside>
+      )}
+      {panel === "settings" && (
           <aside className="side-panel">
             <div className="panel-heading">
               <h2>Settings</h2>

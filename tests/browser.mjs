@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict';
 import { chromium } from "@playwright/test";
 import { testFocus } from "./focus-browser.mjs";
 import { testSpacing } from "./spacing-browser.mjs";
@@ -165,6 +166,25 @@ try {
   await page.waitForTimeout(600);
   await page.screenshot({ path: "test-results/landscape.png" });
   await testLiveMap(page, root);
+  // The reading of the map has to reach the canvas, not only the CLI.
+  const flags = await page.locator(".object-flag").count();
+  assert.ok(flags > 0, "objects worth a second look are marked on their cards");
+  await page.locator(".review-open").click();
+  await page.waitForTimeout(300);
+  assert.ok(
+    (await page.locator(".review-item").count()) > 0,
+    "the review panel lists the flagged objects",
+  );
+  const target = await page.locator(".review-item .review-name").first().innerText();
+  await page.locator(".review-item").first().click();
+  await page.waitForTimeout(400);
+  assert.equal(await page.locator(".side-panel").count(), 0, "choosing one closes the panel");
+  assert.equal(
+    await page.locator(".object-card.focused .object-title").innerText(),
+    target,
+    "and selects that object on the canvas",
+  );
+  await page.getByRole("button", { name: "Clear selection", exact: true }).click();
   await page.setViewportSize({ width: 390, height: 844 });
   await page
     .getByRole("button", { name: "Settings", exact: true })

@@ -1,5 +1,7 @@
 import path from "node:path";
+import { readFile } from "node:fs/promises";
 import { Store } from "./store.mjs";
+import { unresolvedQuestions } from "./model.mjs";
 export function createApi(
   root = path.resolve(process.env.OBJECT_MAP_REPO || "."),
 ) {
@@ -23,11 +25,23 @@ export function createApi(
         const [map, layout, config] = await Promise.all(
           ["map", "layout", "config"].map((k) => store.read(k)),
         );
+        // The agent's own open questions live beside the map. The canvas is
+        // where the builder reads them, so they travel with the workspace.
+        let notes = null;
+        try {
+          notes = await readFile(
+            path.join(root, ".object-map/discovery.md"),
+            "utf8",
+          );
+        } catch (error) {
+          if (error.code !== "ENOENT") throw error;
+        }
         return res.end(
           JSON.stringify({
             map: map.data,
             layout: layout.data,
             config: config.data,
+            questions: unresolvedQuestions(notes),
             revisions: { map: map.revision, layout: layout.revision },
             repository: root,
           }),

@@ -643,8 +643,7 @@ body:has(.app-shell[data-input="keyboard"]) .object-type-menu { transition: none
   :root:not([data-theme="light"]) .object-heading,
   :root:not([data-theme="light"]) .evidence,
   :root:not([data-theme="light"]) .column-add,
-  :root:not([data-theme="light"]) .relationship-edit select,
-  :root:not([data-theme="light"]) .legend i {
+  :root:not([data-theme="light"]) .relationship-edit select {
     border-color: transparent;
   }
 }
@@ -661,7 +660,6 @@ body:has(.app-shell[data-input="keyboard"]) .object-type-menu { transition: none
 [data-theme="dark"] .object-heading,
 [data-theme="dark"] .evidence,
 [data-theme="dark"] .column-add,
-[data-theme="dark"] .relationship-edit select,
-[data-theme="dark"] .legend i {
+[data-theme="dark"] .relationship-edit select {
   border-color: transparent;
 }
