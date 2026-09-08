@@ -99,28 +99,37 @@
     --c-scale: 2.3;
     color-scheme: dark;
 
-    --l-fill: 0.305;
+    /* The dark chrome runs slightly cooler than the light one. */
+    --h-chrome: 276;
+
+    --l-fill: 0.325;
     --l-border: 0.415;
     --l-label: 0.885;
     --l-muted: 0.700;
 
-    --chrome-fill: oklch(0.205 0.003 var(--h-chrome));
-    --chrome-border: oklch(0.290 0.004 var(--h-chrome));
-    --chrome-badge: oklch(0.245 0.003 var(--h-chrome));
-    --chrome-title: oklch(0.965 0.002 var(--h-chrome));
-    --chrome-label: oklch(0.815 0.003 var(--h-chrome));
-    --chrome-muted: oklch(0.700 0.003 var(--h-chrome));
-    --chrome-line: oklch(0.255 0.004 var(--h-chrome));
-    --canvas: oklch(0.135 0.003 var(--h-chrome));
-    --canvas-dot: oklch(0.245 0.004 var(--h-chrome));
-    --surface: oklch(0.185 0.003 var(--h-chrome));
+    /* No strokes in dark: separation is carried by fill alone. */
+    --attribute-border: transparent;
+    --relationship-border: transparent;
+    --action-border: transparent;
+    --state-border: transparent;
 
-    --accent: oklch(0.970 0.002 var(--h-chrome));
-    --accent-fg: oklch(0.160 0.003 var(--h-chrome));
+    --chrome-fill: oklch(0.2705 0.013 var(--h-chrome));
+    --chrome-border: transparent;
+    --chrome-badge: oklch(0.325 0.014 var(--h-chrome));
+    --chrome-title: oklch(0.965 0.004 var(--h-chrome));
+    --chrome-label: oklch(0.815 0.006 var(--h-chrome));
+    --chrome-muted: oklch(0.700 0.006 var(--h-chrome));
+    --chrome-line: transparent;
+    --canvas: oklch(0.2141 0.008 var(--h-chrome));
+    --canvas-dot: oklch(0.290 0.010 var(--h-chrome));
+    --surface: oklch(0.2705 0.013 var(--h-chrome));
 
-    --scrim: oklch(0.135 0.003 var(--h-chrome) / 0.94);
-    --veil: oklch(0.170 0.003 var(--h-chrome) / 0.91);
-    --raised-veil: oklch(0.205 0.003 var(--h-chrome) / 0.93);
+    --accent: oklch(0.970 0.004 var(--h-chrome));
+    --accent-fg: oklch(0.200 0.008 var(--h-chrome));
+
+    --scrim: oklch(0.2141 0.008 var(--h-chrome) / 0.94);
+    --veil: oklch(0.245 0.010 var(--h-chrome) / 0.91);
+    --raised-veil: oklch(0.2705 0.013 var(--h-chrome) / 0.93);
     --drop-tint: oklch(0.42 0.03 var(--h-relationship) / 0.22);
 
     --shadow-lifted:
@@ -138,28 +147,37 @@
   --c-scale: 2.3;
   color-scheme: dark;
 
-  --l-fill: 0.305;
+  /* The dark chrome runs slightly cooler than the light one. */
+  --h-chrome: 276;
+
+  --l-fill: 0.325;
   --l-border: 0.415;
   --l-label: 0.885;
   --l-muted: 0.700;
 
-  --chrome-fill: oklch(0.205 0.003 var(--h-chrome));
-  --chrome-border: oklch(0.290 0.004 var(--h-chrome));
-  --chrome-badge: oklch(0.245 0.003 var(--h-chrome));
-  --chrome-title: oklch(0.965 0.002 var(--h-chrome));
-  --chrome-label: oklch(0.815 0.003 var(--h-chrome));
-  --chrome-muted: oklch(0.700 0.003 var(--h-chrome));
-  --chrome-line: oklch(0.255 0.004 var(--h-chrome));
-  --canvas: oklch(0.135 0.003 var(--h-chrome));
-  --canvas-dot: oklch(0.245 0.004 var(--h-chrome));
-  --surface: oklch(0.185 0.003 var(--h-chrome));
+  /* No strokes in dark: separation is carried by fill alone. */
+  --attribute-border: transparent;
+  --relationship-border: transparent;
+  --action-border: transparent;
+  --state-border: transparent;
 
-  --accent: oklch(0.970 0.002 var(--h-chrome));
-  --accent-fg: oklch(0.160 0.003 var(--h-chrome));
+  --chrome-fill: oklch(0.2705 0.013 var(--h-chrome));
+  --chrome-border: transparent;
+  --chrome-badge: oklch(0.325 0.014 var(--h-chrome));
+  --chrome-title: oklch(0.965 0.004 var(--h-chrome));
+  --chrome-label: oklch(0.815 0.006 var(--h-chrome));
+  --chrome-muted: oklch(0.700 0.006 var(--h-chrome));
+  --chrome-line: transparent;
+  --canvas: oklch(0.2141 0.008 var(--h-chrome));
+  --canvas-dot: oklch(0.290 0.010 var(--h-chrome));
+  --surface: oklch(0.2705 0.013 var(--h-chrome));
 
-  --scrim: oklch(0.135 0.003 var(--h-chrome) / 0.94);
-  --veil: oklch(0.170 0.003 var(--h-chrome) / 0.91);
-  --raised-veil: oklch(0.205 0.003 var(--h-chrome) / 0.93);
+  --accent: oklch(0.970 0.004 var(--h-chrome));
+  --accent-fg: oklch(0.200 0.008 var(--h-chrome));
+
+  --scrim: oklch(0.2141 0.008 var(--h-chrome) / 0.94);
+  --veil: oklch(0.245 0.010 var(--h-chrome) / 0.91);
+  --raised-veil: oklch(0.2705 0.013 var(--h-chrome) / 0.93);
   --drop-tint: oklch(0.42 0.03 var(--h-relationship) / 0.22);
 
   --shadow-lifted:
@@ -353,10 +371,10 @@
     visibility 0s linear 140ms;
 }
 .object-heading {
-  /* Gives the heading's own labels a base for the hover darkening. */
-  --row-bg: oklch(calc(var(--tone-0) + var(--tone-d) * 0.9432) calc(0.006729 * var(--tone-c)) 233.6);
+  /* The card surface, and the base its own labels darken from on hover. */
+  --row-bg: var(--chrome-fill);
   background: var(--row-bg);
-  border-color: oklch(calc(var(--tone-0) + var(--tone-d) * 0.8987) calc(0.01025 * var(--tone-c)) 228.9);
+  border-color: var(--chrome-border);
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
@@ -584,4 +602,42 @@ body:has(.app-shell[data-input="keyboard"]) .object-type-menu { transition: none
   .world[data-column-motion="true"] .object-card { transition: none; }
   .column-add, .object-type-menu { transition: none; }
   .column-add:active { transform: none; }
+}
+
+/* Strokes off in dark for everything on the canvas, selected included. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .object-card .mini-card.selected-item,
+  :root:not([data-theme="light"]) .object-card .mini-card.is-relevant,
+  :root:not([data-theme="light"]) .type-icon,
+  :root:not([data-theme="light"]) .canvas-find,
+  :root:not([data-theme="light"]) .object-type-menu,
+  :root:not([data-theme="light"]) .modal-card,
+  :root:not([data-theme="light"]) .guide-card,
+  :root:not([data-theme="light"]) .run-prompt,
+  :root:not([data-theme="light"]) .side-panel,
+  :root:not([data-theme="light"]) .canvas-toolbar,
+  :root:not([data-theme="light"]) .object-heading,
+  :root:not([data-theme="light"]) .evidence,
+  :root:not([data-theme="light"]) .column-add,
+  :root:not([data-theme="light"]) .relationship-edit select,
+  :root:not([data-theme="light"]) .legend i {
+    border-color: transparent;
+  }
+}
+[data-theme="dark"] .object-card .mini-card.selected-item,
+[data-theme="dark"] .object-card .mini-card.is-relevant,
+[data-theme="dark"] .type-icon,
+[data-theme="dark"] .canvas-find,
+[data-theme="dark"] .object-type-menu,
+[data-theme="dark"] .modal-card,
+[data-theme="dark"] .guide-card,
+[data-theme="dark"] .run-prompt,
+[data-theme="dark"] .side-panel,
+[data-theme="dark"] .canvas-toolbar,
+[data-theme="dark"] .object-heading,
+[data-theme="dark"] .evidence,
+[data-theme="dark"] .column-add,
+[data-theme="dark"] .relationship-edit select,
+[data-theme="dark"] .legend i {
+  border-color: transparent;
 }
