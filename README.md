@@ -1,154 +1,133 @@
 # Object Map
 
-A shared product model your coding agent maintains while it builds.
+Create an object model of your project that your coding agent maintains as it builds.
 
-Install it into a repository and the agent reads the implementation — routes, forms, schemas, services, tests — and writes down what the product is actually made of: the things a user can name, what belongs to each one, how they connect, what can be done to them, and the states they move through. You open a canvas and read the result as parallel columns, correct it, and add the concepts that only exist in your head so far. It is [OOUX](https://alistapart.com/article/object-oriented-ux/) kept current by the agent instead of workshopped once and abandoned.
+As coding agents grow more capable, maintaining visibility into what is actually being built becomes increasingly difficult. Domain logic, data structures, and feature choices quickly get fragmented across long chat histories, PRDs, pull requests, and generated code. When you hand an agent a prompt and say "build this," it is easy to lose track of your system's core primitives.
+
+Object Map gives you and your coding agent a shared, continuously updated single source of truth. Your agent reads the repository — routes, forms, schemas, services, tests — and records the core building blocks of your product: objects, attributes, relationships, actions, and states. The model it keeps is [Object-Oriented UX](https://alistapart.com/article/object-oriented-ux/) (OOUX), Sophia Prater's method for describing a product as the things its users recognize, rather than as the screens they pass through.
+
+Instead of digging through chat logs or reading thousands of lines of generated code, you get a visual canvas to inspect, refine, and discuss your product structure directly with your agent.
 
 ![The Bookshelf demo: five object columns — Book, Author, Member, Loan, Hold — with colour-coded attributes, relationships, actions and states](docs/canvas.png)
 
-## Install
+## Core Concepts
 
-Requires **Node 22.12 or newer** and a repository you want mapped.
+Object Map describes your product as the set of things it is made of, laid out side by side so you can read the whole product at once. Each object is one thing your users recognize, and carries five kinds of structure:
 
-```sh
+- **Object**: A core noun in your product that users recognize and interact with (e.g., Book, Author, Member).
+- **Attributes**: Properties that describe the object (e.g., Title, ISBN, Publish Date).
+- **Relationships**: Directional connections between objects (e.g., a Book is Written by an Author).
+- **Actions**: Operations users can perform on or with the object (e.g., Borrow, Renew, Archive).
+- **States**: Lifecycle stages an object moves through (e.g., Available, On Loan, Overdue).
+
+Concepts present in your brief but not yet implemented in code remain on the map as unbuilt items, allowing you to design the product before writing code.
+
+## Why It Helps
+
+- **You can read your product in a minute.** The map is the whole product on one surface, so checking what exists does not mean rereading generated code or scrolling back through a chat history.
+- **It makes the wrong shapes visible.** One concept living in two places under two names, an object that has swollen to carry everything, an action with nowhere to happen — these are obvious on the map and nearly invisible in a diff.
+- **Your agent stops rediscovering your product.** Every session starts from the same model and the same names, instead of re-deriving them from the code and guessing at your intent.
+- **You can design ahead of the build.** Concepts you have only described sit next to the ones that exist, marked as unbuilt, so a decision made in conversation is not lost by the next one.
+
+## Quick Start
+
+### 1. Install
+
+Requires Node 22.12 or newer. Extract the skill anywhere, then point the installer at your repository:
+
+```bash
 curl -L https://github.com/MetaHeavies/object-map/releases/latest/download/object-map-skill.tgz | tar xz
 node object-map/scripts/install.mjs /absolute/path/to/your/repository
 ```
 
-Restart or trust your agent host so the project hooks activate, then open the canvas:
+### 2. Launch the Canvas
 
-```sh
+Start the local server:
+
+```bash
 cd /absolute/path/to/your/repository
 node .agents/skills/object-map/scripts/serve.mjs
 ```
 
-Give the agent this:
+### 3. Prompt Your Agent
 
-> Run Object Map on this repository. Inspect the implementation, populate the map, and tell me what you were unsure about.
+Once installed, share this prompt with your agent:
 
-For a product that does not exist yet, point it at the brief instead — the map holds intentions and implementation side by side, and marks which is which.
+> Run Object Map on this repository. Inspect the implementation, populate the map, and report any missing concepts or ambiguities.
 
-### What it needs, and what it doesn't
+For a new project without existing code, point the agent at your spec or product brief. The agent will map your intended architecture side-by-side with your code as you build.
 
-Node is the tool's own runtime, the way git is: **your product can be written in anything.** Python, Ruby, Go, PHP, TypeScript — Object Map reads the implementation, it never runs it. There is no clone, no `npm install`, no build step and no dependency added to your project.
+## System Requirements & Integration
 
-There is no Python build of the installer, hooks or viewer, and a static server such as `python3 -m http.server` cannot host the canvas: it reads and writes `.object-map/*.json` through a small local API, all of it on 127.0.0.1.
+- **Language Agnostic**: Your agent reads your code; Object Map never parses or runs it. Your product can be written in Python, Ruby, Go, PHP, TypeScript, or any other stack.
+- **Node Runtime**: Node is only required locally on your machine to run the CLI and canvas server. It adds no dependencies to your project's `package.json` or build process.
+- **Agent Support**: Configures hooks automatically for Claude Code and Codex (use `--hosts=claude` or `--hosts=codex` to specify one). For other agents, standard instructions are added to `AGENTS.md`.
 
-Hosts: **Claude Code** and **Codex** are configured automatically. Use `--hosts=claude` or `--hosts=codex` for one instead of both. Any other agent falls back to the repository instructions, which are plain Markdown and work anywhere.
+## What Gets Added to Your Project
 
-### What installation writes
+Installation adds local configuration and agent instructions without altering your application code:
 
-| Path | What it is |
+| Path | Purpose |
 | --- | --- |
-| `.object-map/` | The model, the layout and local config |
-| `.agents/skills/object-map/` | The portable skill: instructions, references, Node helpers, canvas |
-| `.claude/skills/object-map/` | The same skill where Claude Code looks for it |
-| `AGENTS.md`, `CLAUDE.md` | A marked block of instructions, appended |
-| `.claude/settings.json`, `.codex/hooks.json` | Session, prompt and end-of-turn hooks |
+| `.object-map/` | Saved map data, canvas layout, and local settings |
+| `.agents/skills/object-map/` | Skill instructions, helper scripts, and canvas interface |
+| `.claude/skills/object-map/` | Claude Code skill integration |
+| `AGENTS.md`, `CLAUDE.md` | Instruction blocks appended for agent context |
+| `.claude/settings.json`, `.codex/hooks.json` | Hooks for automatic map synchronization |
 
-Existing instructions, settings and maps are preserved. `--upgrade` replaces older or customized skill files and keeps backups. To remove Object Map, delete the three directories, the marked blocks and the Object Map entries in the hook files.
+To uninstall, delete these directories and remove the marked blocks from your markdown and settings files.
 
-## Try it without installing
+## Demo Mode
 
-```sh
+To test Object Map without modifying a project:
+
+```bash
 node .agents/skills/object-map/scripts/serve.mjs --demo
 ```
 
-Opens **Bookshelf**, a small library product built to show what the parts mean rather than to be realistic. A walkthrough explains the vocabulary: what an object is, what belongs to it as an attribute, why a relationship carries a name, how the same object can appear twice under two roles, and why one concept on the map has no code behind it yet. The demo is copied to a temporary directory before it is served, so exploring it never edits anything.
+This launches a pre-populated example library project ("Bookshelf") in a temporary directory so you can explore the canvas risk-free.
 
-From a source checkout, `npm run demo` does the same.
+## Canvas Controls
 
-## Reading the map
+- **Focus View**: Click an object header to isolate its connections. Click the background or press Escape to reset.
+- **Edit & Rename**: Double-click any label or press F2 to edit.
+- **Add Elements**: Click + at the bottom of a column to add attributes, relationships, actions, or states. To draft a whole object before building it, ask your agent to add it — it stays on the map as unbuilt until code exists.
+- **Refactor**: Promote an attribute into its own object or demote an object back to an attribute using the item menu.
+- **Shortcuts**: Cmd/Ctrl + Z (Undo), Shift + Cmd/Ctrl + Z (Redo), F (Fit map to screen), Cmd/Ctrl + K (Search objects).
 
-Each column is one object. Beneath it, in order: amber attributes, blue relationships, green actions, lilac states. Colour is the only decoration — everything else is structure.
+Edits save automatically to `.object-map/map.json`. The canvas updates live when your coding agent modifies the structure.
 
-- **A one-line definition** under each object name says what it is in this product. Empty is better than a restatement of the name.
-- **Relationship labels are predicates**, read source to target: *Written by Author*, *Translated by Author*. Two links to the same object stay distinguishable. A label that merely repeats its target is visible as a label that says nothing.
-- **`many`** means the source holds more than one, so that link needs a list to add to and remove from where a single one needs a picker. **`filter`** marks a field the product actually lets people sort or search by. Together they are the shape of every browse screen you have not built yet.
-- **Objects with no code behind them** stay on the map, marked, until they are built or dropped — nothing quietly disappears between conversations.
-- Look for the object that carries everything and the ones that carry nothing, one concept sitting in two places under two names, an action with nowhere to happen. Those are the questions worth taking back to the agent.
+## How It Stays Current
 
-## Working on it
+The map is a plain JSON file in your repository, `.object-map/map.json`, which your agent reads and writes through the installed skill. Keeping it accurate is not left to the agent's memory. Installation registers three **hooks** — short commands your agent host runs by itself at fixed points in a session, configured in `.claude/settings.json` and `.codex/hooks.json`:
 
-- Click an object header to select it. Everything outside its context leaves the canvas and the remaining columns gather around the one you acted in, which holds its place. Click blank canvas or press Escape to bring them back.
-- Double-click any label, or press F2 while it is focused, to rename it. Enter saves, Escape cancels. Semantic identifiers survive renaming.
-- `+` at the foot of a column adds an attribute, relationship, CTA or state. **New object** is how you put a concept on the map before any code exists.
-- **Promote to object** turns an attribute into its own column and leaves a relationship behind — then asks you to name it, because the attribute's own name only repeats the target.
-- Deleting an object, promoting and demoting are confirmed first, and the confirmation names what the change takes with it.
-- Undo and redo with Cmd/Ctrl-Z and Shift-Cmd/Ctrl-Z. **F** fits the map, **Cmd/Ctrl-K** finds an object, **Escape** dismisses panels.
-- Settings holds the repository paths, a saved-map recovery, an export, and the session log with a copyable summary for your agent.
+- **SessionStart**: Fires when a session begins. Puts the current map in front of your agent, so it starts from your model and your names instead of re-deriving them from the code.
+- **UserPromptSubmit**: Fires on every prompt you send. Re-supplies the map so it stays in context through a long session.
+- **Stop**: Fires when your agent finishes a turn. It compares what moved: if implementation files changed and the map did not, it names those files and asks for the model to be reconciled. One reminder at most, and silence when nothing changed.
 
-Edits save to `.object-map/map.json` and `.object-map/layout.json` independently. Stale revisions are rejected rather than overwriting a newer file, so you and the agent can both be working. The canvas polls for external changes, defers them during an active edit, and keeps your view when only the semantics moved.
+You and your agent can both be working at once. Saves are revision-checked, so a write from a stale copy is rejected rather than overwriting newer work.
 
-## Staying current
-
-The install writes three hooks so the model does not rot:
-
-- **SessionStart** and **UserPromptSubmit** put the current map in front of the agent, so it works from the model rather than rediscovering it.
-- **Stop** compares what moved this turn: if the implementation changed and the map did not, it names the files and asks for a reconciliation, at most once.
-
-Hooks keep the map in the conversation. They cannot prove it is semantically right — that is what your reading of the canvas is for. `node .agents/skills/object-map/scripts/map.mjs doctor` checks the installation; a fresh prompt confirms activation.
-
-Resolve a single reference from the repository:
-
-```sh
-node .agents/skills/object-map/scripts/context.mjs obj:place
-```
+Hooks keep the map in the conversation. They cannot prove it is correct — that judgement is what the canvas is for, and it is why the install prompt asks your agent to report what it was unsure about.
 
 ## Development
 
-Requires Node 22.12+.
+To contribute to Object Map or build from source:
 
-```sh
+```bash
 npm install
 npm run dev
 ```
 
-Opens **http://127.0.0.1:5173**. The first run generates the Atlas fixture in `examples/atlas` and installs the skill there. Atlas is a deliberately mixed-quality product for testing discovery; it never ships with a precomputed map. `npm run atlas` runs the fixture's own application on **http://127.0.0.1:4318**.
+The dev server runs on http://127.0.0.1:5173. To test against the included fixture project, run `npm run atlas` (http://127.0.0.1:4318).
 
-Install a development build into another repository:
+### Testing & Packaging
 
-```sh
-npm run package:skill
-node scripts/install.mjs /absolute/path/to/repository
-```
-
-`package:skill` builds the canvas into `dist/object-map-skill.tgz`. Installing straight from a clone without it gives the agent integration but no viewer, since build output is not committed.
-
-`--dev` records local hook, review and write diagnostics under git-ignored `.object-map/dev/`, which is only useful when reporting a problem with Object Map itself. See [feedback details](skills/object-map/references/feedback.md).
-
-### Fixtures
-
-```sh
-npm run generate -- /tmp/atlas-realistic --condition realistic --seed 42
-node generator/scenario.mjs /tmp/atlas-realistic drift
-```
-
-Conditions are `clean`, `realistic` and `messy`; a fixed condition and seed give identical starting data, and each destination must be new. Generated projects are standalone with no npm dependencies. The scenarios (`drift`, `opening-hours`, `companions`) change the implementation after mapping so divergence can be tested; they leave Object Map untouched. Expectations live in `evaluation/atlas.json` and are never copied into generated repositories.
-
-### Validation
-
-```sh
+```bash
 npm test
 npm run build
-npx playwright install chromium
-npm run test:browser
 npm run package:skill
-npm run test:portable
 ```
 
-Browser tests generate an isolated repository and start their own servers on ports 5176 and 4319, so they never touch your development map. Set `CHROMIUM_EXECUTABLE` to reuse an existing Chromium. Screenshots land in `test-results/`.
-
-## Current boundary
-
-This is a working beta. Implemented: agent-led discovery and maintenance, semantic editing, promotion and demotion, undo/redo, contextual focus, repository persistence with revision checks, the portable skill, prompt and session hooks, bounded end-of-turn review, live canvas refresh and the fixture generator.
-
-Not implemented: fully automatic semantic drift detection, generic deterministic parsers for arbitrary stacks, and inertial dragging. Native Windows and live host activation still need validating on your setup. There are no accounts, no cloud storage and no code generation.
-
-Deliberately absent: a built-in schema extractor. A schema reader only sees schema-backed products, it cannot tell a product object from a table, and having one in the canvas implied the map could populate itself. Mapping is the agent's job.
-
-Original intent and scope: [PRD.md](PRD.md), [PROJECT.md](PROJECT.md), and the open questions behind them in [PRODUCT-QUESTIONS.md](PRODUCT-QUESTIONS.md). Host compatibility: [host integration](skills/object-map/references/hosts.md). The maintenance contract the agent follows: [the skill](skills/object-map/SKILL.md).
-
-## Licence
+## License
 
 MIT. See [LICENSE](LICENSE).
