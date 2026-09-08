@@ -12,7 +12,7 @@ import {
   validateMap,
   changesBetween,
 } from "../src/model.mjs";
-import { generate } from "../generator/generate.mjs";
+import { generate } from "./fixtures/generator/generate.mjs";
 import { Store, initialize } from "../server/store.mjs";
 import { install } from "../scripts/install.mjs";
 const empty = () => ({ version: 1, objects: [] });
@@ -123,7 +123,7 @@ test("installer preserves existing agent instructions and an existing map", asyn
 });
 
 test("implementation scenarios preserve the existing conceptual map and migrate live fixture data", async () => {
-  const { applyScenario } = await import("../generator/scenario.mjs");
+  const { applyScenario } = await import("./fixtures/generator/scenario.mjs");
   const temporary = await mkdtemp(
     path.join(os.tmpdir(), "object-map-scenario-"),
   );

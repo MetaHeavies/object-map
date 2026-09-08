@@ -1,6 +1,6 @@
 import { access } from "node:fs/promises";
 import path from "node:path";
-import { generate } from "../generator/generate.mjs";
+import { generate } from "../tests/fixtures/generator/generate.mjs";
 import { install } from "./install.mjs";
 const root = path.resolve(process.env.OBJECT_MAP_REPO || "examples/atlas");
 try {

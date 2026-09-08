@@ -10,7 +10,7 @@ import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
-import { generate } from "../generator/generate.mjs";
+import { generate } from "./fixtures/generator/generate.mjs";
 import { install } from "../scripts/install.mjs";
 const temporary = await mkdtemp(path.join(os.tmpdir(), "object-map-browser-"));
 const root = path.join(temporary, "atlas");

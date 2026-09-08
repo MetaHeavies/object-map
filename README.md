@@ -119,7 +119,7 @@ npm run dev
 
 The dev server runs on http://127.0.0.1:5173. To test against the included fixture project, run `npm run atlas` (http://127.0.0.1:4318).
 
-Background documents live in `docs/`: the [open questions](docs/product-questions.md) behind the current design. The Atlas test fixture has its own [specification](generator/README.md), and what a good mapping of it looks like is recorded in [`evaluation/`](evaluation/README.md).
+Background documents live in `docs/`: the [open questions](docs/product-questions.md) behind the current design. Test fixtures and their expectations live under `tests/fixtures/`.
 
 ### Testing & Packaging
 
