@@ -6,6 +6,17 @@ import {validateMap} from './model.mjs';
 import {findRoot, isMain} from './workspace.mjs';
 import {recordEvent, addFeedback, exportFeedback, devConfig} from './feedback.mjs';
 
+// The agent records what it could not settle in .object-map/discovery.md. It is
+// the most useful thing it writes and nothing surfaced it, so check reads it back.
+export function unresolvedQuestions(notes) {
+  const lines = (notes || '').split('\n');
+  const start = lines.findIndex(line => /^##\s+unresolved questions\s*$/i.test(line.trim()));
+  if (start < 0) return [];
+  const end = lines.findIndex((line, index) => index > start && /^##\s/.test(line));
+  return lines.slice(start + 1, end < 0 ? undefined : end).join('\n').trim().split(/\n(?=\s*(?:\d+\.|[-*])\s)/)
+    .map(entry => entry.trim()).filter(Boolean);
+}
+
 // A reading of the map you can act on: what connects to nothing, what nobody
 // can act on, what has no definition, and labels that only repeat their target.
 export function checkMap(map) {
@@ -66,7 +77,11 @@ export async function main(args = process.argv.slice(2)) {
   if (command === 'check') {
     const current = await store.read('map');
     validateMap(current.data);
-    return {root, objects: checkMap(current.data)};
+    const notesPath = path.join(root, '.object-map/discovery.md');
+    let notes = null;
+    try { notes = await readFile(notesPath, 'utf8'); }
+    catch (error) { if (error.code !== 'ENOENT') throw error; }
+    return {root, objects: checkMap(current.data), notes: notes !== null, questions: unresolvedQuestions(notes)};
   }
   if (command === 'doctor') {
     const checks = [];
@@ -112,8 +127,15 @@ function report(objects) {
     `Filterable: ${filterable.length ? filterable.join(', ') : 'nothing marked'}`,
   ].join('\n');
 }
+function notesReport({notes, questions}) {
+  if (!notes) return ['', 'No discovery notes. The agent writes .object-map/discovery.md when it maps a repository.'];
+  if (!questions.length) return ['', 'Discovery notes: .object-map/discovery.md (no unresolved questions recorded).'];
+  return ['', `The agent left ${questions.length} unresolved ${questions.length === 1 ? 'question' : 'questions'} in .object-map/discovery.md:`, '', ...questions.map(question => question.replace(/^/gm, '  ')), ''];
+}
 if (isMain(import.meta.url)) {
   main()
-    .then(result => console.log(process.argv[2] === 'check' ? report(result.objects) : JSON.stringify(result, null, 2)))
+    .then(result => console.log(process.argv[2] === 'check'
+      ? [report(result.objects), ...notesReport(result)].join('\n')
+      : JSON.stringify(result, null, 2)))
     .catch(error => {console.error(error.message); process.exitCode = 1;});
 }

@@ -152,3 +152,23 @@ test('check names what a reader should look at twice without touching the map', 
   assert.deepEqual(orphan.warnings, ['connects to nothing', 'nothing can be done to it'],
     'an intended object is not asked for evidence it cannot have');
 });
+
+test('check surfaces the questions the agent could not settle, and says so when there are none', async () => {
+  const {unresolvedQuestions} = await import('../skills/object-map/scripts/map.mjs');
+  const notes = [
+    '# Object Map discovery', '', '## Boundary calls made', '', '- Kept Invoice despite living inside Project.', '',
+    '## Unresolved questions', '',
+    '1. **Two account concepts.** `config.accounts` and treasury accounts.',
+    '   Nothing links them. Whether they are one concept is a product decision.',
+    '2. **Archived vs Lost.** Stored as `archived`, the button reads "Mark as Lost".', '',
+    '## Not inspected', '', '- The mobile client.', '',
+  ].join('\n');
+  const questions = unresolvedQuestions(notes);
+  assert.equal(questions.length, 2, 'each numbered entry is one question, however many lines it wraps to');
+  assert.match(questions[0], /Two account concepts/);
+  assert.match(questions[0], /product decision\.$/, 'a wrapped question keeps its continuation lines');
+  assert.match(questions[1], /Archived vs Lost/);
+  assert.ok(!questions[1].includes('Not inspected'), 'the section ends at the next heading');
+  assert.deepEqual(unresolvedQuestions('# Notes\n\n## Boundary\n\n- Nothing open.\n'), []);
+  assert.deepEqual(unresolvedQuestions(null), [], 'a repository with no notes is not an error');
+});
