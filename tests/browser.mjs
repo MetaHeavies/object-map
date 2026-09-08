@@ -150,14 +150,14 @@ try {
   await contact.getByRole("textbox", { name: "New attribute", exact: true }).fill("Uncommitted");
   await contact.getByRole("button", { name: "Cancel", exact: true }).click();
   if (await contact.getByText("Uncommitted", {exact:true}).count()) throw new Error("Cancel should discard the draft");
-  await page.getByRole("button", { name: "Session changes" }).click();
+  await page.getByRole("button", { name: "Settings", exact: true }).click();
   if (
     !(await page.locator(".change-list").textContent()).includes(
       "Contact / attributes: Email",
     )
   )
     throw new Error("Handoff missing change");
-  await page.getByRole("button", { name: "Close panel", exact: true }).click();
+  await page.getByRole("button", { name: "Close settings", exact: true }).click();
   await page.waitForFunction(() =>
     document.querySelector(".app-shell").dataset.saveState === "Saved",
   );
@@ -169,7 +169,7 @@ try {
   await testLiveMap(page, root);
   await page.setViewportSize({ width: 390, height: 844 });
   await page
-    .getByRole("button", { name: "Canvas settings", exact: true })
+    .getByRole("button", { name: "Settings", exact: true })
     .click();
   await page.waitForTimeout(300);
   await page.screenshot({ path: "test-results/mobile.png" });

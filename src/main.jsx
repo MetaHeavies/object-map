@@ -40,7 +40,6 @@ import {
 import {
   sections,
   clone,
-  makeObject,
   addItem,
   promote,
   demote,
@@ -734,8 +733,6 @@ function App() {
     [panel, setPanel] = useState(null),
     [query, setQuery] = useState(""),
     [searchOpen, setSearchOpen] = useState(false),
-    [creating, setCreating] = useState(false),
-    [newName, setNewName] = useState(""),
     [toast, setToast] = useState(""),
     [saveStatus, setSaveStatus] = useState("Saved"),
     [saveError, setSaveError] = useState(""),
@@ -776,7 +773,7 @@ function App() {
     settleTimer = useRef(),
     persistTimer = useRef();
   const interactionRef = useRef({});
-  interactionRef.current = {creating, panel};
+  interactionRef.current = {panel};
   layoutRef.current = layout;
   mapRef.current = map;
   const notify = useCallback((message) => {
@@ -865,7 +862,7 @@ function App() {
     if (!loaded) return;
     let stopped = false, checking = false;
     const busy = () => saving.current || Object.keys(pending.current).length || activeDrag.current ||
-      interactionRef.current.creating || document.querySelector('.inline-input,.item-composer,.relationship-edit[data-editing="true"]');
+      document.querySelector('.inline-input,.item-composer,.relationship-edit[data-editing="true"]');
     const refresh = async () => {
       if (checking || busy() || document.hidden) return;
       checking = true;
@@ -1064,34 +1061,6 @@ function App() {
       notify("Clipboard unavailable. Use Export to save the context.");
     }
   }
-  function createObject(e) {
-    e.preventDefault();
-    if (!newName.trim()) return;
-    const object = makeObject(map, newName.trim());
-    const bounds = canvasRef.current.getBoundingClientRect(),
-      v = layout.viewport;
-    const nextLayout = {
-      ...layout,
-      positions: {
-        ...layout.positions,
-        [object.id]: {
-          x: (bounds.width / 2 - v.x) / v.zoom,
-          y: (180 - v.y) / v.zoom,
-        },
-      },
-    };
-    change(
-      { ...map, objects: [...map.objects, object] },
-      {
-        layout: nextLayout,
-        expanded: [...expanded, object.id],
-        focused: object.id,
-      },
-    );
-    setNewName("");
-    setCreating(false);
-    notify(`${object.name} added to your map`);
-  }
   function onDrag(e, id) {
     if (e.button !== 0 || !e.isPrimary || activeDrag.current) return;
     e.preventDefault();
@@ -1200,7 +1169,7 @@ function App() {
     if ((e.button !== 0 && e.button !== 1) || !e.isPrimary) return;
     if (
       e.target.closest(
-        "button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover,.new-object-popover",
+        "button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover",
       )
     )
       return;
@@ -1329,7 +1298,6 @@ function App() {
         setSelectedItem(null);
       }
       if (e.key === "f") fit();
-      if (e.key === "n") setCreating(true);
     };
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
@@ -1361,37 +1329,19 @@ function App() {
     <div className="app-shell" ref={shellRef} data-save-state={saveStatus}>
       <header className="app-header">
         <a className="brand" href="/" aria-label="Object Map home">
-          <span className="brand-mark">
-            <Layers size={20} />
-          </span>
           Object Map
         </a>
-        <button
-          className="workspace-name"
-          onClick={() => setPanel(panel === "about" ? null : "about")}
-        >
+        {/* The repository is where you are, not something to open. */}
+        <p className="workspace-name">
           {config.name.charAt(0).toUpperCase() + config.name.slice(1)}
           <span className="beta">Local</span>
-          <ChevronDown size={13} />
-        </button>
+        </p>
         <div className="header-right">
-          <button
-            className={`quiet-button ${panel === "changes" ? "active" : ""}`}
-            onClick={() => setPanel(panel === "changes" ? null : "changes")}
-          >
-            <GitBranch size={15} />
-            Session changes
-            {changes.length > 0 && (
-              <span className="count-badge">{changes.length}</span>
-            )}
-          </button>
-          <button
-            className="primary new-object-button"
-            onClick={() => setCreating(!creating)}
-          >
-            <Plus size={16} />
-            New object
-          </button>
+          <IconButton
+            icon={Settings}
+            label="Settings"
+            onClick={() => setPanel(panel === "settings" ? null : "settings")}
+          />
         </div>
       </header>
       <main
@@ -1399,7 +1349,7 @@ function App() {
         ref={canvasRef}
         onPointerDown={pan}
         onDoubleClick={(e) => {
-          if (activeDrag.current || e.target.closest('button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover,.new-object-popover')) return;
+          if (activeDrag.current || e.target.closest('button,input,select,textarea,article,aside,.canvas-actions,.canvas-toolbar,.search-popover')) return;
           e.preventDefault();
           const rect = canvasRef.current.getBoundingClientRect();
           zoom(e.shiftKey ? 1 / 1.5 : 1.5, { x: e.clientX - rect.left, y: e.clientY - rect.top });
@@ -1415,17 +1365,17 @@ function App() {
               Clear selection
             </button>
         )}
+        {/* Finding sits where you look for it, centred under the bar. */}
         <div className="canvas-actions">
-          <IconButton
-            icon={Search}
-            label="Find an object (⌘K)"
+          <button
+            className="canvas-find"
+            aria-label="Find an object (⌘K)"
             onClick={() => setSearchOpen(!searchOpen)}
-          />
-          <IconButton
-            icon={Settings}
-            label="Canvas settings"
-            onClick={() => setPanel(panel === "settings" ? null : "settings")}
-          />
+          >
+            <Search size={15} />
+            Find an object
+            <kbd>⌘K</kbd>
+          </button>
         </div>
         {searchOpen && (
           <div className="search-popover">
@@ -1582,29 +1532,6 @@ function App() {
             </section>
           </div>
         )}
-        {creating && (
-          <form className="new-object-popover" onSubmit={createObject}>
-            <div className="composer-heading">
-              <IconButton
-                icon={X}
-                label="Cancel new object"
-                onClick={() => setCreating(false)}
-              />
-            </div>
-            <label htmlFor="object-name">Give this thing a name.</label>
-            <input
-              id="object-name"
-              autoFocus
-              placeholder="Contact, opening hours, a new idea…"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-            />
-            <p>Use a noun your product’s users would recognize.</p>
-            <button className="primary" disabled={!newName.trim()}>
-              Create object <ArrowUpRight size={14} />
-            </button>
-          </form>
-        )}
         <div className="canvas-bottom">
           <div className="legend" aria-label="Color key">
             {sections.map(section => <span key={section}><i className={sectionColors[section]} />{sectionLabels[section]}</span>)}
@@ -1669,123 +1596,119 @@ function App() {
       {panel && (
           <aside className="side-panel">
             <div className="panel-heading">
+              <h2>Settings</h2>
               <IconButton
                 icon={X}
-                label="Close panel"
+                label="Close settings"
                 onClick={() => setPanel(null)}
               />
             </div>
-            {panel === "changes" ? (
-              <>
-                <h2>Session changes</h2>
-                <div className="change-list">
-                  {changes.length ? (
-                    changes.map((c, i) => <div key={i}>{c}</div>)
-                  ) : (
-                    <div className="muted">No semantic changes this session.</div>
-                  )}
-                </div>
+            <div className="setting-group">
+              <h3>Repository</h3>
+              <div className="workspace-detail">
+                <span>Path</span>
+                <code>{repository}</code>
+                <span>Model</span>
+                <code>.object-map/map.json</code>
+                <span>Layout</span>
+                <code>.object-map/layout.json</code>
+              </div>
+              <div className="setting-buttons">
                 <button
-                  className="primary"
-                  disabled={!changes.length}
-                  onClick={() =>
-                    copy(
-                      `Object Map — session changes\n\n${changes.join("\n")}\n\nRead .object-map/map.json for the current model.`,
-                    )
-                  }
+                  className="secondary"
+                  disabled={!map.objects.length}
+                  onClick={() => {
+                    setPanel(null);
+                    setFocused(null);
+                    fit(true);
+                  }}
                 >
-                  <Copy size={15} />
-                  Copy session changes
+                  <Maximize size={14} />
+                  Show saved map
                 </button>
                 <button className="secondary" onClick={exportContext}>
-                  <Download size={15} />
-                  Export map context
+                  <Download size={14} />
+                  Export
                 </button>
-              </>
-            ) : panel === "settings" ? (
-              <>
-                <h2>Canvas settings</h2>
-                <div className="setting-group">
-                  <h3>Display</h3>
-                  <label className="setting">
-                    <span>Optional states</span>
-                    <input
-                      type="checkbox"
-                      role="switch"
-                      checked={showStates}
-                      onChange={(e) => {
-                        before.current = motion.capture();
-                        setShowStates(e.target.checked);
-                      }}
-                    />
-                  </label>
-                  <label className="setting">
-                    <span>Implementation evidence</span>
-                    <input
-                      type="checkbox"
-                      role="switch"
-                      checked={showEvidence}
-                      onChange={(e) => setShowEvidence(e.target.checked)}
-                    />
-                  </label>
-                </div>
-                <div className="setting-group">
-                  <h3 id="appearance-label">Appearance</h3>
-                  <div className="options" role="group" aria-labelledby="appearance-label">
-                    {[["system", "System"], ["light", "Light"], ["dark", "Dark"]].map(([key, label]) => (
-                      <button
-                        className={theme === key ? "selected" : ""}
-                        aria-pressed={theme === key}
-                        key={key}
-                        onClick={() => setTheme(key)}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="setting-group motion-settings">
-                  <h3 id="motion-label">Motion</h3>
-                  <div className="options" role="group" aria-labelledby="motion-label">
-                    {Object.entries(treatments).map(([key, value]) => (
-                      <button
-                        className={treatment === key ? "selected" : ""}
-                        aria-pressed={treatment === key}
-                        key={key}
-                        onClick={() => setTreatment(key)}
-                      >
-                        {value.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <h2>
-                  {config.name.charAt(0).toUpperCase() + config.name.slice(1)}
-                </h2>
-                <button className="secondary" disabled={!map.objects.length} onClick={() => {
-                  setPanel(null);
-                  setFocused(null);
-                  fit(true);
-                }}>
-                  <Maximize size={15} />Show saved map
-                </button>
-                <div className="workspace-detail">
-                  <span>Repository</span>
-                  <code>{repository}</code>
-                  <span>Model</span>
-                  <code>.object-map/map.json</code>
-                  <span>Layout</span>
-                  <code>.object-map/layout.json</code>
-                </div>
-                <button className="secondary" onClick={exportContext}>
-                  <Download size={15} />
-                  Export map context
-                </button>
-              </>
-            )}
+              </div>
+            </div>
+            <div className="setting-group">
+              <h3>Display</h3>
+              <label className="setting">
+                <span>Optional states</span>
+                <input
+                  type="checkbox"
+                  role="switch"
+                  checked={showStates}
+                  onChange={(e) => {
+                    before.current = motion.capture();
+                    setShowStates(e.target.checked);
+                  }}
+                />
+              </label>
+              <label className="setting">
+                <span>Implementation evidence</span>
+                <input
+                  type="checkbox"
+                  role="switch"
+                  checked={showEvidence}
+                  onChange={(e) => setShowEvidence(e.target.checked)}
+                />
+              </label>
+            </div>
+            <div className="setting-group">
+              <h3 id="appearance-label">Appearance</h3>
+              <div className="options" role="group" aria-labelledby="appearance-label">
+                {[["system", "System"], ["light", "Light"], ["dark", "Dark"]].map(([key, label]) => (
+                  <button
+                    className={theme === key ? "selected" : ""}
+                    aria-pressed={theme === key}
+                    key={key}
+                    onClick={() => setTheme(key)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="setting-group motion-settings">
+              <h3 id="motion-label">Motion</h3>
+              <div className="options" role="group" aria-labelledby="motion-label">
+                {Object.entries(treatments).map(([key, value]) => (
+                  <button
+                    className={treatment === key ? "selected" : ""}
+                    aria-pressed={treatment === key}
+                    key={key}
+                    onClick={() => setTreatment(key)}
+                  >
+                    {value.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* A log, so it reads bottom-of-panel like one. */}
+            <div className="setting-group change-group">
+              <h3>Session changes</h3>
+              <div className="change-list">
+                {changes.length ? (
+                  changes.map((c, i) => <div key={i}>{c}</div>)
+                ) : (
+                  <div className="muted">Nothing changed this session.</div>
+                )}
+              </div>
+              <button
+                className="secondary"
+                disabled={!changes.length}
+                onClick={() =>
+                  copy(
+                    `Object Map — session changes\n\n${changes.join("\n")}\n\nRead .object-map/map.json for the current model.`,
+                  )
+                }
+              >
+                <Copy size={14} />
+                Copy changes
+              </button>
+            </div>
           </aside>
         )}
       </main>

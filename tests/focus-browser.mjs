@@ -122,9 +122,10 @@ export async function testFocus(page) {
   );
   assert.ok((await city.getAttribute("class")).includes("focused"));
   // A tiny amount of pointer noise still counts as a canvas click, not a pan.
-  await page.mouse.move(650, 110);
+  // Well clear of the find control, which is centred under the bar.
+  await page.mouse.move(220, 760);
   await page.mouse.down();
-  await page.mouse.move(652, 111);
+  await page.mouse.move(222, 761);
   await page.mouse.up();
   await page.waitForTimeout(300);
   assert.equal(await page.locator(".object-card.focused").count(), 0);

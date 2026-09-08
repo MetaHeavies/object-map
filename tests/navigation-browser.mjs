@@ -10,7 +10,7 @@ export async function testNavigation(page) {
   await saved();
   const original = await workspace();
   const canvas = await page.locator('.canvas').boundingBox();
-  const point = {x: 650, y: 110};
+  const point = {x: 220, y: 760};
   const before = await viewport();
   await page.mouse.move(point.x, point.y);
   await page.mouse.wheel(0, 120);
@@ -26,13 +26,13 @@ export async function testNavigation(page) {
   await page.mouse.dblclick(point.x, point.y);
   await page.keyboard.up('Shift');
   assert.ok(Math.abs((await viewport()).zoom - after.zoom) < .001, 'Shift-double-click zooms out');
-  await page.getByRole('button', {name: 'Canvas settings', exact: true}).click();
+  await page.getByRole('button', {name: 'Settings', exact: true}).click();
   const panelView = await viewport();
   await page.locator('.setting-group').last().hover();
   await page.mouse.wheel(0, 120);
   await page.waitForTimeout(150);
   assert.deepEqual(await viewport(), panelView, 'Scrolling settings does not zoom the canvas');
-  await page.getByRole('button', {name: 'Close panel', exact: true}).click();
+  await page.getByRole('button', {name: 'Close settings', exact: true}).click();
   await saved();
   const current = await workspace();
   const response = await page.request.put(new URL('/api/layout', page.url()).href, {data: {
@@ -44,7 +44,7 @@ export async function testNavigation(page) {
   await page.locator('.object-heading').first().waitFor();
   await saved();
   assert.ok((await viewport()).y > 0, 'Opening an entirely offscreen saved map recovers its viewport');
-  await page.locator('.workspace-name').click();
+  await page.getByRole('button', {name: 'Settings', exact: true}).click();
   await page.getByRole('button', {name: 'Show saved map', exact: true}).click();
   assert.equal(await page.locator('.side-panel').count(), 0);
   await saved();

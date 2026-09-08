@@ -19,7 +19,7 @@
   --tone-0: 0;
   --tone-d: 1;
   --tone-c: 1;
-  --c-scale: 1;
+  --c-scale: 1.55;
   color-scheme: light;
 
   --l-fill: 0.955;
@@ -48,16 +48,27 @@
 
   /* Chrome is the same system at a near-neutral blue-grey, so headings, panels
      and buttons sit in the same family as the rows rather than beside it. */
-  --chrome-fill: oklch(0.943 0.007 var(--h-chrome));
-  --chrome-border: oklch(0.899 0.010 var(--h-chrome));
-  --chrome-badge: oklch(0.920 0.010 var(--h-chrome));
-  --chrome-title: oklch(0.329 0.010 var(--h-chrome));
-  --chrome-label: oklch(0.482 0.008 var(--h-chrome));
-  --chrome-muted: oklch(var(--l-muted) 0.007 var(--h-chrome));
-  --chrome-line: oklch(0.916 0.006 var(--h-chrome));
-  --canvas: oklch(0.967 0.004 var(--h-chrome));
-  --canvas-dot: oklch(0.855 0.008 var(--h-chrome));
+  --chrome-fill: oklch(0.955 0.002 var(--h-chrome));
+  --chrome-border: oklch(0.900 0.003 var(--h-chrome));
+  --chrome-badge: oklch(0.935 0.002 var(--h-chrome));
+  --chrome-title: oklch(0.275 0.003 var(--h-chrome));
+  --chrome-label: oklch(0.455 0.003 var(--h-chrome));
+  --chrome-muted: oklch(var(--l-muted) 0.003 var(--h-chrome));
+  --chrome-line: oklch(0.922 0.002 var(--h-chrome));
+  --canvas: oklch(0.974 0.001 var(--h-chrome));
+  --canvas-dot: oklch(0.875 0.003 var(--h-chrome));
   --surface: oklch(1 0 var(--h-chrome));
+
+  /* The bar is white in both themes, so it needs its own pair rather than a
+     surface that inverts underneath it. */
+  --header-bg: oklch(1 0 0);
+  --header-fg: oklch(0.240 0.003 var(--h-chrome));
+  --header-muted: oklch(0.520 0.003 var(--h-chrome));
+  --header-line: oklch(0.895 0.003 var(--h-chrome));
+
+  /* Selection is the ink of the theme, never a colour of its own. */
+  --accent: oklch(0.280 0.004 var(--h-chrome));
+  --accent-fg: oklch(0.990 0 0);
 
   /* Depth as one long ramp rather than a single blur. */
   --shadow-lifted:
@@ -82,76 +93,82 @@
    and inversion would put them below the canvas. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --tone-0: 1.06;
+    --tone-0: 1.0;
     --tone-d: -0.80;
-    --tone-c: 3.4;
-    --c-scale: 1.9;
+    --tone-c: 0.4;
+    --c-scale: 2.3;
     color-scheme: dark;
 
-    --l-fill: 0.345;
-    --l-border: 0.455;
+    --l-fill: 0.305;
+    --l-border: 0.415;
     --l-label: 0.885;
-    --l-muted: 0.712;
+    --l-muted: 0.700;
 
-    --chrome-fill: oklch(0.335 0.020 var(--h-chrome));
-    --chrome-border: oklch(0.435 0.024 var(--h-chrome));
-    --chrome-badge: oklch(0.405 0.026 var(--h-chrome));
-    --chrome-title: oklch(0.945 0.014 var(--h-chrome));
-    --chrome-label: oklch(0.815 0.016 var(--h-chrome));
-    --chrome-muted: oklch(0.725 0.014 var(--h-chrome));
-    --chrome-line: oklch(0.395 0.018 var(--h-chrome));
-    --canvas: oklch(0.198 0.016 var(--h-chrome));
-  --canvas-dot: oklch(0.315 0.018 var(--h-chrome));
-    --canvas-dot: oklch(0.315 0.018 var(--h-chrome));
-    --surface: oklch(0.288 0.020 var(--h-chrome));
+    --chrome-fill: oklch(0.205 0.003 var(--h-chrome));
+    --chrome-border: oklch(0.290 0.004 var(--h-chrome));
+    --chrome-badge: oklch(0.245 0.003 var(--h-chrome));
+    --chrome-title: oklch(0.965 0.002 var(--h-chrome));
+    --chrome-label: oklch(0.815 0.003 var(--h-chrome));
+    --chrome-muted: oklch(0.700 0.003 var(--h-chrome));
+    --chrome-line: oklch(0.255 0.004 var(--h-chrome));
+    --canvas: oklch(0.135 0.003 var(--h-chrome));
+    --canvas-dot: oklch(0.245 0.004 var(--h-chrome));
+    --surface: oklch(0.185 0.003 var(--h-chrome));
 
-    --scrim: oklch(0.205 0.009 var(--h-chrome) / 0.94);
-    --veil: oklch(0.235 0.009 var(--h-chrome) / 0.91);
-    --raised-veil: oklch(0.285 0.010 var(--h-chrome) / 0.93);
+    --accent: oklch(0.970 0.002 var(--h-chrome));
+    --accent-fg: oklch(0.160 0.003 var(--h-chrome));
+
+    --scrim: oklch(0.135 0.003 var(--h-chrome) / 0.94);
+    --veil: oklch(0.170 0.003 var(--h-chrome) / 0.91);
+    --raised-veil: oklch(0.205 0.003 var(--h-chrome) / 0.93);
     --drop-tint: oklch(0.42 0.03 var(--h-relationship) / 0.22);
 
     --shadow-lifted:
-      0 13px 29px oklch(0 0 0 / 0.44),
-      0 53px 53px oklch(0 0 0 / 0.36),
-      0 119px 71px oklch(0 0 0 / 0.22),
-      0 211px 84px oklch(0 0 0 / 0.06),
+      0 13px 29px oklch(0 0 0 / 0.52),
+      0 53px 53px oklch(0 0 0 / 0.42),
+      0 119px 71px oklch(0 0 0 / 0.26),
+      0 211px 84px oklch(0 0 0 / 0.07),
       0 330px 92px oklch(0 0 0 / 0);
   }
 }
 [data-theme="dark"] {
-  --tone-0: 1.06;
+  --tone-0: 1.0;
   --tone-d: -0.80;
-  --tone-c: 3.4;
-  --c-scale: 1.9;
+  --tone-c: 0.4;
+  --c-scale: 2.3;
   color-scheme: dark;
 
-  --l-fill: 0.345;
-  --l-border: 0.455;
+  --l-fill: 0.305;
+  --l-border: 0.415;
   --l-label: 0.885;
-  --l-muted: 0.712;
+  --l-muted: 0.700;
 
-  --chrome-fill: oklch(0.335 0.020 var(--h-chrome));
-  --chrome-border: oklch(0.435 0.024 var(--h-chrome));
-  --chrome-badge: oklch(0.405 0.026 var(--h-chrome));
-  --chrome-title: oklch(0.945 0.014 var(--h-chrome));
-  --chrome-label: oklch(0.815 0.016 var(--h-chrome));
-  --chrome-muted: oklch(0.725 0.014 var(--h-chrome));
-  --chrome-line: oklch(0.395 0.018 var(--h-chrome));
-  --canvas: oklch(0.198 0.016 var(--h-chrome));
-  --surface: oklch(0.288 0.020 var(--h-chrome));
+  --chrome-fill: oklch(0.205 0.003 var(--h-chrome));
+  --chrome-border: oklch(0.290 0.004 var(--h-chrome));
+  --chrome-badge: oklch(0.245 0.003 var(--h-chrome));
+  --chrome-title: oklch(0.965 0.002 var(--h-chrome));
+  --chrome-label: oklch(0.815 0.003 var(--h-chrome));
+  --chrome-muted: oklch(0.700 0.003 var(--h-chrome));
+  --chrome-line: oklch(0.255 0.004 var(--h-chrome));
+  --canvas: oklch(0.135 0.003 var(--h-chrome));
+  --canvas-dot: oklch(0.245 0.004 var(--h-chrome));
+  --surface: oklch(0.185 0.003 var(--h-chrome));
 
-  --scrim: oklch(0.205 0.009 var(--h-chrome) / 0.94);
-  --veil: oklch(0.235 0.009 var(--h-chrome) / 0.91);
-  --raised-veil: oklch(0.285 0.010 var(--h-chrome) / 0.93);
+  --accent: oklch(0.970 0.002 var(--h-chrome));
+  --accent-fg: oklch(0.160 0.003 var(--h-chrome));
+
+  --scrim: oklch(0.135 0.003 var(--h-chrome) / 0.94);
+  --veil: oklch(0.170 0.003 var(--h-chrome) / 0.91);
+  --raised-veil: oklch(0.205 0.003 var(--h-chrome) / 0.93);
   --drop-tint: oklch(0.42 0.03 var(--h-relationship) / 0.22);
+
   --shadow-lifted:
-    0 13px 29px oklch(0 0 0 / 0.44),
-    0 53px 53px oklch(0 0 0 / 0.36),
-    0 119px 71px oklch(0 0 0 / 0.22),
-    0 211px 84px oklch(0 0 0 / 0.06),
+    0 13px 29px oklch(0 0 0 / 0.52),
+    0 53px 53px oklch(0 0 0 / 0.42),
+    0 119px 71px oklch(0 0 0 / 0.26),
+    0 211px 84px oklch(0 0 0 / 0.07),
     0 330px 92px oklch(0 0 0 / 0);
 }
-
 .canvas-bottom .legend {
   position: absolute;
   left: 0;

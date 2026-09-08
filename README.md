@@ -49,9 +49,9 @@ node .agents/skills/object-map/scripts/serve.mjs --demo
 - Drag the blank area of an object header to move its column. Drag the canvas to pan; scroll or pinch to zoom around the pointer. There is no separate pan tool. Double-click blank canvas to zoom in; Shift-double-click to zoom out.
 - Deleting an object, promoting an attribute and demoting back are confirmed first, naming what the change takes with it — a delete lists the links into the object that go too. Enter accepts, Escape cancels.
 - Undo/redo semantic changes with the toolbar or Cmd/Ctrl-Z and Shift-Cmd/Ctrl-Z. A promoted object can also be demoted from its menu if it has no added structure or additional inbound relationships.
-- Copy stable references from an item's controls or an object's menu. **Session changes** provides a compact agent handoff and an export of the model.
-- Canvas settings group display switches (optional states, implementation evidence), appearance (match system, light, dark) and three motion prototypes. The motion choice sets the duration and easing for both the scripted animations and the canvas transitions, so focus and collapse follow it too. The appearance choice is remembered in this browser. Reduced-motion settings take priority.
-- Keyboard shortcuts: **N** creates an object, **F** fits the model, **Cmd/Ctrl-K** finds an object, **Escape** dismisses panels.
+- Copy stable references from an item's controls or an object's menu. The session log in settings provides a compact agent handoff and an export of the model.
+- One panel holds everything that is not the map: repository paths, show saved map, export, display switches, appearance, motion and the session log. The header carries the product name, the repository you are in, and the control that opens it. The motion choice sets the duration and easing for both the scripted animations and the canvas transitions, so focus and collapse follow it too. The appearance choice is remembered in this browser. Reduced-motion settings take priority.
+- Keyboard shortcuts: **F** fits the model, **Cmd/Ctrl-K** finds an object, **Escape** dismisses panels.
 
 Saves go to the selected repository's `.object-map/map.json` and `.object-map/layout.json` independently. Semantic identifiers survive renaming. Stale revisions are rejected instead of overwriting a newer file. If a save fails, export your unsaved work before reloading.
 
