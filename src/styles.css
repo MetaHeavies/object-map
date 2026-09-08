@@ -1187,7 +1187,7 @@ i.purple {
 .mini-card .item-tools {
   background: var(--row-bg);
   box-shadow: -7px 0 8px var(--row-bg);
-  top: 1px;
+  top: 4px;
 }
 .relationship-link {
   font-size: var(--t-body);

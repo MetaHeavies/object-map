@@ -134,6 +134,16 @@ export async function testFocus(page) {
       (el) => el.getBoundingClientRect().height > 100,
     ),
   );
+  // Escape has to reach every dismissal, not stop at the first one.
+  await city.getByRole("button", { name: "Select City", exact: true }).click();
+  await page.waitForTimeout(120);
+  await page.keyboard.press("Escape");
+  await page.waitForTimeout(250);
+  assert.equal(
+    await page.locator(".object-card.focused").count(),
+    0,
+    "Escape clears the selection",
+  );
   await page.emulateMedia({ reducedMotion: "reduce" });
   await city.getByRole("button", { name: "Select City", exact: true }).click();
   assert.ok(

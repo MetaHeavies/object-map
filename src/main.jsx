@@ -1314,7 +1314,6 @@ function App() {
       }
       if (e.key === "Escape") {
         setPanel(null);
-        setCreating(false);
         setSearchOpen(false);
         setFocused(null);
         setSelectedItem(null);
