@@ -1296,7 +1296,8 @@ function App() {
       }
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        setSearchOpen((v) => !v);
+        // Nothing to find until the agent has mapped something.
+        if (map.objects.length) setSearchOpen((v) => !v);
       }
       if (e.key === "Escape") {
         setPanel(null);
@@ -1376,7 +1377,7 @@ function App() {
         {/* The control becomes the field. Clicking it should not open an
             interface somewhere else on the screen. */}
         <div className="canvas-actions">
-          {!searchOpen && (
+          {!!map.objects.length && !searchOpen && (
             <button
               className="canvas-find"
               aria-label="Find an object (⌘K)"
@@ -1546,7 +1547,6 @@ function App() {
         </div>
         {!map.objects.length && (
           <div className={`empty-state ${panel ? "with-panel" : ""}`}>
-            <h2>Nothing mapped yet</h2>
             <section className="run-prompt">
               <header>
                 <h3>Agent prompt:</h3>
@@ -1560,6 +1560,7 @@ function App() {
             </section>
           </div>
         )}
+        {!!map.objects.length && (
         <div className="canvas-bottom">
           <div className="legend" aria-label="Color key">
             {sections.map(section => <span key={section}><i className={sectionColors[section]} />{sectionLabels[section]}</span>)}
@@ -1600,6 +1601,7 @@ function App() {
             />
           </div>
         </div>
+        )}
         {confirm && (
         <Confirm
           title={confirm.title}

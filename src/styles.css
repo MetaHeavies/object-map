@@ -772,13 +772,6 @@ i.purple {
 .empty-state.with-panel {
   left: calc((100% - 390px) / 2);
 }
-.empty-state h2 {
-  font-size: var(--t-title);
-  font-weight: 500;
-  line-height: 22px;
-  margin: 0 0 16px;
-  color: var(--chrome-title);
-}
 .run-prompt {
   border: 1px solid var(--chrome-line);
   background: var(--surface);
@@ -911,9 +904,6 @@ i.purple {
     left: calc((100% - 350px) / 2);
     width: 350px;
   }
-  .empty-state h2 {
-    font-size: var(--t-display);
-  }
 }
 @media (max-width: 700px) {
   .app-header {
@@ -945,9 +935,6 @@ i.purple {
     width: calc(100% - 36px);
     left: 50%;
     top: 49%;
-  }
-  .empty-state h2 {
-    font-size: var(--t-display);
   }
   .canvas-bottom {
     left: 15px;
