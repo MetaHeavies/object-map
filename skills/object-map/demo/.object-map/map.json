@@ -72,7 +72,8 @@
           "name": "Overdue"
         }
       ],
-      "evidence": []
+      "evidence": [],
+      "destination": true
     },
     {
       "id": "obj:author",
@@ -97,7 +98,8 @@
         }
       ],
       "states": [],
-      "evidence": []
+      "evidence": [],
+      "destination": true
     },
     {
       "id": "obj:member",
@@ -140,7 +142,8 @@
           "name": "Suspended"
         }
       ],
-      "evidence": []
+      "evidence": [],
+      "destination": true
     },
     {
       "id": "obj:loan",
@@ -196,7 +199,11 @@
           "name": "Returned"
         }
       ],
-      "evidence": []
+      "evidence": [],
+      "within": [
+        "obj:book",
+        "obj:member"
+      ]
     },
     {
       "id": "obj:hold",
