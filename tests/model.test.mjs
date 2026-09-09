@@ -121,3 +121,32 @@ test("selection highlights incoming and outgoing relationships, but excludes two
   assert.ok(!focus.objects.has("obj:person"));
   assert.equal(focusContext(map, null).objects.size, 0);
 });
+
+test("where a person meets an object is validated, and a placement with no relationship behind it is reported", async () => {
+  const { validateMap, checkMap } = await import("../src/model.mjs");
+  const map = {
+    version: 1,
+    objects: [
+      { id: "obj:project", name: "Project", description: "Paid work.", status: "observed", evidence: ["src/project.js"],
+        destination: true, attributes: [], relationships: [{ id: "obj:project/rel:invoice", name: "Billed by", target: "obj:invoice" }],
+        actions: [{ id: "obj:project/action:edit", name: "Edit" }], states: [] },
+      { id: "obj:invoice", name: "Invoice", description: "A bill.", status: "observed", evidence: ["src/invoice.js"],
+        within: ["obj:project", "obj:treasury"], attributes: [], relationships: [],
+        actions: [{ id: "obj:invoice/action:send", name: "Send" }], states: [] },
+      { id: "obj:treasury", name: "Treasury", description: "Money in and out.", status: "observed", evidence: ["src/treasury.js"],
+        destination: true, attributes: [], relationships: [{ id: "obj:treasury/rel:x", name: "Holds", target: "obj:project" }],
+        actions: [{ id: "obj:treasury/action:view", name: "View" }], states: [] },
+    ],
+  };
+  assert.equal(validateMap(map), true);
+  const [project, invoice, treasury] = checkMap(map);
+  assert.equal(project.destination, true);
+  assert.deepEqual(invoice.within, ["obj:project", "obj:treasury"]);
+  assert.deepEqual(invoice.warnings, ["appears inside Treasury with no relationship to it"],
+    "an inbound relationship counts as a connection, a placement alone does not");
+  assert.deepEqual(treasury.warnings, []);
+  assert.throws(() => validateMap({ ...map, objects: [{ ...map.objects[1], within: ["obj:missing"] }, map.objects[0], map.objects[2]] }),
+    /appears inside a missing object/);
+  assert.throws(() => validateMap({ ...map, objects: [{ ...map.objects[1], within: ["obj:invoice"] }, map.objects[0], map.objects[2]] }),
+    /cannot appear inside itself/);
+});

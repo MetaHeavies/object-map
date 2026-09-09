@@ -95,7 +95,8 @@
         "src/models/list.json",
         "src/services/collection.mjs",
         "src/validation/collection.mjs"
-      ]
+      ],
+      "destination": true
     },
     {
       "id": "obj:photo",
@@ -149,6 +150,10 @@
         "src/models/media_asset.json",
         "src/services/photo.mjs",
         "src/validation/photo.mjs"
+      ],
+      "within": [
+        "obj:place",
+        "obj:visit"
       ]
     },
     {
@@ -194,6 +199,9 @@
         "src/models/note.json",
         "src/services/note.mjs",
         "src/validation/note.mjs"
+      ],
+      "within": [
+        "obj:place"
       ]
     },
     {
@@ -291,7 +299,8 @@
         "src/models/saved_location.json",
         "src/services/place.mjs",
         "src/validation/place.mjs"
-      ]
+      ],
+      "destination": true
     },
     {
       "id": "obj:tag",
@@ -451,7 +460,8 @@
         "src/models/user.json",
         "src/services/person.mjs",
         "src/validation/person.mjs"
-      ]
+      ],
+      "destination": true
     }
   ]
 }

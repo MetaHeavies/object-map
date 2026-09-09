@@ -185,6 +185,38 @@ try {
     "and selects that object on the canvas",
   );
   await page.getByRole("button", { name: "Clear selection", exact: true }).click();
+
+  // Hierarchy is a second reading of the same objects: an object met in two
+  // places appears in both, and nothing about the model changes.
+  await page.getByRole("button", { name: "Hierarchy", exact: true }).click();
+  await page.waitForTimeout(500);
+  const outline = await page.locator(".object-card").evaluateAll((nodes) =>
+    nodes.map((node) => ({
+      id: node.dataset.objectId,
+      depth: node.dataset.depth,
+      x: Math.round(node.getBoundingClientRect().x),
+    })),
+  );
+  assert.ok(
+    outline.filter((card) => card.id === "obj:photo").length === 2,
+    "an object met on two surfaces appears under both",
+  );
+  const [topLevel] = outline.filter((card) => card.depth === "0");
+  const [nestedCard] = outline.filter((card) => card.depth === "1");
+  assert.ok(nestedCard.x > topLevel.x, "nesting is indented");
+  assert.ok(
+    (await page.locator(".outline-group").count()) > 0,
+    "the outline names what it is grouping",
+  );
+  assert.equal(await page.locator(".column-add").count(), 0, "the outline does not offer to add");
+  await page.screenshot({ path: "test-results/hierarchy.png" });
+  await page.getByRole("button", { name: "Columns", exact: true }).click();
+  await page.waitForTimeout(400);
+  assert.equal(
+    await page.locator('[data-object-id="obj:photo"]').count(),
+    1,
+    "columns show every object exactly once",
+  );
   await page.setViewportSize({ width: 390, height: 844 });
   await page
     .getByRole("button", { name: "Settings", exact: true })

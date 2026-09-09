@@ -52,7 +52,7 @@ import {
   checkMap,
 } from "./model.mjs";
 import { motion, treatments } from "./motion";
-import { arrange, columnOrder, reorderColumns, positionsForOrder, COLUMN_STEP } from "./layout.mjs";
+import { arrange, hierarchy, columnOrder, reorderColumns, positionsForOrder, COLUMN_STEP } from "./layout.mjs";
 import { Reveal } from "./Reveal";
 import { ColumnAdd } from "./ColumnAdd";
 import { Guide } from "./Guide.jsx";
@@ -267,6 +267,7 @@ function ItemComposer({ section, object, map, onAdd, onCancel, onReveal }) {
 function ObjectCard({
   object,
   index,
+  placement,
   warnings,
   onReview,
   zoom,
@@ -339,16 +340,23 @@ function ObjectCard({
   return (
     <article
       ref={cardRef}
-      className={`object-card ${expanded ? "expanded" : ""} ${focused ? "focused" : ""} ${dimmed ? "dimmed" : ""} ${related ? "related" : ""}`}
+      className={`object-card ${expanded ? "expanded" : ""} ${focused ? "focused" : ""} ${dimmed ? "dimmed" : ""} ${related ? "related" : ""} ${placement ? "in-outline" : ""} ${placement?.repeat ? "repeat" : ""}`}
       style={{ left: 0, top: 0, translate: `${position.x}px ${position.y}px`, width: 250 }}
       data-dragging={dragging || undefined}
       data-object-id={object.id}
-      data-motion-id={object.promotedFrom?.attribute.id || object.id}
+      data-depth={placement ? placement.depth : undefined}
+      data-motion-id={
+        placement
+          ? placement.repeat
+            ? placement.key
+            : object.id
+          : object.promotedFrom?.attribute.id || object.id
+      }
     >
       <div className="object-heading" onClick={e => {
         if (!e.target.closest('button,input,.card-tools')) onSelect(object.id);
       }} onPointerDown={e => {
-        if (!e.target.closest('input,.card-tools')) onDrag(e, object.id);
+        if (!placement && !e.target.closest('input,.card-tools')) onDrag(e, object.id);
       }}>
         <div
           className="card-head"
@@ -359,6 +367,7 @@ function ObjectCard({
           <span className="object-index">
             OBJECT {String(index + 1).padStart(2, "0")}
           </span>
+          <div className="card-tools">
           {warnings?.length > 0 && (
             <button
               type="button"
@@ -373,7 +382,6 @@ function ObjectCard({
               <Info size={12} />
             </button>
           )}
-          <div className="card-tools">
             <div className="menu-anchor">
               <IconButton
                 icon={MoreHorizontal}
@@ -682,7 +690,7 @@ function ObjectCard({
       </Reveal>
       {/* Under focus the connected columns are context, so their add controls
           are noise below a single revealed row. */}
-      {(!hasFocus || focused) && (
+      {!placement && (!hasFocus || focused) && (
         <ColumnAdd name={object.name} zoom={zoom} onChoose={section=>{
           onSelect(object.id);
           setComposer(section);
@@ -758,6 +766,9 @@ function App() {
     [loadError, setLoadError] = useState(""),
     [config, setConfig] = useState({ name: "" }),
     [questions, setQuestions] = useState([]),
+    [mode, setMode] = useState(() => {
+      try { return localStorage.getItem("object-map-mode") || "columns"; } catch { return "columns"; }
+    }),
     [repository, setRepository] = useState("");
   const [expanded, setExpanded] = useState([]),
     [nameRelationship, setNameRelationship] = useState(null),
@@ -1004,8 +1015,12 @@ function App() {
     persist("layout", snapshot.layout);
     notify(redo ? "Change restored" : "Change undone");
   }
+  useEffect(() => {
+    try { localStorage.setItem("object-map-mode", mode); } catch {}
+  }, [mode]);
+  const outline = mode === "hierarchy" ? hierarchy(map, dimensions) : null;
   const focusContextValue = focusContext(map, focused);
-  const { positions, placed } = arrange(
+  const { positions, placed: columnPlacements } = arrange(
     map,
     layout,
     expanded,
@@ -1018,6 +1033,9 @@ function App() {
         }
       : null,
   );
+  // Fitting, panning and the empty state all read one list of boxes, whichever
+  // mode drew them.
+  const placed = outline ? outline.boxes : columnPlacements;
   useLayoutEffect(() => {
     if (!loaded || !map.objects.length) return;
     const bounds = canvasRef.current.getBoundingClientRect();
@@ -1033,7 +1051,7 @@ function App() {
       motion.reflow(before.current, treatment);
       before.current = null;
     }
-  }, [map, layout, expanded, showStates, showEvidence]);
+  }, [map, layout, expanded, mode, showStates, showEvidence]);
   function selectObject(id, anchor = id) {
     if (dragged.current) return;
     setSelectedItem(null);
@@ -1388,6 +1406,17 @@ function App() {
         <p className="workspace-name">
           {config.name.charAt(0).toUpperCase() + config.name.slice(1)}
           <span className="beta">Local</span>
+          {(flagged.length > 0 || questions.length > 0) && (
+            <button
+              type="button"
+              className="review-open"
+              aria-label={`Review ${flagged.length} flagged ${flagged.length === 1 ? "object" : "objects"} and ${questions.length} open ${questions.length === 1 ? "question" : "questions"}`}
+              onClick={() => setPanel(panel === "review" ? null : "review")}
+            >
+              <Info size={13} />
+              {flagged.length ? `${flagged.length} to review` : `${questions.length} open`}
+            </button>
+          )}
         </p>
         <div className="header-right">
           <IconButton
@@ -1431,6 +1460,32 @@ function App() {
               Find an object
               <kbd>⌘K</kbd>
             </button>
+          )}
+        </div>
+        <div className="canvas-mode" role="group" aria-label="View">
+          {[["columns", "Columns", Layers], ["hierarchy", "Hierarchy", GitBranch]].map(
+            ([key, label, Icon]) => (
+              <button
+                key={key}
+                className={mode === key ? "selected" : ""}
+                aria-pressed={mode === key}
+                aria-label={label}
+                title={
+                  key === "hierarchy"
+                    ? "Where a person meets each object"
+                    : "Every object as a peer"
+                }
+                onClick={() => {
+                  if (mode === key) return;
+                  before.current = motion.capture();
+                  setFocused(null);
+                  setSelectedItem(null);
+                  setMode(key);
+                }}
+              >
+                <Icon size={15} />
+              </button>
+            ),
           )}
         </div>
         {/* Mirrors the find control across the canvas: same top, same height. */}
@@ -1511,12 +1566,25 @@ function App() {
             left: columnDrag.order.indexOf(columnDrag.id) * COLUMN_STEP,
             height: dimensions[`${columnDrag.id}:${expanded.includes(columnDrag.id)}`] || 100,
           }} />}
-          {map.objects.map((object, index) => (
+          {outline?.groups.map((group) => (
+            <div className="outline-group" key={group.label} style={{ translate: `0px ${group.y}px` }}>
+              {group.label}
+            </div>
+          ))}
+          {(outline
+            ? outline.placements.map((placement) => ({
+                object: map.objects.find((o) => o.id === placement.id),
+                index: map.objects.findIndex((o) => o.id === placement.id),
+                placement,
+              }))
+            : map.objects.map((object, index) => ({ object, index, placement: null }))
+          ).map(({ object, index, placement }) => (
             <ObjectCard
-              key={object.id}
+              key={placement ? placement.key : object.id}
+              placement={placement}
               object={object}
               index={index}
-              expanded={expanded.includes(object.id)}
+              expanded={placement ? false : expanded.includes(object.id)}
               focused={focused === object.id}
               dimmed={!!focused && !context.objects.has(object.id)}
               related={
@@ -1526,7 +1594,7 @@ function App() {
               }
               relevantRelationships={context.relationships}
               onSelect={selectObject}
-              position={positions[object.id]}
+              position={placement || positions[object.id]}
               zoom={v.zoom}
               dragging={columnDrag?.id === object.id}
               map={map}
@@ -1608,17 +1676,6 @@ function App() {
         )}
         {!!map.objects.length && (
         <div className="canvas-bottom">
-          {(flagged.length > 0 || questions.length > 0) && (
-            <button
-              type="button"
-              className="review-open"
-              aria-label={`Review ${flagged.length} flagged ${flagged.length === 1 ? "object" : "objects"} and ${questions.length} open ${questions.length === 1 ? "question" : "questions"}`}
-              onClick={() => setPanel(panel === "review" ? null : "review")}
-            >
-              <Info size={13} />
-              {flagged.length ? `${flagged.length} to review` : `${questions.length} open`}
-            </button>
-          )}
           <div className="legend" aria-label="Color key">
             {sections.map(section => <span key={section}><i className={sectionColors[section]} />{sectionLabels[section]}</span>)}
           </div>

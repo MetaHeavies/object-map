@@ -46,3 +46,57 @@ export function arrange(map, layout, expanded, dimensions = {}, drag = null, foc
   });
   return { positions, placed };
 }
+
+export const INDENT = 32;
+export const ROW_GAP = 8;
+// The outline is a reading of the product, not a second model: it is derived
+// from where each object says a person meets it, and an object met in two
+// places appears in both. Repeats carry the same id, so selecting one selects
+// every copy.
+export function hierarchy(map, dimensions = {}) {
+  const byId = new Map(map.objects.map(object => [object.id, object]));
+  const children = new Map(map.objects.map(object => [object.id, []]));
+  for (const object of map.objects)
+    for (const container of object.within || [])
+      if (children.has(container)) children.get(container).push(object.id);
+  const placements = [];
+  let y = 0;
+  const place = (id, depth, path) => {
+    const object = byId.get(id);
+    if (!object || path.includes(id)) return;
+    const height = dimensions[`${id}:false`] || 70;
+    placements.push({
+      key: `${path.join('>')}>${id}`,
+      id,
+      depth,
+      repeat: placements.some(placement => placement.id === id),
+      x: depth * INDENT,
+      y,
+      width: COLUMN_WIDTH,
+      height,
+    });
+    y += height + ROW_GAP;
+    for (const child of children.get(id) || []) place(child, depth + 1, [...path, id]);
+  };
+  const groups = [];
+  const destinations = map.objects.filter(object => object.destination);
+  const loose = map.objects.filter(
+    object => !object.destination && !(object.within || []).length,
+  );
+  if (destinations.length) {
+    groups.push({ label: 'Places a person can go', y });
+    y += 40;
+    for (const object of destinations) place(object.id, 0, []);
+  }
+  if (loose.length) {
+    groups.push({ label: 'Not on any surface yet', y: (y += destinations.length ? 24 : 0) });
+    y += 40;
+    for (const object of loose) place(object.id, 0, []);
+  }
+  // Group headings are part of the drawing, so fitting has to see them.
+  const boxes = [
+    ...placements,
+    ...groups.map(group => ({ x: 0, y: group.y, width: COLUMN_WIDTH, height: 32 })),
+  ];
+  return { placements, groups, boxes, assessed: destinations.length > 0 || map.objects.some(object => (object.within || []).length) };
+}

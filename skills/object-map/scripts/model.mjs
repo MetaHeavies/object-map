@@ -120,6 +120,10 @@ export function validateMap(map) {
     throw new Error("Unsupported map format.");
   const all = new Set(),
     objects = new Set(map.objects.map((o) => o.id));
+  for (const o of map.objects)
+    for (const container of o.within || [])
+      if (!objects.has(container))
+        throw new Error('An object appears inside a missing object.');
   for (const o of map.objects) {
     if (
       typeof o.id !== "string" ||
@@ -151,6 +155,13 @@ export function validateMap(map) {
         throw new Error('Filterable must be true or false.');
       if (item.cardinality !== undefined && !['one', 'many'].includes(item.cardinality))
         throw new Error('Cardinality is one or many.');
+    }
+    if (o.destination !== undefined && typeof o.destination !== 'boolean')
+      throw new Error('Destination must be true or false.');
+    if (o.within !== undefined) {
+      if (!Array.isArray(o.within) || o.within.some(value => typeof value !== 'string'))
+        throw new Error('Within must be an array of object identifiers.');
+      if (o.within.includes(o.id)) throw new Error('An object cannot appear inside itself.');
     }
     for (const r of o.relationships)
       if (!objects.has(r.target))
@@ -251,8 +262,20 @@ export function checkMap(map) {
     });
     if (echoes.length) warnings.push(`label repeats its target: ${echoes.map(r => r.name).join(', ')}`);
     if (object.status !== 'intended' && !(object.evidence || []).length) warnings.push('no evidence recorded');
+    // Placed on a surface it has no structural connection to. Either the
+    // relationship was missed or the placement is wrong, and both matter.
+    const linked = new Set([
+      ...out.map(relationship => relationship.target),
+      ...map.objects.filter(other => (other.relationships || []).some(r => r.target === object.id)).map(other => other.id),
+    ]);
+    const stranded = (object.within || []).filter(container => !linked.has(container));
+    if (stranded.length) {
+      const names = stranded.map(id => map.objects.find(o => o.id === id)?.name || id);
+      warnings.push(`appears inside ${names.join(' and ')} with no relationship to it`);
+    }
     return {
       id: object.id, name: object.name, status: object.status,
+      destination: !!object.destination, within: object.within || [],
       attributes: (object.attributes || []).length, relationships: out.length, inbound: into,
       actions: (object.actions || []).length, states: (object.states || []).length,
       filterable: (object.attributes || []).filter(a => a.filterable).map(a => a.name),
