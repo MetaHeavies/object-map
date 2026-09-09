@@ -1748,7 +1748,7 @@ function App() {
             />
           </div>
           <div className="setting-group">
-            <h3>Worth a second look</h3>
+            <h3>Things to check</h3>
             {flagged.length ? (
               <div className="review-list">
                 {flagged.map((entry) => (

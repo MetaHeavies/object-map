@@ -47,56 +47,91 @@ export function arrange(map, layout, expanded, dimensions = {}, drag = null, foc
   return { positions, placed };
 }
 
-export const INDENT = 32;
-export const ROW_GAP = 8;
-// The outline is a reading of the product, not a second model: it is derived
-// from where each object says a person meets it, and an object met in two
-// places appears in both. Repeats carry the same id, so selecting one selects
-// every copy.
+export const LEVEL_GAP = 40;
+export const GROUP_GAP = 88;
+// The outline is a reading of the product, not a second model. Objects at the
+// same level stay side by side as columns; what sits under an object is what a
+// person only meets inside it. An object met in two places appears in both,
+// and selecting one copy selects them all.
 export function hierarchy(map, dimensions = {}) {
   const byId = new Map(map.objects.map(object => [object.id, object]));
   const children = new Map(map.objects.map(object => [object.id, []]));
   for (const object of map.objects)
     for (const container of object.within || [])
       if (children.has(container)) children.get(container).push(object.id);
+  const heightOf = id => dimensions[`${id}:false`] || 70;
+  const kidsOf = (id, path) => (children.get(id) || []).filter(child => !path.includes(child));
+
+  // A subtree is as wide as its children need, and never narrower than a card.
+  const band = (id, path) => {
+    const kids = kidsOf(id, path);
+    if (!kids.length) return COLUMN_WIDTH;
+    const widths = kids.map(child => band(child, [...path, id]));
+    return Math.max(COLUMN_WIDTH, widths.reduce((a, b) => a + b, 0) + COLUMN_GAP * (kids.length - 1));
+  };
+
   const placements = [];
-  let y = 0;
-  const place = (id, depth, path) => {
+  const seen = new Set();
+  const place = (id, x, depth, path) => {
     const object = byId.get(id);
-    if (!object || path.includes(id)) return;
-    const height = dimensions[`${id}:false`] || 70;
+    if (!object) return;
     placements.push({
       key: `${path.join('>')}>${id}`,
-      id,
-      depth,
-      repeat: placements.some(placement => placement.id === id),
-      x: depth * INDENT,
-      y,
+      id, depth, x, y: 0,
+      repeat: seen.has(id),
       width: COLUMN_WIDTH,
-      height,
+      height: heightOf(id),
     });
-    y += height + ROW_GAP;
-    for (const child of children.get(id) || []) place(child, depth + 1, [...path, id]);
+    seen.add(id);
+    let cursor = x;
+    for (const child of kidsOf(id, path)) {
+      place(child, cursor, depth + 1, [...path, id]);
+      cursor += band(child, [...path, id]) + COLUMN_GAP;
+    }
   };
+
+  const row = (ids, startIndex) => {
+    let x = 0;
+    for (const id of ids) {
+      place(id, x, 0, []);
+      x += band(id, []) + COLUMN_GAP;
+    }
+    return placements.slice(startIndex);
+  };
+
   const groups = [];
-  const destinations = map.objects.filter(object => object.destination);
-  const loose = map.objects.filter(
-    object => !object.destination && !(object.within || []).length,
-  );
-  if (destinations.length) {
-    groups.push({ label: 'Places a person can go', y });
-    y += 40;
-    for (const object of destinations) place(object.id, 0, []);
+  const destinations = map.objects.filter(object => object.destination).map(object => object.id);
+  const loose = map.objects
+    .filter(object => !object.destination && !(object.within || []).length)
+    .map(object => object.id);
+
+  const sections = [];
+  if (destinations.length) sections.push({ label: 'Has a page of its own', ids: destinations });
+  if (loose.length) sections.push({ label: 'Not on any page yet', ids: loose });
+
+  let top = 0;
+  for (const section of sections) {
+    const from = placements.length;
+    const members = row(section.ids, from);
+    // Every card on a level shares a baseline, so levels read as levels.
+    const levels = [...new Set(members.map(placement => placement.depth))].sort((a, b) => a - b);
+    let y = top + LEVEL_GAP;
+    const levelY = new Map();
+    for (const level of levels) {
+      levelY.set(level, y);
+      y += Math.max(...members.filter(p => p.depth === level).map(p => p.height)) + LEVEL_GAP;
+    }
+    for (const placement of members) placement.y = levelY.get(placement.depth);
+    groups.push({ label: section.label, y: top });
+    top = y - LEVEL_GAP + GROUP_GAP;
   }
-  if (loose.length) {
-    groups.push({ label: 'Not on any surface yet', y: (y += destinations.length ? 24 : 0) });
-    y += 40;
-    for (const object of loose) place(object.id, 0, []);
-  }
-  // Group headings are part of the drawing, so fitting has to see them.
+
   const boxes = [
     ...placements,
     ...groups.map(group => ({ x: 0, y: group.y, width: COLUMN_WIDTH, height: 32 })),
   ];
-  return { placements, groups, boxes, assessed: destinations.length > 0 || map.objects.some(object => (object.within || []).length) };
+  return {
+    placements, groups, boxes,
+    assessed: destinations.length > 0 || map.objects.some(object => (object.within || []).length),
+  };
 }

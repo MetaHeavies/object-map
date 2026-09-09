@@ -72,7 +72,10 @@
           "name": "Overdue"
         }
       ],
-      "evidence": [],
+      "evidence": [
+        "src/models/book.js",
+        "src/routes/books.jsx"
+      ],
       "destination": true
     },
     {
@@ -98,7 +101,10 @@
         }
       ],
       "states": [],
-      "evidence": [],
+      "evidence": [
+        "src/models/author.js",
+        "src/routes/authors.jsx"
+      ],
       "destination": true
     },
     {
@@ -142,7 +148,10 @@
           "name": "Suspended"
         }
       ],
-      "evidence": [],
+      "evidence": [
+        "src/models/member.js",
+        "src/routes/members.jsx"
+      ],
       "destination": true
     },
     {
@@ -199,7 +208,10 @@
           "name": "Returned"
         }
       ],
-      "evidence": [],
+      "evidence": [
+        "src/models/loan.js",
+        "src/components/LoanPanel.jsx"
+      ],
       "within": [
         "obj:book",
         "obj:member"

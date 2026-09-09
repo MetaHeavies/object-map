@@ -1830,13 +1830,14 @@ textarea:focus-visible,
   color: var(--chrome-muted);
   white-space: nowrap;
 }
-/* A rule down the left edge shows the depth a 32px indent alone reads weakly. */
+/* A stub above each nested card, running back towards the object it sits
+   inside. Levels share a baseline, so the stubs line up as one rule. */
 .object-card.in-outline:not([data-depth="0"]):before {
   content: "";
   position: absolute;
-  left: -17px;
-  top: 0;
-  bottom: 0;
+  left: 20px;
+  top: -40px;
+  height: 40px;
   width: 1px;
   background: var(--chrome-line);
 }
